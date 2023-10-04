@@ -1,6 +1,7 @@
 # iac
 ## Create an AWS accunt
 ### demo.redhat.com > labs > AWS ILT
+### https://github.com/mmwillingham/acm/tree/main/create_rosa_cluster
 
 ## Create basic AWS resources
 ```bash
