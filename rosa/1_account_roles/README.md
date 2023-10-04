@@ -9,7 +9,7 @@ export TF_VAR_token=<see ~/ocm_token.txt>
 # Execute
 terraform init
 terraform plan -var-file="demo.tfvars" # Optional
-terraform apply -var-file="demo.tfvars"
+terraform apply -var-file="demo.tfvars" -auto-approve
 
 
 # Verification

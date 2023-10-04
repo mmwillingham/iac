@@ -1,5 +1,5 @@
 account_role_prefix = "demo"
-availability_zones = "us-east-2a"
+#availability_zones = "us-east-2a"
 cloud_region = "us-east-2"
 cluster_name = "bolauder88"
 operator_role_prefix = "bosez"

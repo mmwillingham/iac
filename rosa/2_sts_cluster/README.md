@@ -1,3 +1,8 @@
+
+terraform init
+terraform plan -var-file="demo.tfvars" # Optional
+terraform apply -var-file="demo.tfvars" -auto-approve
+
 # Creating a ROSA STS cluster with a managed OIDC configuration ID
 
 This Terraform example creates a ROSA STS cluster that uses a managed OIDC configuration. For more information on OIDC configurations, see the [OpenID Connect Overview](https://access.redhat.com/documentation/en-us/red_hat_openshift_service_on_aws/4/html/introduction_to_rosa/rosa-oidc-overview) in the Red Hat Customer Portal.
