@@ -48,7 +48,7 @@ resource "rhcs_cluster_rosa_classic" "rosa_sts_cluster" {
 resource "rhcs_cluster_wait" "rosa_cluster" {
   cluster = rhcs_cluster_rosa_classic.rosa_sts_cluster.id
   # timeout in minutes
-  timeout = 60
+  timeout = 120
 }
 
 data "rhcs_rosa_operator_roles" "operator_roles" {
