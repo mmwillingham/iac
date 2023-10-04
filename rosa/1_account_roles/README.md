@@ -1,3 +1,4 @@
+# Make sure you have credentials file in ~/.aws
 # Create or adjust .tfvars file.
 ## Note: The OCM environment value should be one of those: production, staging, integration, local.
 
