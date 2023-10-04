@@ -1,3 +1,6 @@
+# Create or adjust .tfvars file.
+## Note: The OCM environment value should be one of those: production, staging, integration, local.
+
 # Export Variable for token
 ## [OCM offline token](https://console.redhat.com/openshift/token)
 export TF_VAR_token=<see ~/ocm_token.txt>
