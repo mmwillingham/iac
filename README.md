@@ -1,5 +1,8 @@
 # iac
-# Create basic AWS resources
+## Create an AWS accunt
+### demo.redhat.com > labs > AWS ILT
+
+## Create basic AWS resources
 ```bash
 cd aws-basic
 terraform init
@@ -14,6 +17,7 @@ terraform destroy -auto-approve
 ```
 
 # Next steps
+## add outputs
 ## terraform cloud - store state there
 ## kickoff terraform from something else
 ## variables
