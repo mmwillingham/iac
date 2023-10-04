@@ -1,4 +1,4 @@
-ocm_environment = "demo"
+ocm_environment = "local"
 openshift_version = "4.13"
 account_role_prefix = "demo"
 # token = 
