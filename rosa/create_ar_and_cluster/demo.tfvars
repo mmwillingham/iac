@@ -1,6 +1,9 @@
 account_role_prefix = "bosez88"
 operator_role_prefix = "bosez88"
 cluster_name = "bosez88"
+admin_username = "cluster-admin"
+admin_password = "cluster-@dmin"
+# aws_subnet_id = 
 # openshift_version = "4.13"
 # ocm_environment = "local"
 # token = 
