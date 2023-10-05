@@ -41,6 +41,11 @@ module "create_account_roles" {
   create_duration        = "10s"
 }
 
+# Sleep after creating account roles
+resource "time_sleep" "wait_12_seconds" {
+  depends_on = [module.create_account_roles]
+  create_duration = "12s"
+}
 
 # Create cluster
 locals {
@@ -76,7 +81,7 @@ resource "rhcs_cluster_rosa_classic" "rosa_sts_cluster" {
     password = var.admin_password
     username = var.admin_username  
   }
-  module_depends_on = [module.create_account_roles]
+  depends_on = [time_sleep.wait_12_seconds]
 }
 
 resource "rhcs_cluster_wait" "rosa_cluster" {
