@@ -8,11 +8,11 @@ terraform {
 }
 
 provider "aws" {
-    region = var.region
+    region = var.vpc_region
  }
 
 locals {
-  availability_zones = ["${var.aws_region}a", "${var.aws_region}b"]
+  availability_zones = ["${var.aws_region}a", "${var.aws_region}b", "${var.aws_region}c"]
 }
 
 # VPC
