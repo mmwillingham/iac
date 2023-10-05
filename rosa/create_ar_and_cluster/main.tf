@@ -38,7 +38,9 @@ module "create_account_roles" {
   all_versions           = data.rhcs_versions.all
   path                   = var.path
   tags                   = var.tags
+  create_duration        = "10s"
 }
+
 
 # Create cluster
 locals {
@@ -74,7 +76,7 @@ resource "rhcs_cluster_rosa_classic" "rosa_sts_cluster" {
     password = var.admin_password
     username = var.admin_username  
   }
-  depends_on = [module.create_account_roles]
+  module_depends_on = [module.create_account_roles]
 }
 
 resource "rhcs_cluster_wait" "rosa_cluster" {
