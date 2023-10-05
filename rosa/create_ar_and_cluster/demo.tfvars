@@ -3,6 +3,7 @@ operator_role_prefix = "bosez88"
 cluster_name = "bosez88"
 admin_username = "cluster-admin"
 admin_password = "cluster-@dmin"
+# machine_cidr = "10.0.0.0/16"
 # aws_subnet_id = 
 # openshift_version = "4.13"
 # ocm_environment = "local"

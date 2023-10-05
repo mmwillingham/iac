@@ -65,9 +65,14 @@ resource "rhcs_cluster_rosa_classic" "rosa_sts_cluster" {
     rosa_creator_arn = data.aws_caller_identity.current.arn
   }
   sts = local.sts_roles
-  # disable_waiting_in_destroy = false
-  # destroy_timeout in minutes
   destroy_timeout = 60
+#  disable_waiting_in_destroy = false
+#  destroy_timeout in minutes
+#  machine_cidr = [var.machine_cidr]
+#  aws_subnet_ids = [var.aws_subnet_id]  
+  admin_credentials = {
+    password = var.admin_password
+    username = var.admin_username  
   depends_on = [module.create_account_roles]
 }
 
