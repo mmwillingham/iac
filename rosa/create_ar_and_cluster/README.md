@@ -4,6 +4,7 @@ terraform plan -var-file="prod.tfvars"
 terraform apply -var-file="prod.tfvars" -auto-approve
 
 or
+
 export TF_VAR_token=<OCM token>
 TF_VAR_account_role_prefix=mmw88
 TF_VAR_operator_role_prefix=mmw88
