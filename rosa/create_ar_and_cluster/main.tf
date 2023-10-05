@@ -73,6 +73,7 @@ resource "rhcs_cluster_rosa_classic" "rosa_sts_cluster" {
   admin_credentials = {
     password = var.admin_password
     username = var.admin_username  
+  }
   depends_on = [module.create_account_roles]
 }
 
