@@ -1,7 +1,7 @@
 export TF_VAR_token=<OCM token>
 terraform init
-terraform plan -var-file="demo.tfvars"
-terraform apply -var-file="demo.tfvars" -auto-approve
+terraform plan -var-file="prod.tfvars"
+terraform apply -var-file="prod.tfvars" -auto-approve
 
 or
 export TF_VAR_token=<OCM token>

@@ -32,6 +32,7 @@ terraform destroy -auto-approve
 # Next steps
 ## combine account roles and cluster creation (depends on?)
 ## create vpc and subnets first, then use them in cluster creation
+## get token from Vault
 ## add outputs
 ### https://github.com/hashicorp/learn-terraform-outputs
 ## terraform cloud - store state there
