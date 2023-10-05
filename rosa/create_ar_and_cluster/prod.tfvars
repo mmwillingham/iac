@@ -1,8 +1,8 @@
 account_role_prefix = "bosez88"
 operator_role_prefix = "bosez88"
 cluster_name = "bosez88"
-admin_username = "cluster-admin"
-admin_password = "Cluster-admin-password-123"
+admin_username = "bolauder"
+admin_password = "Bolauder-password-123"
 # machine_cidr = "10.0.0.0/16"
 # aws_subnet_id = 
 # openshift_version = "4.13"

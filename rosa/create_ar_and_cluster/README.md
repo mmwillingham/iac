@@ -2,7 +2,9 @@ export TF_VAR_token=<OCM token>
 terraform init
 terraform plan -var-file="prod.tfvars"
 terraform apply -var-file="prod.tfvars" -auto-approve
-
+# For checking cluster logs
+rosa logs install -c xxx --watch
+rosa create admin -c <clusterid>
 or
 
 export TF_VAR_token=<OCM token>
