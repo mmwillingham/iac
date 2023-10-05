@@ -67,6 +67,9 @@ resource "rhcs_cluster_rosa_classic" "rosa_sts_cluster" {
   # disable_waiting_in_destroy = false
   # destroy_timeout in minutes
   destroy_timeout = 60
+  depends_on = [
+    create_account_roles
+  ]
 }
 
 resource "rhcs_cluster_wait" "rosa_cluster" {
