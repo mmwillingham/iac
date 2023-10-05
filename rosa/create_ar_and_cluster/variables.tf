@@ -54,9 +54,9 @@ variable "availability_zones" {
   default = ["us-east-2a"]
 }
 
-variable "aws_subnet_id" {
-  type    = string
-}
+#variable "aws_subnet_id" {
+#  type    = string
+#}
 
 variable "admin_username" {
   type = string
