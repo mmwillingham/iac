@@ -1,3 +1,4 @@
+# Common
 terraform {
   required_providers {
     aws = {
