@@ -38,7 +38,6 @@ module "create_account_roles" {
   all_versions           = data.rhcs_versions.all
   path                   = var.path
   tags                   = var.tags
-  create_duration        = "10s"
 }
 
 # Sleep after creating account roles
