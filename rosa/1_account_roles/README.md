@@ -6,6 +6,9 @@
 ## [OCM offline token](https://console.redhat.com/openshift/token)
 export TF_VAR_token=<see ~/ocm_token.txt>
 
+# If not using ftvars file
+export TF_VAR_account_role_prefix="demo"
+
 # Execute
 terraform init
 terraform plan -var-file="demo.tfvars" # Optional

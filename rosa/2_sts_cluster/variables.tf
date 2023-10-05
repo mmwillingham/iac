@@ -19,7 +19,7 @@ variable "account_role_prefix" {
 
 variable "cluster_name" {
   type    = string
-  default = "my-cluster"
+  default = "mmw"
 }
 
 variable "cloud_region" {
