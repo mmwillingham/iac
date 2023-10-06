@@ -83,8 +83,6 @@ resource "rhcs_cluster_rosa_classic" "rosa_sts_cluster" {
   version = var.openshift_version
   compute_machine_type = var.compute_machine_type
   autoscaling_enabled = var.autoscaling_enabled
-  min_replicas = var.min_replicas
-  max_replicas = var.max_replicas
 # disable_waiting_in_destroy = false
 # destroy_timeout in minutes
 # upgrade_acknowledgements_for = [var.upgrade_acknowledgements_for]
