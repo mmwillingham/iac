@@ -5,6 +5,7 @@
 
 export TF_VAR_token=<OCM token>
 terraform init
+terraform validate
 terraform plan -var-file="prod.tfvars"
 terraform apply -var-file="prod.tfvars" -auto-approve
 # For checking cluster logs

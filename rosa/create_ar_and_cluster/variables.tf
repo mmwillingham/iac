@@ -3,10 +3,10 @@ variable "ocm_environment" {
   default = "production"
 }
 
-variable "rosa_openshift_version" {
-  type = string
-  default = "4.13"
-}
+#variable "rosa_openshift_version" {
+#  type = string
+#  default = "4.13"
+#}
 
 variable "openshift_version" {
   type = string
