@@ -8,8 +8,10 @@ terraform init
 terraform plan -var-file="prod.tfvars"
 terraform apply -var-file="prod.tfvars" -auto-approve
 # For checking cluster logs
-rosa logs install -c xxx --watch
-rosa create admin -c <clusterid>
+rosa list clusters
+rosa logs install -c <clustername> --watch
+$ No need to create cluster-admin if you created admin_username in the tf code
+# rosa create admin -c <clustername>
 or
 
 export TF_VAR_token=<OCM token>
