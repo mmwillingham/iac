@@ -50,8 +50,8 @@ variable "cloud_region" {
 }
 
 variable replicas {
-    type = string
-    default = "2"
+    type = number
+    default = 2
 }
 
 variable multi_az{
