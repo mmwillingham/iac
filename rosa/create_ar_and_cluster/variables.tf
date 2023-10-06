@@ -56,7 +56,7 @@ variable replicas {
 
 variable multi_az{
     type = bool
-    default = false
+    default = "false"
 }
 
 variable "availability_zones" {
@@ -71,7 +71,7 @@ variable "aws_subnet_ids" {
 
 variable "machine_cidr" {
   type    = string
-  default = null
+  default = ""
 }
 
 variable "admin_username" {
