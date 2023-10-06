@@ -12,8 +12,8 @@ cloud_region = "us-east-2"
 multi_az = "true"
 machine_cidr = "10.0.0.0/16"
 autoscaling_enabled = "true"
-min_replicas = 3
-max_replicas = 5
+min_replicas = 6
+max_replicas = 9
 #availability_zones = ["${var.cloud_region}a", "${var.cloud_region}b", "${var.cloud_region}c"]  <-- variable not allowed
 availability_zones = ["us-east-2a", "us-east-2b", "us-east-2c"]
 # NOTE: for aws_subnet_ids, I specified private a,b,c, then public a,b,c. Don't know if this is correct.
