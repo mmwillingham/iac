@@ -24,7 +24,7 @@ data "rhcs_versions" "all" {}
 
 module "create_account_roles" {
   source  = "terraform-redhat/rosa-sts/aws"
-  version = "0.0.14"
+  version = "0.0.15"
 
   create_operator_roles = false
   create_oidc_provider  = false
@@ -67,20 +67,23 @@ resource "rhcs_cluster_rosa_classic" "rosa_sts_cluster" {
   cloud_region       = var.cloud_region
   aws_account_id     = data.aws_caller_identity.current.account_id
   availability_zones = var.availability_zones
-  properties = {
-    rosa_creator_arn = data.aws_caller_identity.current.arn
-  }
+  properties = { rosa_creator_arn = data.aws_caller_identity.current.arn }
   sts = local.sts_roles
   destroy_timeout = 60
-#  disable_waiting_in_destroy = false
-#  destroy_timeout in minutes
-#  machine_cidr = [var.machine_cidr]
-#  aws_subnet_ids = [var.aws_subnet_id]  
+  replicas = [var.replicas]
+  machine_cidr = [var.machine_cidr]
+  aws_subnet_ids = [var.aws_subnet_ids]
+  multi_az = [var.multi_az]
   admin_credentials = {
     password = var.admin_password
     username = var.admin_username  
   }
   depends_on = [time_sleep.wait_12_seconds]
+  version = var.openshift_version
+# disable_waiting_in_destroy = false
+# destroy_timeout in minutes
+# upgrade_acknowledgements_for = [var.upgrade_acknowledgements_for]
+
 }
 
 resource "rhcs_cluster_wait" "rosa_cluster" {
@@ -96,7 +99,7 @@ data "rhcs_rosa_operator_roles" "operator_roles" {
 
 module "operator_roles" {
   source  = "terraform-redhat/rosa-sts/aws"
-  version = "0.0.14"
+  version = "0.0.15"
 
   create_operator_roles = true
   create_oidc_provider  = true

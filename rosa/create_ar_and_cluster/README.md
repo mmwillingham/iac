@@ -1,3 +1,8 @@
+# All variables: https://github.com/terraform-redhat/terraform-provider-rhcs/blob/main/docs/resources/cluster_rosa_classic.md
+# Upgrading: https://github.com/terraform-redhat/terraform-provider-rhcs/blob/main/docs/guides/upgrading-cluster.md
+# Machine pools: https://github.com/terraform-redhat/terraform-provider-rhcs/blob/main/docs/guides/machine-pool.md
+
+
 export TF_VAR_token=<OCM token>
 terraform init
 terraform plan -var-file="prod.tfvars"

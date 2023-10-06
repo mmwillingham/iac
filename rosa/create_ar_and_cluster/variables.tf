@@ -49,14 +49,25 @@ variable "cloud_region" {
   default = "us-east-2"
 }
 
+variable replicas {
+    type = string
+    default = "2"
+}
+
+variable multi_az{
+    type = bool
+    default = false
+}
+
 variable "availability_zones" {
   type    = list(string)
   default = ["us-east-2a"]
 }
 
-#variable "aws_subnet_id" {
-#  type    = string
-#}
+variable "aws_subnet_ids" {
+  description = "Specify the subnet ID (not name) of the private subnet"
+  type    = string
+}
 
 variable "admin_username" {
   type = string
@@ -65,3 +76,16 @@ variable "admin_username" {
 variable "admin_password" {
   type = string
 }
+
+variable "upgrade_acknowledgements_for" {
+  type = string
+  default = "4.13"
+}
+
+#variable aws_access_key {
+#    type = string
+#}
+#
+#variable aws_secret_key {
+#    type = string
+#}
