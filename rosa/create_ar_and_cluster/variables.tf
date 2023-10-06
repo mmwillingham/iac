@@ -64,11 +64,6 @@ variable replicas {
     default = 2
 }
 
-variable autoscaling_enabled{
-    type = bool
-    default = "false"
-}
-
 variable multi_az{
     type = bool
     default = "false"
