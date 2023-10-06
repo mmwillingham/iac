@@ -72,7 +72,7 @@ resource "rhcs_cluster_rosa_classic" "rosa_sts_cluster" {
   destroy_timeout = 60
   replicas = var.replicas
   machine_cidr = var.machine_cidr
-  aws_subnet_ids = [var.aws_subnet_ids]
+  aws_subnet_ids = var.aws_subnet_ids
   multi_az = var.multi_az
   admin_credentials = {
     password = var.admin_password
