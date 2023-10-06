@@ -69,6 +69,11 @@ variable "aws_subnet_ids" {
   type    = string
 }
 
+variable "machine_cidr" {
+  type    = string
+  default = null
+}
+
 variable "admin_username" {
   type = string
 }
