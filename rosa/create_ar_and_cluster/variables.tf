@@ -66,7 +66,7 @@ variable "availability_zones" {
 
 variable "aws_subnet_ids" {
   description = "Specify the subnet ID (not name) of the private subnet"
-  type    = string
+  type    = list(string)
 }
 
 variable "machine_cidr" {
