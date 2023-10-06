@@ -54,9 +54,19 @@ variable "cloud_region" {
   default = "us-east-2"
 }
 
+variable "compute_machine_type" {
+  type    = string
+  default = "m5.xlarge"
+}
+
 variable replicas {
     type = number
     default = 2
+}
+
+variable autoscaling_enabled{
+    type = bool
+    default = "false"
 }
 
 variable multi_az{
