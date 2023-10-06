@@ -70,10 +70,10 @@ resource "rhcs_cluster_rosa_classic" "rosa_sts_cluster" {
   properties = { rosa_creator_arn = data.aws_caller_identity.current.arn }
   sts = local.sts_roles
   destroy_timeout = 60
-  replicas = [var.replicas]
-  machine_cidr = [var.machine_cidr]
+  replicas = var.replicas
+  machine_cidr = var.machine_cidr
   aws_subnet_ids = [var.aws_subnet_ids]
-  multi_az = [var.multi_az]
+  multi_az = var.multi_az
   admin_credentials = {
     password = var.admin_password
     username = var.admin_username  
