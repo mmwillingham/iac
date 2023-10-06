@@ -3,6 +3,7 @@ operator_role_prefix = "bosez88"
 cluster_name = "bosez88"
 admin_username = "bolauder"
 admin_password = "Bolauder-password-123"
+rosa_openshift_version = "4.13"
 openshift_version = "4.13.10"
 replicas = 3
 cloud_region = "us-east-2"
