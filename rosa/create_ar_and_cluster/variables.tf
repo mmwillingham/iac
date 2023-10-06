@@ -5,7 +5,7 @@ variable "ocm_environment" {
 
 variable "openshift_version" {
   type = string
-  default = ""
+  default = "4.13.10"
 }
 
 variable "account_role_prefix" {
