@@ -4,13 +4,14 @@ cluster_name = "bosez88"
 admin_username = "bolauder"
 admin_password = "Bolauder-password-123"
 #rosa_openshift_version = "4.13"
+# To upgrade OCP, just update openshift_version and terraform apply
 openshift_version = "4.13.10"
 replicas = 3
 compute_machine_type ="m5.xlarge"
 cloud_region = "us-east-2"
 multi_az = "true"
 machine_cidr = "10.0.0.0/16"
-autoscaling_enabled = "false"
+autoscaling_enabled = "true"
 #availability_zones = ["${var.cloud_region}a", "${var.cloud_region}b", "${var.cloud_region}c"]  <-- variable not allowed
 availability_zones = ["us-east-2a", "us-east-2b", "us-east-2c"]
 # NOTE: for aws_subnet_ids, I specified private a,b,c, then public a,b,c. Don't know if this is correct.
@@ -19,7 +20,6 @@ aws_subnet_ids = ["subnet-0a73cb33c1f6c7e2f", "subnet-04930ad373bc82008", "subne
 # ocm_environment = "local"
 # token = 
 # url = "https://api.openshift.com"
-# availability_zones = "us-east-2a"
 # tags=<aws_resource_tags>
 # ec2_metadata_http_tokens=<required_or_optional>
 # path
