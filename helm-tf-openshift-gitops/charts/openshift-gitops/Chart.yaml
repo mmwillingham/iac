@@ -1,0 +1,22 @@
+annotations:
+  artifacthub.io/changes: |
+    - kind: fixed
+      description: Signing Chart
+  artifacthub.io/license: Apache-2.0
+  artifacthub.io/signKey: |
+    fingerprint: B677CB52F8358FA091044E375D24D6846DBA8F8A
+    url: https://keys.openpgp.org/vks/v1/by-fingerprint/B677CB52F8358FA091044E375D24D6846DBA8F8A
+apiVersion: v2
+description: Installs and patches the Red Hat Openshift Gitops Operator
+home: https://github.com/tjungbauer/helm-charts/tree/main/charts/openshift-gitops
+icon: https://github.com/tjungbauer/helm-charts/raw/gh-pages/images/argo-icon-color.png
+keywords:
+- gitops
+- management
+maintainers:
+- email: tjungbau@redhat.com
+  name: tjungbauer
+name: openshift-gitops
+sources:
+- https://github.com/tjungbauer/helm-charts
+version: 1.0.20
