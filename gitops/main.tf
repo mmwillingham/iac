@@ -1,22 +1,22 @@
 provider "openshift" {
   load_config_file = "false"
 
-  host = "https://104.196.242.174"
+  host = var.host
 
-  username = "bolauder"
-  password = "Bolauder-password-123"
+  username = var.username
+  password = var.password
 }
 
 resource "kubernetes_namespace" "example" {
   metadata {
-    annotations = {
-      name = "example-annotation"
-    }
+#    annotations = {
+#      name = "example-annotation"
+#    }
 
-    labels = {
-      mylabel = "label-value"
-    }
+#    labels = {
+#      mylabel = "label-value"
+#    }
 
-    name = "terraform-example-namespace"
+    name = var.namespace
   }
 }
