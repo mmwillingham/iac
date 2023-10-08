@@ -3,6 +3,7 @@
 # Upgrading: https://github.com/terraform-redhat/terraform-provider-rhcs/blob/main/docs/guides/upgrading-cluster.md
 # Machine pools: https://github.com/terraform-redhat/terraform-provider-rhcs/blob/main/docs/guides/machine-pool.md
 
+# Vault: https://developer.hashicorp.com/vault/tutorials/hcp-vault-secrets-get-started/hcp-vault-secrets-install-cli
 
 export TF_VAR_token=<OCM token>
 terraform init
