@@ -6,8 +6,8 @@ provider "kubernetes" {
   password = var.password
 }
 
-resource "kubernetes_namespace" "example" {
-  metadata {
+#resource "kubernetes_namespace" "example" {
+#  metadata {
 #    annotations = {
 #      name = "example-annotation"
 #    }
@@ -15,7 +15,27 @@ resource "kubernetes_namespace" "example" {
 #    labels = {
 #      mylabel = "label-value"
 #    }
+#
+#    name = var.namespace
+#  }
+#}
 
-    name = var.namespace
+resource "kubernetes_pod" "nginx" {
+  metadata {
+    name = "nginx-example"
+    labels {
+      App = "nginx"
+    }
+  }
+
+  spec {
+    container {
+      image = "nginx:1.15.2"
+      name  = "example"
+
+      port {
+        container_port = 80
+      }
+    }
   }
 }
