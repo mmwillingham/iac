@@ -4,7 +4,7 @@ provider "kubernetes" {
 
 resource "kubernetes_namespace" "labs-ci-cd" {
   metadata {
-    name = var.namespace
+    name = labs-ci-cd
   }
 }
 
