@@ -1,9 +1,13 @@
+#provider "kubernetes" {
+#
+#  host = var.host
+#
+#  username = var.username
+#  password = var.password
+#}
+
 provider "kubernetes" {
-
-  host = var.host
-
-  username = var.username
-  password = var.password
+  config_path = "~/.kube/config"
 }
 
 #resource "kubernetes_namespace" "example" {
