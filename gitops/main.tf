@@ -23,9 +23,9 @@ provider "kubernetes" {
 resource "kubernetes_pod" "nginx" {
   metadata {
     name = "nginx-example"
-    labels {
-      App = "nginx"
-    }
+#    labels {
+#      App = "nginx"
+#    }
   }
 
   spec {
