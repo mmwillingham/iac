@@ -1,4 +1,4 @@
-account_role_prefix = "godawgs88"
+account_role_prefix = "bosez88"
 operator_role_prefix = "bosez88"
 cluster_name = "bosez88"
 admin_username = "adminuser"
