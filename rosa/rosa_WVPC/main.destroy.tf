@@ -21,7 +21,7 @@ provider "rhcs" {
 }
 
 # +-----------------------------------------------------+
-# | Comment out everyting below to destory the cluster  |
+# | Comment out everyting below to destroy the cluster  |
 # +-----------------------------------------------------+
 
 locals {
