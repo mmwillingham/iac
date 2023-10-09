@@ -21,7 +21,8 @@ provider "rhcs" {
 }
 
 # +-----------------------------------------------------+
-# | Comment out everyting below to destroy the cluster  |
+# | DON'T DO THIS: Comment out everything below to destroy the cluster 
+# | Instead, in terraform workspace, go to Settings > Destruction and Deletion > Queue destroy plan
 # +-----------------------------------------------------+
 
 locals {
