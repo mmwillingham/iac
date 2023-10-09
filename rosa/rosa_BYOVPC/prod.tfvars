@@ -1,8 +1,8 @@
-account_role_prefix = "bosez88"
+account_role_prefix = "godawgs88"
 operator_role_prefix = "bosez88"
 cluster_name = "bosez88"
-admin_username = "bolauder"
-admin_password = "Bolauder-password-123"
+admin_username = "adminuser"
+admin_password = "adminuser-password-123"
 #rosa_openshift_version = "4.13"
 # To upgrade OCP, just update openshift_version and terraform apply
 openshift_version = "4.13.10"
