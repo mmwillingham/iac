@@ -3,6 +3,10 @@ kind: ClusterServiceVersion
 metadata:
   name: openshift-gitops-operator.v1.10.0
   namespace: openshift-gitops-operator
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   customresourcedefinitions:
     owned:
