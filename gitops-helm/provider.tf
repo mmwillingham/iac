@@ -5,7 +5,6 @@ provider "helm" {
     username = "bolauder"
     password = "Bolauder-password-123"
     insecure = true
-    insecure-skip-tls-verify = true
   }
 }
 
