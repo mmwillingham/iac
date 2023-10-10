@@ -2,7 +2,7 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: openshift-gitops-operator
-  namespace: openshift-gitops-operator
+  namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-wave: "2" # (3)
 spec:
@@ -16,7 +16,7 @@ apiVersion: operators.coreos.com/v1alpha2 # (2)
 kind: OperatorGroup
 metadata:
   name: gitops-og
-  namespace: openshift-gitops-operator
+  namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-wave: "2" # (3)
 spec: {}
@@ -24,7 +24,7 @@ spec: {}
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: openshift-gitops-operator
+  name: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-wave: "1" # (3)
 
