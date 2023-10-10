@@ -3,6 +3,6 @@ provider "helm" {
     #config_path = "~/.kube/config"
     host = var.host
     username = var.username
-    username = var.password
+    password = var.password
   }
 }
