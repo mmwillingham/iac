@@ -1,10 +1,18 @@
+#provider "helm" {
+#  debug = true
+#  kubernetes {
+#    host     = "https://api.bosez123.qzzw.p1.openshiftapps.com:6443"
+#    username = "bolauder"
+#    password = "Bolauder-password-123"
+#    insecure = true
+#  }
+#}
+#
+
+# This works
 provider "helm" {
-  debug = true
   kubernetes {
-    host     = "https://api.bosez123.qzzw.p1.openshiftapps.com:6443"
-    username = "bolauder"
-    password = "Bolauder-password-123"
-    insecure = true
+    config_path = "~/.kube/config"
   }
 }
 
