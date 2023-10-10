@@ -1,10 +1,10 @@
 provider "helm" {
   debug = true
   kubernetes {
-  host     = "https://api.bosez123.qzzw.p1.openshiftapps.com:6443"
-  username = "bolauder"
-  password = "Bolauder-password-123"
-  insecure = true
+    host     = "https://api.bosez123.qzzw.p1.openshiftapps.com:6443"
+    username = "bolauder"
+    password = "Bolauder-password-123"
+    insecure = true
   }
 }
 
