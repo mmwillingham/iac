@@ -1,4 +1,4 @@
-data "kubernetes_resource" "example" {
+data "kubernetes_resource" "gitops" {
   api_version = "v1"
   kind        = "Subscription"
 
