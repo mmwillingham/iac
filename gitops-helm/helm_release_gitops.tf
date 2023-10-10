@@ -1,7 +1,7 @@
 resource "helm_release" "gitops" {
   name        = "gitops"
   chart       = "gitops"
-#  repository  = "./charts"
+  repository  = "./charts"
 #  namespace   = "helm-gitops"
 #  max_history = 3
 #  create_namespace = true
