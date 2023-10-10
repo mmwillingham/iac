@@ -4,7 +4,7 @@ provider "helm" {
     host     = "https://api.bosez123.qzzw.p1.openshiftapps.com:6443"
     username = "bolauder"
     password = "Bolauder-password-123"
-    insecure = "yes"
+    insecure = yes
   }
 }
 
