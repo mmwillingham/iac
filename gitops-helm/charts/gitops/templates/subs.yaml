@@ -3,9 +3,28 @@ kind: Subscription
 metadata:
   name: openshift-gitops-operator
   namespace: openshift-gitops-operator
+  annotations:
+    argocd.argoproj.io/sync-wave: "2" # (3)
 spec:
   channel: latest
   installPlanApproval: Automatic
   name: openshift-gitops-operator
   source: redhat-operators
   sourceNamespace: openshift-marketplace
+---
+apiVersion: operators.coreos.com/v1alpha2 # (2)
+kind: OperatorGroup
+metadata:
+  name: gitops-og
+  namespace: openshift-gitops-operator
+  annotations:
+    argocd.argoproj.io/sync-wave: "2" # (3)
+spec: {}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: openshift-gitops-operator
+  annotations:
+    argocd.argoproj.io/sync-wave: "1" # (3)
+
