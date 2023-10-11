@@ -1,3 +1,4 @@
+# This throws an error about unknown api
 #provider "helm" {
 #  debug = true
 #  kubernetes {
