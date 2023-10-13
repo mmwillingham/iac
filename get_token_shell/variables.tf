@@ -12,4 +12,5 @@ variable "ocp_pwd" {
 
 variable "token" {
   type = string
+  default = "unset"
 }
