@@ -62,7 +62,7 @@ provider "shell" {
 data "shell_script" "token" {
     lifecycle_commands {
         read = <<-EOF
-          echo "{\"token\": \"$(curl -s -k -i -L -X GET --user "${var.ocp_user}":"${var.ocp_pwd}" "${var.ocp_oauth_host}" | grep -oP "access_token=\K[^&]*")\"}"
+          echo "{\"ocp_token\": \"$(curl -s -k -i -L -X GET --user "${var.ocp_user}":"${var.ocp_pwd}" "${var.ocp_oauth_host}" | grep -oP "access_token=\K[^&]*")\"}"
           echo $token
         EOF
     }
@@ -70,8 +70,8 @@ data "shell_script" "token" {
 
 
 # "token" can be accessed like a normal Terraform map
- output "token" {
-     value = data.shell_script.token.output["token"]
+ output "ocp_token" {
+     value = data.shell_script.token.output["ocp_token"]
  }
 
 # data "shell_script" "weather" {
