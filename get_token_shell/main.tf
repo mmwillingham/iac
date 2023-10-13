@@ -4,8 +4,6 @@
 #   }
 # }
 
-#comment
-
 data "shell_script" "token" {
     lifecycle_commands {
         read = <<-EOF
@@ -19,17 +17,21 @@ output "ocp_token" {
     sensitive   = true
 }
 
-resource "helm_release" "mmw" {
-  name        = "mmw"
-  chart       = "mmw"
-  repository  = "."
-  namespace   = "helm-mmw"
-  max_history = 3
-  create_namespace = true
-  wait             = true
-  reset_values     = true
-}
+# Comment out everything below here to destroy resources
+# resource "helm_release" "mmw" {
+#   name        = "mmw"
+#   chart       = "mmw"
+#   repository  = "."
+#   namespace   = "helm-mmw"
+#   max_history = 3
+#   create_namespace = true
+#   wait             = true
+#   reset_values     = true
+# }
 
+
+
+# This was testing stuff:
 
 # curl that works
 # curl -s -k -i -L -X GET --user bolauder:Bolauder-password-123 'https://oauth-openshift.apps.bosez123.qzzw.p1.openshiftapps.com/oauth/authorize?response_type=token&client_id=openshift-challenging-client' | grep -oP "access_token=\K[^&]*"
