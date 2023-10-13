@@ -56,6 +56,7 @@ provider "shell" {
 #     }
 # }
 #
+# delete this line
 
 
 data "shell_script" "token" {
