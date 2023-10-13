@@ -4,6 +4,8 @@
 #   }
 # }
 
+#comment
+
 data "shell_script" "token" {
     lifecycle_commands {
         read = <<-EOF
