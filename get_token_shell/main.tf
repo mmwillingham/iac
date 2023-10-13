@@ -16,6 +16,7 @@ data "shell_script" "token" {
 
 output "ocp_token" {
     value = data.shell_script.token.output["ocp_token"]
+    sensitive   = true
 }
 
 resource "helm_release" "mmw" {
