@@ -56,13 +56,14 @@ provider "shell" {
 #     }
 # }
 #
-# delete this line
-
+# curl -s -k -i -L -X GET --user bolauder:Bolauder-password-123 'https://oauth-openshift.apps.bosez123.qzzw.p1.openshiftapps.com/oauth/authorize?response_type=token&client_id=openshift-challenging-client' | grep -oP "access_token=\K[^&]*"
+#echo "{\"token\": \"$(curl -s -k -i -L -X GET --user "${var.ocp_user}":"${var.ocp_pwd}" "${var.ocp_oauth_host}" | grep -oP "access_token=\K[^&]*")\"}"
 
 data "shell_script" "token" {
     lifecycle_commands {
         read = <<-EOF
           echo "{\"token\": \"$(curl -s -k -i -L -X GET --user "${var.ocp_user}":"${var.ocp_pwd}" "${var.ocp_oauth_host}" | grep -oP "access_token=\K[^&]*")\"}"
+          echo $token
         EOF
     }
 }
