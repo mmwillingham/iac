@@ -63,7 +63,7 @@ data "shell_script" "token" {
     lifecycle_commands {
         read = <<-EOF
           echo "{\"ocp_token\": \"$(curl -s -k -i -L -X GET --user "${var.ocp_user}":"${var.ocp_pwd}" "${var.ocp_oauth_host}" | grep -oP "access_token=\K[^&]*")\"}"
-          echo $token
+#          echo $ocp_token
         EOF
     }
 }
