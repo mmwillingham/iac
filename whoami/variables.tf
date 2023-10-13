@@ -9,3 +9,4 @@ variable "ocp_user" {
 variable "ocp_pwd" {
   type = string
 }
+# hello
