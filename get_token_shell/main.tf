@@ -1,15 +1,32 @@
-terraform {
-  required_providers {
-    shell = {
-      source = "scottwinkler/shell"
-      version = "1.7.10"
+# resource "kubernetes_namespace" "example" {
+#   metadata {
+#     name = "helm-mmw"
+#   }
+# }
+
+data "shell_script" "token" {
+    lifecycle_commands {
+        read = <<-EOF
+          echo "{\"ocp_token\": \"$(curl -s -k -i -L -X GET --user "${var.ocp_user}":"${var.ocp_pwd}" "${var.ocp_oauth_host}" | grep -oP "access_token=\K[^&]*")\"}"
+        EOF
     }
-  }
 }
 
-provider "shell" {
-  # Configuration options
+output "ocp_token" {
+    value = data.shell_script.token.output["ocp_token"]
 }
+
+resource "helm_release" "mmw" {
+  name        = "mmw"
+  chart       = "mmw"
+  repository  = "."
+  namespace   = "helm-mmw"
+  max_history = 3
+  create_namespace = true
+  wait             = true
+  reset_values     = true
+}
+
 
 # curl that works
 # curl -s -k -i -L -X GET --user bolauder:Bolauder-password-123 'https://oauth-openshift.apps.bosez123.qzzw.p1.openshiftapps.com/oauth/authorize?response_type=token&client_id=openshift-challenging-client' | grep -oP "access_token=\K[^&]*"
@@ -58,21 +75,6 @@ provider "shell" {
 #
 # curl -s -k -i -L -X GET --user bolauder:Bolauder-password-123 'https://oauth-openshift.apps.bosez123.qzzw.p1.openshiftapps.com/oauth/authorize?response_type=token&client_id=openshift-challenging-client' | grep -oP "access_token=\K[^&]*"
 #echo "{\"token\": \"$(curl -s -k -i -L -X GET --user "${var.ocp_user}":"${var.ocp_pwd}" "${var.ocp_oauth_host}" | grep -oP "access_token=\K[^&]*")\"}"
-
-data "shell_script" "token" {
-    lifecycle_commands {
-        read = <<-EOF
-          echo "{\"ocp_token\": \"$(curl -s -k -i -L -X GET --user "${var.ocp_user}":"${var.ocp_pwd}" "${var.ocp_oauth_host}" | grep -oP "access_token=\K[^&]*")\"}"
-#          echo $ocp_token
-        EOF
-    }
-}
-
-
-# "token" can be accessed like a normal Terraform map
- output "ocp_token" {
-     value = data.shell_script.token.output["ocp_token"]
- }
 
 # data "shell_script" "weather" {
 #   lifecycle_commands {
