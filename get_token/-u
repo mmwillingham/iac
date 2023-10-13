@@ -1,0 +1,31 @@
+HTTP/1.1 302 Found
+Audit-Id: 046dcbd2-c8fc-40f7-a693-b048c4280a43
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Expires: 0
+Expires: Fri, 01 Jan 1990 00:00:00 GMT
+Location: https://oauth-openshift.apps.bosez123.qzzw.p1.openshiftapps.com/oauth/token/implicit?error=unsupported_response_type&error_description=The+authorization+server+does+not+support+obtaining+a+token+using+this+method.
+Pragma: no-cache
+Pragma: no-cache
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+X-Dns-Prefetch-Control: off
+X-Frame-Options: DENY
+X-Xss-Protection: 1; mode=block
+Date: Fri, 13 Oct 2023 17:00:49 GMT
+Content-Length: 0
+
+HTTP/1.1 200 OK
+Audit-Id: 57685602-bbc6-488e-8b30-edbe6d120bd0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Content-Type: text/plain
+Expires: 0
+Pragma: no-cache
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+X-Dns-Prefetch-Control: off
+X-Frame-Options: DENY
+X-Xss-Protection: 1; mode=block
+Date: Fri, 13 Oct 2023 17:00:49 GMT
+Content-Length: 755
+

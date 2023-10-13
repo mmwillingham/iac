@@ -74,6 +74,7 @@ resource "time_sleep" "wait_for_roles" {
 resource "rhcs_cluster_rosa_classic" "rosa_sts_cluster" {
   name               = var.cluster_name
   cloud_region       = var.cloud_region
+  #host_prefix        = var.host_prefix
   aws_account_id     = data.aws_caller_identity.current.account_id
   availability_zones = var.availability_zones
   properties = {

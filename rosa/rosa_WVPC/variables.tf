@@ -22,6 +22,12 @@ variable "cluster_name" {
   default = "my-cluster"
 }
 
+# variable "host_prefix" {
+#   type    = string
+#   default = "my_prefix"
+# }
+
+
 variable "cloud_region" {
   type    = string
   default = "us-east-2"

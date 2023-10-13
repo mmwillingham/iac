@@ -1,21 +1,30 @@
-# This throws an error about unknown api
-#provider "helm" {
-#  debug = true
-#  kubernetes {
-#    host     = "https://api.bosez123.qzzw.p1.openshiftapps.com:6443"
-#    username = "bolauder"
-#    password = "Bolauder-password-123"
-#    insecure = true
-#  }
-#}
-#
-
-# This works
 provider "helm" {
   kubernetes {
-    config_path = "~/.kube/config"
+    host     = "https://api.bosez123.qzzw.p1.openshiftapps.com:6443"
+    token = "sha256~lkXy1_zQ24WmRBsR0iHM3wKtyHL_YWHzJo-KwHVdoTk"
+    insecure = true
   }
 }
+
+terraform {
+  required_providers {
+    python = {
+      source = "joaqquin89/python"
+      version = "1.0.3"
+    }
+    helm = {
+      source = "hashicorp/helm"
+      version = "2.11.0"
+    }
+  }
+}
+
+# This works
+# provider "helm" {
+#   kubernetes {
+#     config_path = "~/.kube/config"
+#   }
+# }
 
 
 #terraform {
