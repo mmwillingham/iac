@@ -18,16 +18,16 @@ output "ocp_token" {
 }
 
 # Comment out everything below here to destroy resources
-# resource "helm_release" "mmw" {
-#   name        = "mmw"
-#   chart       = "mmw"
-#   repository  = "."
-#   namespace   = "helm-mmw"
-#   max_history = 3
-#   create_namespace = true
-#   wait             = true
-#   reset_values     = true
-# }
+resource "helm_release" "mmw" {
+  name        = "mmw"
+  chart       = "mmw"
+  repository  = "."
+  namespace   = "helm-mmw"
+  max_history = 3
+  create_namespace = true
+  wait             = true
+  reset_values     = true
+}
 
 
 
