@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: stp
-  namespace: openshift-gitops
+  namespace: ocp-gitops
 spec:
   clusterResourceWhitelist:
     - group: '*'
