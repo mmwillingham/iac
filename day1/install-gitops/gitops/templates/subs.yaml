@@ -17,7 +17,7 @@ spec:
   config:
     env:
       name: "DISABLE_DEFAULT_ARGOCD_INSTANCE"
-      value: true
+      value: "true"
 ---
 apiVersion: operators.coreos.com/v1alpha2
 kind: OperatorGroup
