@@ -1,0 +1,70 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: swagger-demo
+  annotations:
+    argocd.argoproj.io/sync-wave: "6" # (6)
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:  
+  name: default
+  namespace: openshift-gitops
+  labels:
+    appgrp: default  
+  annotations:
+    argocd.argoproj.io/sync-wave: "7" # (7)  
+spec:
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  destinations:
+    - namespace: '*'
+      server: '*'
+  sourceRepos:
+    - '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:  
+  name: stp
+  namespace: openshift-gitops
+  labels:
+    appgrp: stp
+  annotations:
+    argocd.argoproj.io/sync-wave: "8" # (8)  
+spec:
+  destinations:
+    - namespace: swagger-demo
+      server: 'https://kubernetes.default.svc'
+  sourceRepos:
+    - 'https://gsbraman.github.io/stp/'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: swagger
+  namespace: openshift-gitops
+  labels:
+    appgrp: stp
+  annotations:
+    argocd.argoproj.io/sync-wave: "9" # (9)
+spec:
+  project: stp
+  source:
+    repoURL: https://gsbraman.github.io/stp/    
+    chart: swagger
+    targetRevision: 7.0.3  # chart version
+    # override default values in values.yaml
+    helm:
+      values: |        
+        containerLimitsCpu: "400m"
+        containerLimitsMemory: "300Mi"       
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: swagger-demo
+  syncPolicy:
+    automated:
+      selfHeal: true
+...
