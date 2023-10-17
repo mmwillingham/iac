@@ -1,0 +1,17 @@
+# NOTE: Don't install in ROSA until this issue is resolved
+# https://access.redhat.com/support/cases/#/case/03641706
+# https://redhat-internal.slack.com/archives/C021EMWAQ76/p1697563242120259
+# https://issues.redhat.com/browse/OSD-17844
+
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: argocd-rbac-ca
+subjects:
+  - kind: ServiceAccount
+    name: openshift-gitops-argocd-application-controller
+    namespace: ocp-gitops
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
