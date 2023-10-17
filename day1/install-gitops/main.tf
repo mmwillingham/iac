@@ -11,7 +11,8 @@ output "ocp_token" {
     sensitive   = true
 }
 
-Comment out everything below here to destroy resources
+## Comment out everything below here to destroy resources
+
 resource "helm_release" "gitops" {
   name        = "gitops"
   chart       = "gitops"
