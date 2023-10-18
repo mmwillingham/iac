@@ -1,0 +1,11 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleLink
+metadata:
+  name: mmw-console-menu
+spec:
+  applicationMenu:
+    imageURL: 'https://i.ibb.co/pZ0Lxdb/Logo-Red-Hat-Hat-Color-RGB.png'
+    section: Red Hat MMW
+  href: 'https://github.com/mmwillingham/acm'
+  location: ApplicationMenu
+  text: MMW GitHub Repository
