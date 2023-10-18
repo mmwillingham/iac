@@ -13,11 +13,11 @@ output "ocp_token" {
 
 # Comment out everything below here to destroy resources
 
-resource "helm_release" "gitops-apps" {
-  name        = "app_of_apps"
-  chart       = "app_of_apps"
+resource "helm_release" "app-of-apps" {
+  name        = "app-of-apps"
+  chart       = "app-of-apps"
   repository  = "."
-  namespace   = "helm-app_of_apps"
+  namespace   = "helm-app-of-apps"
   max_history = 3
   create_namespace = true
   wait             = true
