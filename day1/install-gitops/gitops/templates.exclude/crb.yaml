@@ -10,7 +10,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: openshift-gitops-argocd-application-controller
-    namespace: openshift-gitops
+    namespace: ocp-gitops
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
