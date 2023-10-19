@@ -8,7 +8,7 @@ data "shell_script" "token" {
 
 output "ocp_token" {
     value = data.shell_script.token.output["ocp_token"]
-    #sensitive   = true
+    sensitive   = true
 }
 
 # Comment out everything below here to destroy resources
