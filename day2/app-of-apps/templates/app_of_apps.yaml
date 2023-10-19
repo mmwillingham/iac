@@ -14,8 +14,8 @@ spec:
   source:
     directory:
       recurse: true
-    path: day2/apps
-    repoURL: https://github.com/mmwillingham/iac
+    path: apps
+    repoURL: https://github.com/mmwillingham/day2-apps
     targetRevision: HEAD
   syncPolicy:
     automated:

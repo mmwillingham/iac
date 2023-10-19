@@ -1,9 +1,1 @@
-ACM?
-cluster-certs
-IDP
-monitoring
-logging
-persistent storage for registry
-See ILT, BP, Ales, Karl for more
-swagger?
-cluster-register into ACM
+app-of-apps calls day2-apps repo

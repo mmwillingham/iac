@@ -9,7 +9,7 @@ metadata:
   name: argocd-rbac-ca
 subjects:
   - kind: ServiceAccount
-    name: openshift-gitops-argocd-application-controller
+    name: ocp-gitops-argocd-application-controller
     namespace: ocp-gitops
 roleRef:
   apiGroup: rbac.authorization.k8s.io
