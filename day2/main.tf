@@ -25,13 +25,13 @@ resource "helm_release" "gitops" {
 
 
 # Comment out everything below here to destroy resources
-resource "helm_release" "app-of-apps" {
-  name        = "app-of-apps"
-  chart       = "app-of-apps"
-  repository  = "."
-  namespace   = "helm-app-of-apps"
-  max_history = 3
-  create_namespace = true
-  wait             = true
-  reset_values     = true
-}
+# resource "helm_release" "app-of-apps" {
+#   name        = "app-of-apps"
+#   chart       = "app-of-apps"
+#   repository  = "."
+#   namespace   = "helm-app-of-apps"
+#   max_history = 3
+#   create_namespace = true
+#   wait             = true
+#   reset_values     = true
+# }
