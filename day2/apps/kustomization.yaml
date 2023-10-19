@@ -3,6 +3,6 @@ kind: Kustomization
 commonAnnotations:
   argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 resources:
-- ./app-swagger.yaml
+- ./swagger/app-swagger.yaml
 #- other apps
 #- other apps
