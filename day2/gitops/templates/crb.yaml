@@ -3,8 +3,6 @@
 # https://redhat-internal.slack.com/archives/C021EMWAQ76/p1697563242120259
 # https://issues.redhat.com/browse/OSD-17844
 # FYI: This issue has been resolved
-
-
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
