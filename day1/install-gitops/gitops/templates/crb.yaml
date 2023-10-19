@@ -1,4 +1,4 @@
-# NOTE: Don't install in ROSA until this issue is resolved
+# NOTE: Don't install in ROSA until this issue is resolved - or put gitops in a different namespace such as ocp-gitops
 # https://access.redhat.com/support/cases/#/case/03641706
 # https://redhat-internal.slack.com/archives/C021EMWAQ76/p1697563242120259
 # https://issues.redhat.com/browse/OSD-17844
