@@ -8,14 +8,14 @@ metadata:
 # apiVersion: operators.coreos.com/v1alpha1
 # kind: Subscription
 # metadata:
-#   name: ocp-gitops-operator
+#   name: openshift-gitops-operator
 #   namespace: ocp-gitops
 #   annotations:
 #     argocd.argoproj.io/sync-wave: "2" # (2)
 # spec:
 #   channel: latest
 #   installPlanApproval: Automatic
-#   name: ocp-gitops-operator
+#   name: openshift-gitops-operator
 #   source: redhat-operators
 #   sourceNamespace: openshift-marketplace
 # ---
