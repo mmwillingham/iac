@@ -23,13 +23,14 @@ resource "helm_release" "gitops" {
   reset_values     = true
 }
 
-resource "helm_release" "master-app" {
-  name        = "master-app"
-  chart       = "master-app"
-  repository  = "."
-  namespace   = "helm-master-app"
-  max_history = 3
-  create_namespace = true
-  wait             = true
-  reset_values     = true
-}
+## Comment out everything below here to destroy resources
+# resource "helm_release" "master-app" {
+#   name        = "master-app"
+#   chart       = "master-app"
+#   repository  = "."
+#   namespace   = "helm-master-app"
+#   max_history = 3
+#   create_namespace = true
+#   wait             = true
+#   reset_values     = true
+# }
