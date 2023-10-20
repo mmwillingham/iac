@@ -23,10 +23,10 @@ output "ocp_token" {
 #   reset_values     = true
 # }
 
-#Comment out everything below here to destroy resources
+## Comment out everything below here to destroy resources
 resource "helm_release" "gitops" {
-  name        = "gitops-operator"
-  chart       = "gitops-operator"
+  name        = "gitops"
+  chart       = "gitops"
   repository  = "."
   namespace   = "helm-gitops"
   max_history = 3
@@ -35,26 +35,13 @@ resource "helm_release" "gitops" {
   reset_values     = true
 }
 
-#Comment out everything below here to destroy resources
 resource "helm_release" "gitops-operands" {
   name        = "gitops-operands"
   chart       = "gitops-operands"
   repository  = "."
-  namespace   = "helm-gitops"
+  namespace   = "helm-gitops-operands"
   max_history = 3
   create_namespace = true
   wait             = true
   reset_values     = true
 }
-
-# Comment out everything below here to destroy resources
-# resource "helm_release" "app-of-apps" {
-#   name        = "app-of-apps"
-#   chart       = "app-of-apps"
-#   repository  = "."
-#   namespace   = "helm-app-of-apps"
-#   max_history = 3
-#   create_namespace = true
-#   wait             = true
-#   reset_values     = true
-# }
