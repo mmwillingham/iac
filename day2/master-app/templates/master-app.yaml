@@ -13,7 +13,7 @@ spec:
   project: default
   source:
     directory:
-      recurse: true
+      recurse: false
     path: apps
     repoURL: https://github.com/mmwillingham/day2-apps
     targetRevision: HEAD
