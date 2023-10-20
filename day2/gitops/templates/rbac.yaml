@@ -12,12 +12,6 @@ subjects:
   - kind: ServiceAccount
     name: ocp-gitops-argocd-application-controller
     namespace: ocp-gitops
-  - kind: ServiceAccount
-    name: ocp-gitops-applicationset-controller
-    namespace: ocp-gitops
-  - kind: ServiceAccount
-    name: ocp-gitops-argocd-server
-    namespace: ocp-gitops
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
