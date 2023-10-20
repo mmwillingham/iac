@@ -2,7 +2,7 @@
 # kind: AppProject
 # metadata:
 #   name: default-app-roject
-#   namespace: openshift-gitops
+#   namespace: ocp-gitops
 # spec:
 #   clusterResourceWhitelist:
 #     - group: '*'

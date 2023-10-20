@@ -3,14 +3,15 @@
 # https://redhat-internal.slack.com/archives/C021EMWAQ76/p1697563242120259
 # https://issues.redhat.com/browse/OSD-17844
 # FYI: This issue has been resolved
+# No, it's not resolved. For rosa clusters, continue using ocp-gitops or another project that doesn't start with openshift-
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: argocd-rbac-ca
 subjects:
   - kind: ServiceAccount
-    name: openshift-gitops-argocd-application-controller
-    namespace: openshift-gitops
+    name: ocp-gitops-argocd-application-controller
+    namespace: ocp-gitops
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole

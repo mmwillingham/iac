@@ -1,30 +1,30 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: openshift-gitops
+  name: ocp-gitops
 ---
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
-  name: openshift-gitops-operator
-  namespace: openshift-gitops
+  name: ocp-gitops-operator
+  namespace: ocp-gitops
 spec:
   channel: latest
   installPlanApproval: Automatic
-  name: openshift-gitops-operator
+  name: ocp-gitops-operator
   source: redhat-operators
   sourceNamespace: openshift-marketplace
-  # config:
-  #   env:
-  #     - name: DISABLE_DEFAULT_ARGOCD_INSTANCE
-  #       value: 'true'
-  #     - name: ARGOCD_CLUSTER_CONFIG_NAMESPACES
-  #       value: 'openshift-gitops'
+  config:
+    env:
+      - name: DISABLE_DEFAULT_ARGOCD_INSTANCE
+        value: 'true'
+      - name: ARGOCD_CLUSTER_CONFIG_NAMESPACES
+        value: 'ocp-gitops'
 ---
 apiVersion: operators.coreos.com/v1alpha2
 kind: OperatorGroup
 metadata:
   name: gitops-og
-  namespace: openshift-gitops
+  namespace: ocp-gitops
 spec: {}
 ...

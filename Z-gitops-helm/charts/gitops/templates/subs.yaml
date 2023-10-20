@@ -1,21 +1,21 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: openshift-gitops
+  name: ocp-gitops
   annotations:
     argocd.argoproj.io/sync-wave: "1" # (1)
 # ---
 # apiVersion: operators.coreos.com/v1alpha1
 # kind: Subscription
 # metadata:
-#   name: openshift-gitops-operator
-#   namespace: openshift-gitops
+#   name: ocp-gitops-operator
+#   namespace: ocp-gitops
 #   annotations:
 #     argocd.argoproj.io/sync-wave: "2" # (2)
 # spec:
 #   channel: latest
 #   installPlanApproval: Automatic
-#   name: openshift-gitops-operator
+#   name: ocp-gitops-operator
 #   source: redhat-operators
 #   sourceNamespace: openshift-marketplace
 # ---
@@ -23,7 +23,7 @@ metadata:
 # kind: OperatorGroup
 # metadata:
 #   name: gitops-og
-#   namespace: openshift-gitops
+#   namespace: ocp-gitops
 #   annotations:
 #     argocd.argoproj.io/sync-wave: "2" # (2)
 # spec: {}
