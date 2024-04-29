@@ -3,8 +3,9 @@
 # +----------------------------+
 # | prod.auto.tfvars Variables |
 # +----------------------------+
-cluster_name = "bosez123"
-openshift_version = "4.13.14"         
+cluster_name = "bosez-04-29-2024"
+openshift_version = "4.14.23"
+private = true
 
 
 # +------------------------------+
