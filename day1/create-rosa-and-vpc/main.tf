@@ -5,7 +5,7 @@ terraform {
       version = ">= 4.20.0"
     }
     rhcs = {
-      version = ">= 1.1.0"
+      version = ">= 1.6.1"
       source  = "terraform-redhat/rhcs"
     }
   }
@@ -72,6 +72,7 @@ resource "time_sleep" "wait_for_roles" {
 }
 
 resource "rhcs_cluster_rosa_classic" "rosa_sts_cluster" {
+  private            = true
   name               = var.cluster_name
   cloud_region       = var.cloud_region
   #host_prefix        = var.host_prefix
