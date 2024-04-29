@@ -72,6 +72,11 @@ variable "AWS_ACCESS_KEY_ID" {
   type = string  
 }
 
+variable "private" {
+  type = string
+  default = "false
+}
+
 variable "AWS_SECRET_ACCESS_KEY" {
   type = string
 }
