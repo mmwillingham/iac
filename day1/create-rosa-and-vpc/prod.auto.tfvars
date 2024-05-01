@@ -5,8 +5,7 @@
 # +----------------------------+
 cluster_name = "bosez-gdabs"
 openshift_version = "4.14.23"
-#private = true
-
+private = true
 
 # +------------------------------+
 # | TF Cloud Workspace Variables |
