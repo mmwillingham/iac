@@ -1,3 +1,14 @@
+variable "token" {
+  type      = string
+  sensitive = true
+}
+
+variable "url" {
+  type        = string
+  description = "Provide OCM environment by setting a value to url"
+  default     = "https://api.openshift.com"
+}
+
 variable "rosa_openshift_version" {
   type        = string
   default     = "4.15.0"
