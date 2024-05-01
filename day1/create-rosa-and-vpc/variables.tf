@@ -580,3 +580,19 @@ variable "default_ingress_cluster_routes_tls_secret_ref" {
   default     = null
   description = "Components route TLS secret reference for oauth, console, download."
 }
+
+variable "admin_username" {
+  type = string
+}
+
+variable "admin_password" {
+  type = string
+}
+
+variable "AWS_ACCESS_KEY_ID" {
+  type = string  
+}
+
+variable "AWS_SECRET_ACCESS_KEY" {
+  type = string
+}
