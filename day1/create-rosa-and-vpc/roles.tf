@@ -10,20 +10,12 @@ module "create_account_roles"{
    create_account_roles = true
 
    account_role_prefix      = var.account_role_prefix
-   path                     = var.path
+#   path                     = var.path
    ocm_environment          = var.ocm_environment
    rosa_openshift_version   = var.rosa_openshift_version
    account_role_policies    = var.account_role_policies
    all_versions             = var.all_versions
    operator_role_policies   = var.operator_role_policies
-
-    #optional
-    tags                    = {
-      contact     = "xyz@company.com"
-      cost-center = "12345"
-      owner       = "productteam"
-      environment = "test"
-    }
 }
 
 data "rhcs_rosa_operator_roles" "operator_roles" {

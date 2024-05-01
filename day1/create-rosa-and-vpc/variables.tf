@@ -601,3 +601,26 @@ variable "cloud_region" {
   type    = string
   default = "us-east-2"
 }
+
+variable "all_versions" {
+  description = "OpenShift versions"
+  type = object({
+    item = object({
+      id   = string
+      name = string
+    })
+    search = string
+    order  = string
+    items = list(object({
+      id   = string
+      name = string
+    }))
+  })
+  default = null
+}
+
+variable "path" {
+  description = "(Optional) The arn path for the account/operator roles as well as their policies."
+  type        = string
+  default     = null
+}
