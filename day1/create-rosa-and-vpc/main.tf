@@ -53,18 +53,18 @@ resource "random_string" "random_name" {
 locals {
   path = coalesce(var.path, "/")
   sts_roles = {
-    role_arn         = "arn:aws:iam::\${data.aws_caller_identity.current.account_id}:role\${local.path}\${local.cluster_name}-Installer-Role",
-    support_role_arn = "arn:aws:iam::\${data.aws_caller_identity.current.account_id}:role\${local.path}\${local.cluster_name}-Support-Role",
+    role_arn         = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role${local.path}${local.cluster_name}-Installer-Role",
+    support_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role${local.path}${local.cluster_name}-Support-Role",
     instance_iam_roles = {
-      master_role_arn = "arn:aws:iam::\${data.aws_caller_identity.current.account_id}:role\${local.path}\${local.cluster_name}-ControlPlane-Role",
-      worker_role_arn = "arn:aws:iam::\${data.aws_caller_identity.current.account_id}:role\${local.path}\${local.cluster_name}-Worker-Role"
+      master_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role${local.path}${local.cluster_name}-ControlPlane-Role",
+      worker_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role${local.path}${local.cluster_name}-Worker-Role"
     },
     operator_role_prefix = local.cluster_name,
     oidc_config_id       = rhcs_rosa_oidc_config.oidc_config.id
   }
   worker_node_replicas = coalesce(var.worker_node_replicas, 2)
   # If cluster_name is not null, use that, otherwise generate a random cluster name
-  cluster_name = coalesce(var.cluster_name, "rosa-\${random_string.random_name.result}")
+  cluster_name = coalesce(var.cluster_name, "rosa-${random_string.random_name.result}")
 }
 
 data "aws_caller_identity" "current" {
@@ -89,7 +89,7 @@ resource "rhcs_cluster_rosa_classic" "rosa_sts_cluster" {
 
   lifecycle {
     precondition {
-      condition     = can(regex("^[a-z][-a-z0-9]{0,13}[a-z0-9]\$", local.cluster_name))
+      condition     = can(regex("^[a-z][-a-z0-9]{0,13}[a-z0-9]$", local.cluster_name))
       error_message = "ROSA cluster name must be less than 16 characters, be lower case alphanumeric, with only hyphens."
     }
   }
