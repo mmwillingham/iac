@@ -8,23 +8,44 @@ variable "operator_role_prefix" {
 }
 
 variable "url" {
+  type    = string
+  default = "https://api.openshift.com"
+}
+
+variable "url" {
   type        = string
   description = "Provide OCM environment by setting a value to url"
   default     = "https://api.openshift.com"
+}
+
+variable "tags" {
+  description = "(optional) List of AWS resource tags to apply."
+  type        = map(string)
+  default = {
+    contact     = "xyz@company.com"
+    cost-center = "12345"
+    owner       = "productteam"
+    environment = "test"
+  }
 }
 
 variable "account_role_prefix" {
   type = string
 }
 
+variable "ocm_environment" {
+  type    = string
+  default = "production"
+}
+
 variable "cluster_name" {
   type    = string
-  default = "my-cluster"
+  default = "mmw-cluster"
 }
 
 # variable "host_prefix" {
 #   type    = string
-#   default = "my_prefix"
+#   default = "mmw_prefix"
 # }
 
 
@@ -42,11 +63,6 @@ variable "tags" {
   description = "List of AWS resource tags to apply."
   type        = map(string)
   default     = null
-}
-
-variable "ocm_environment" {
-  type    = string
-  default = "production"
 }
 
 variable "openshift_version" {
