@@ -11,6 +11,15 @@ terraform {
   }
 }
 
+provider "aws" {
+  region = var.cloud_region  
+}
+
+provider "rhcs" {
+  token = var.token
+  url   = var.url
+}
+
 locals {
   path           = coalesce(var.path, "/")
   aws_account_id = var.aws_account_id == null ? data.aws_caller_identity.current[0].account_id : var.aws_account_id
