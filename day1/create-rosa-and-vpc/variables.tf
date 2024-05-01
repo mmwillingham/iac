@@ -619,8 +619,4 @@ variable "all_versions" {
   default = null
 }
 
-variable "path" {
-  description = "(Optional) The arn path for the account/operator roles as well as their policies."
-  type        = string
-  default     = null
-}
+
