@@ -117,10 +117,10 @@ variable "aws_account_arn" {
   description = "The ARN of the AWS account where all resources are created during the installation of the ROSA cluster. If no information is provided, the data is retrieved from the currently connected account."
 }
 
-variable "oidc_config_id" {
-  type        = string
-  description = "The unique identifier associated with users authenticated through OpenID Connect (OIDC) within the ROSA cluster."
-}
+#variable "oidc_config_id" {
+#  type        = string
+#  description = "The unique identifier associated with users authenticated through OpenID Connect (OIDC) within the ROSA cluster."
+#}
 
 variable "installer_role_arn" {
   type        = string
