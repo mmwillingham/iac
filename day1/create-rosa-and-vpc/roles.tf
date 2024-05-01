@@ -14,7 +14,7 @@ module "create_account_roles"{
    ocm_environment          = var.ocm_environment
    rosa_openshift_version   = var.rosa_openshift_version
    account_role_policies    = var.account_role_policies
-   all_versions             = var.all_versions
+#   all_versions             = var.all_versions
    operator_role_policies   = var.operator_role_policies
 }
 
