@@ -9,6 +9,15 @@ variable "url" {
   default     = "https://api.openshift.com"
 }
 
+variable "operator_role_prefix" {
+  type = string
+}
+
+variable "account_role_prefix" {
+  type = string
+}
+
+
 variable "rosa_openshift_version" {
   type        = string
   default     = "4.15.0"
