@@ -1,3 +1,50 @@
+# https://github.com/terraform-redhat/terraform-aws-rosa-sts/blob/main/examples/operator_roles_and_oidc/create_rosa_sts_operator_roles_and_oidc.tf
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 4.20.0"
+    }
+    rhcs = {
+      version = ">= 1.0.0"
+      source  = "terraform-redhat/rhcs"
+    }
+  }
+}
+
+provider "rhcs" {
+  token = var.token
+  url   = var.url
+}
+
+data "rhcs_rosa_operator_roles" "operator_roles" {
+  operator_role_prefix = var.operator_role_prefix
+  account_role_prefix  = var.account_role_prefix
+}
+
+module "operator_roles" {
+  source  = "terraform-redhat/rosa-sts/aws"
+  version = "0.0.4"
+
+  create_operator_roles = true
+  create_oidc_provider  = false
+  create_account_roles  = false
+
+  cluster_id                  = var.cluster_id
+  rh_oidc_provider_thumbprint = var.oidc_thumbprint
+  rh_oidc_provider_url        = var.oidc_endpoint_url
+  operator_roles_properties   = data.rhcs_rosa_operator_roles.operator_roles.operator_iam_roles
+  tags                        = var.tags
+}
+
+
+
+
+
+
+##################
+# OLD
+##################
 terraform {
   required_providers {
     aws = {
@@ -9,6 +56,11 @@ terraform {
       source  = "terraform-redhat/rhcs"
     }
   }
+}
+
+module "rosa-sts" {
+  source  = "terraform-redhat/rosa-sts/aws"
+  version = "0.0.15"
 }
 
 provider "aws" {
@@ -43,23 +95,27 @@ data "rhcs_policies" "all_policies" {}
 
 data "rhcs_versions" "all" {}
 
+module "create_account_roles"{
+   source = "terraform-redhat/rosa-sts/aws"
+   version = "0.0.5"
 
-module "create_account_roles" {
-  source  = "terraform-redhat/rosa-sts/aws"
-  version = "0.0.15"
+   create_account_roles = true
 
-  create_operator_roles = false
-  create_oidc_provider  = false
-  create_account_roles  = true
+   account_role_prefix      = var.account_role_prefix
+   path                     = var.path
+   ocm_environment          = var.ocm_environment
+   rosa_openshift_version   = var.rosa_openshift_version
+   account_role_policies    = var.account_role_policies
+   all_versions             = var.all_versions
+   operator_role_policies   = var.operator_role_policies
 
-  account_role_prefix    = var.account_role_prefix
-  ocm_environment        = var.ocm_environment
-  rosa_openshift_version = regex("^[0-9]+\\.[0-9]+", var.openshift_version)
-  account_role_policies  = data.rhcs_policies.all_policies.account_role_policies
-  operator_role_policies = data.rhcs_policies.all_policies.operator_role_policies
-  all_versions           = data.rhcs_versions.all
-  path                   = var.path
-  tags                   = var.tags    
+    #optional
+    tags                    = {
+      contact     = "xyz@company.com"
+      cost-center = "12345"
+      owner       = "productteam"
+      environment = "test"
+    }
 }
 
 # +------------------------------------------------------------+
@@ -97,20 +153,26 @@ resource "rhcs_cluster_wait" "rosa_cluster" {
 
 data "rhcs_rosa_operator_roles" "operator_roles" {
   operator_role_prefix = var.operator_role_prefix
-  account_role_prefix  = var.account_role_prefix
+  account_role_prefix = var.account_role_prefix
 }
 
-module "operator_roles" {
-  source  = "terraform-redhat/rosa-sts/aws"
-  version = "0.0.15"
+module operator_roles {
+    source = "terraform-redhat/rosa-sts/aws"
+    version = "0.0.5"
 
-  create_operator_roles = true
-  create_oidc_provider  = true
-  create_account_roles  = false
+    create_operator_roles = true
+    create_oidc_provider = true
 
-  cluster_id                  = rhcs_cluster_rosa_classic.rosa_sts_cluster.id
-  rh_oidc_provider_thumbprint = rhcs_cluster_rosa_classic.rosa_sts_cluster.sts.thumbprint
-  rh_oidc_provider_url        = rhcs_cluster_rosa_classic.rosa_sts_cluster.sts.oidc_endpoint_url
-  operator_roles_properties   = data.rhcs_rosa_operator_roles.operator_roles.operator_iam_roles
-  tags                        = var.tags  
+    cluster_id = rhcs_cluster_rosa_classic.rosa_sts_cluster.id
+    rh_oidc_provider_thumbprint = rhcs_cluster_rosa_classic.rosa_sts_cluster.sts.thumbprint
+    rh_oidc_provider_url = rhcs_cluster_rosa_classic.rosa_sts_cluster.sts.oidc_endpoint_url
+    operator_roles_properties = data.rhcs_rosa_operator_roles.operator_roles.operator_iam_roles
+
+    #optional
+    tags                = {
+      contact     = "xyz@company.com"
+      cost-center = "12345"
+      owner       = "productteam"
+      environment = "test"
+    }
 }
