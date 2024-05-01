@@ -100,23 +100,6 @@ variable "aws_region" {
   default = "us-east-1"
 }
 
-variable "cluster_name" {
-  type        = string
-  description = "Name of the cluster. After resource creation, the attribute value cannot be updated."
-}
-
-variable "aws_region" {
-  type        = string
-  default     = null
-  description = "The full name of the AWS region used for the ROSA cluster installation, for example 'us-east-1'. If no information is provided, the data is retrieved from the currently connected account."
-}
-
-variable "path" {
-  type        = string
-  default     = "/"
-  description = "The ARN path for the account/operator roles as well as their policies."
-}
-
 variable "openshift_version" {
   type        = string
   description = "Desired version of OpenShift for the cluster, for example '4.1.0'. If the version is later than the currently running version, an upgrade is scheduled."
@@ -161,17 +144,6 @@ variable "worker_role_arn" {
   type        = string
   default     = null
   description = "The Amazon Resource Name (ARN) associated with the AWS IAM role that is used by the cluster's compute instances."
-}
-
-
-variable "account_role_prefix" {
-  type        = string
-  default     = null
-  description = "User-defined prefix for all generated AWS resources (default \"account-role-<random>\")"
-}
-variable "operator_role_prefix" {
-  type        = string
-  description = "A designated prefix used for the creation of AWS IAM roles associated with operators within the ROSA environment."
 }
 
 variable "base_dns_domain" {
@@ -377,12 +349,6 @@ variable "multi_az" {
   type        = bool
   default     = null
   description = "Specifies whether the deployment of the cluster should extend across multiple availability zones. (default: false)"
-}
-
-variable "autoscaling_enabled" {
-  type        = bool
-  default     = null
-  description = "Enable autoscaling for the initial worker pool. (default: false)"
 }
 
 variable "replicas" {
