@@ -68,6 +68,13 @@ locals {
   worker_node_replicas = coalesce(var.worker_node_replicas, 2)
   # If cluster_name is not null, use that, otherwise generate a random cluster name
   cluster_name = coalesce(var.cluster_name, "rosa-${random_string.random_name.result}")
+  aws_account_arn = var.aws_account_arn == null ? data.aws_caller_identity.current[0].arn : var.aws_account_arn
+  admin_credentials = var.admin_credentials_username == null && var.admin_credentials_password == null ? (
+    null
+    ) : (
+    { username = var.admin_credentials_username, password = var.admin_credentials_password }
+  )
+
 }
 
 data "aws_caller_identity" "current" {
