@@ -26,10 +26,10 @@ data "rhcs_rosa_operator_roles" "operator_roles" {
 
 module "operator_roles" {
   source  = "terraform-redhat/rosa-sts/aws"
-  version = "0.0.4"
+  version = "0.0.5"
 
   create_operator_roles = true
-  create_oidc_provider  = false
+  create_oidc_provider  = true
   create_account_roles  = false
 
   cluster_id                  = var.cluster_id
@@ -100,25 +100,25 @@ resource "rhcs_cluster_wait" "rosa_cluster" {
   timeout = 60 
 }
 
-module operator_roles {
-    source = "terraform-redhat/rosa-sts/aws"
-    version = "0.0.5"
-
-    create_operator_roles = true
-    create_oidc_provider = true
-
-    cluster_id = rhcs_cluster_rosa_classic.rosa_sts_cluster.id
-    rh_oidc_provider_thumbprint = rhcs_cluster_rosa_classic.rosa_sts_cluster.sts.thumbprint
-    rh_oidc_provider_url = rhcs_cluster_rosa_classic.rosa_sts_cluster.sts.oidc_endpoint_url
-    operator_roles_properties = data.rhcs_rosa_operator_roles.operator_roles.operator_iam_roles
-
-    #optional
-    tags                = {
-      contact     = "xyz@company.com"
-      cost-center = "12345"
-      owner       = "productteam"
-      environment = "test"
-    }
-}
+#module operator_roles {
+#    source = "terraform-redhat/rosa-sts/aws"
+#    version = "0.0.5"
+#
+#    create_operator_roles = true
+#    create_oidc_provider = true
+#
+#    cluster_id = rhcs_cluster_rosa_classic.rosa_sts_cluster.id
+#    rh_oidc_provider_thumbprint = rhcs_cluster_rosa_classic.rosa_sts_cluster.sts.thumbprint
+#    rh_oidc_provider_url = rhcs_cluster_rosa_classic.rosa_sts_cluster.sts.oidc_endpoint_url
+#    operator_roles_properties = data.rhcs_rosa_operator_roles.operator_roles.operator_iam_roles
+#
+#    #optional
+#    tags                = {
+#      contact     = "xyz@company.com"
+#      cost-center = "12345"
+#      owner       = "productteam"
+#      environment = "test"
+#    }
+#}
 
 
