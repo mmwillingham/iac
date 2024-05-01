@@ -8,11 +8,6 @@ variable "operator_role_prefix" {
 }
 
 variable "url" {
-  type    = string
-  default = "https://api.openshift.com"
-}
-
-variable "url" {
   type        = string
   description = "Provide OCM environment by setting a value to url"
   default     = "https://api.openshift.com"
@@ -57,12 +52,6 @@ variable "cloud_region" {
 variable "availability_zones" {
   type    = list(string)
   default = ["us-east-2a"]
-}
-
-variable "tags" {
-  description = "List of AWS resource tags to apply."
-  type        = map(string)
-  default     = null
 }
 
 variable "openshift_version" {
