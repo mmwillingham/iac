@@ -3,7 +3,7 @@
 # +----------------------------+
 # | prod.auto.tfvars Variables |
 # +----------------------------+
-cluster_name = "bosez-04-29-2024"
+cluster_name = "bosez-gdabs"
 openshift_version = "4.14.23"
 private = true
 
