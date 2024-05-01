@@ -65,15 +65,7 @@ resource "rhcs_cluster_rosa_classic" "rosa_classic_cluster" {
   version        = var.openshift_version
   sts            = local.sts_roles
   aws_subnet_ids = var.aws_subnet_ids
-  availability_zones = length(var.aws_availability_zones) > 0 ? (
-    var.aws_availability_zones
-    ) : (
-    length(var.aws_subnet_ids) > 0 ? (
-      distinct(data.aws_subnet.provided_subnet[*].availability_zone)
-      ) : (
-      slice(data.aws_availability_zones.available[0].names, 0, var.multi_az == true ? 3 : 1)
-    )
-  )
+  availability_zones = var.aws_availability_zones
   multi_az             = var.multi_az
   admin_credentials    = local.admin_credentials
   autoscaling_enabled  = var.autoscaling_enabled
