@@ -11,6 +11,12 @@ terraform {
   }
 }
 
+module "rosa-classic_rosa-cluster-classic" {
+  source  = "terraform-redhat/rosa-classic/rhcs//modules/rosa-cluster-classic"
+  version = "1.5.0"
+  # insert the 4 required variables here
+}
+
 provider "aws" {
   region = var.cloud_region  
 }
