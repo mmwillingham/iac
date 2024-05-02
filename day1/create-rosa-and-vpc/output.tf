@@ -1,7 +1,3 @@
-output "account_role_prefix" {
-  value = module.create_account_roles.account_role_prefix
-}
-
 output "cluster_id" {
   value = rhcs_cluster_rosa_classic.rosa_sts_cluster.id
 }
@@ -22,23 +18,27 @@ output "domain" {
   value = rhcs_cluster_rosa_classic.rosa_sts_cluster.domain
 }
 
-output "ocm_properties" {
-  value = rhcs_cluster_rosa_classic.rosa_sts_cluster.ocm_properties
-}
-
 output "state" {
   value = rhcs_cluster_rosa_classic.rosa_sts_cluster.state
 }
 
-output "ccs_enabled" {
-  value = rhcs_cluster_rosa_classic.rosa_sts_cluster.ccs_enabled
-}
+# output "account_role_prefix" {
+#   value = module.create_account_roles.account_role_prefix
+# }
 
-output "oidc_thumbprint" {
-  value = rhcs_cluster_rosa_classic.rosa_sts_cluster.sts.thumbprint
-}
+# output "ocm_properties" {
+#   value = rhcs_cluster_rosa_classic.rosa_sts_cluster.ocm_properties
+# }
 
-output "oidc_endpoint_url" {
-  value = rhcs_cluster_rosa_classic.rosa_sts_cluster.sts.oidc_endpoint_url
-}
+# output "ccs_enabled" {
+#   value = rhcs_cluster_rosa_classic.rosa_sts_cluster.ccs_enabled
+# }
+
+# output "oidc_thumbprint" {
+#   value = rhcs_cluster_rosa_classic.rosa_sts_cluster.sts.thumbprint
+# }
+
+# output "oidc_endpoint_url" {
+#   value = rhcs_cluster_rosa_classic.rosa_sts_cluster.sts.oidc_endpoint_url
+# }
 
