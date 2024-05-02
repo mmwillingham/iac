@@ -22,12 +22,6 @@ variable "cluster_name" {
   default = "my-cluster"
 }
 
-# variable "host_prefix" {
-#   type    = string
-#   default = "my_prefix"
-# }
-
-
 variable "cloud_region" {
   type    = string
   default = "us-east-2"
@@ -57,7 +51,7 @@ variable "openshift_version" {
 variable "path" {
   description = "(Optional) The arn path for the account/operator roles as well as their policies."
   type        = string
-  default     = null
+  default = null
 }
 
 variable "admin_username" {
@@ -72,11 +66,12 @@ variable "AWS_ACCESS_KEY_ID" {
   type = string  
 }
 
-variable "private" {
-  type = string
-  default = "false"
-}
-
 variable "AWS_SECRET_ACCESS_KEY" {
   type = string
+}
+
+variable "upgrade_acknowledgements_for" {
+  description = "Requried for cluster upgades"
+  type        = string
+  default = ""
 }
