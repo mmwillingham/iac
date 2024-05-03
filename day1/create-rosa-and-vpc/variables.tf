@@ -75,3 +75,8 @@ variable "upgrade_acknowledgements_for" {
   type        = string
   default = ""
 }
+
+variable "multi_az" {
+  type      = string
+  sensitive = true
+}
