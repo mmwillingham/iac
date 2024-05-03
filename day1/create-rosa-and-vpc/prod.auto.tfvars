@@ -4,8 +4,9 @@
 # | prod.auto.tfvars Variables |
 # +----------------------------+
 cluster_name = "bosez-gdabs"
-openshift_version = "4.14.21"
+openshift_version            = "4.14.21"
 upgrade_acknowledgements_for = "4.15"
+availability_zones           = ["us-east-2a", "us-east-2b", "us-east-2c"]
 #private = true
 
 
