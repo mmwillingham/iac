@@ -80,3 +80,9 @@ variable "multi_az" {
   type      = string
   sensitive = true
 }
+
+variable "replicas" {
+  type        = number
+  default     = null
+  description = "Number of worker nodes to provision. This attribute is applicable solely when autoscaling is disabled. Single zone clusters need at least 2 nodes, multizone clusters need at least 3 nodes. Hosted clusters require that the number of worker nodes be a multiple of the number of private subnets. (default: 2)"
+}
