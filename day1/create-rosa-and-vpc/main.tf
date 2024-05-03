@@ -79,6 +79,7 @@ resource "rhcs_cluster_rosa_classic" "rosa_sts_cluster" {
   name               = var.cluster_name
   cloud_region       = var.cloud_region
   aws_account_id     = data.aws_caller_identity.current.account_id
+  multi_az           - var.multi_az
   availability_zones = var.availability_zones
   properties = {
     rosa_creator_arn = data.aws_caller_identity.current.arn
