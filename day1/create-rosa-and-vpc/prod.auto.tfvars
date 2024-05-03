@@ -13,7 +13,7 @@ multi_az                     = true
 availability_zones           = ["us-east-2a", "us-east-2b", "us-east-2c"]
 
 # For 1 availability zone
-multi_az                     = false
+#multi_az                     = false
 #availability_zones           = ["us-east-2a"]
 
 
