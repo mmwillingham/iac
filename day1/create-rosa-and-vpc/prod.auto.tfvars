@@ -4,7 +4,8 @@
 # | prod.auto.tfvars Variables |
 # +----------------------------+
 cluster_name = "bosez-gdabs"
-openshift_version            = "4.14.21"
+openshift_version            = "4.15.10"
+# For available stable versions: rosa list versions --channel-group stable
 upgrade_acknowledgements_for = "4.15"
 cloud_region                 = "us-east-2"
 
