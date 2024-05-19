@@ -1,9 +1,9 @@
-# Good info: https://github.com/terraform-redhat/terraform-provider-rhcs/blob/806c3e5b80ee41e60d1db99e10e0511e5d55a85e/README.md?plain=1#L45
-# All variables: https://github.com/terraform-redhat/terraform-provider-rhcs/blob/main/docs/resources/cluster_rosa_classic.md
-# Upgrading: https://github.com/terraform-redhat/terraform-provider-rhcs/blob/main/docs/guides/upgrading-cluster.md
-# Machine pools: https://github.com/terraform-redhat/terraform-provider-rhcs/blob/main/docs/guides/machine-pool.md
+### Good info: https://github.com/terraform-redhat/terraform-provider-rhcs/blob/806c3e5b80ee41e60d1db99e10e0511e5d55a85e/README.md?plain=1#L45
+### All variables: https://github.com/terraform-redhat/terraform-provider-rhcs/blob/main/docs/resources/cluster_rosa_classic.md
+### Upgrading: https://github.com/terraform-redhat/terraform-provider-rhcs/blob/main/docs/guides/upgrading-cluster.md
+### Machine pools: https://github.com/terraform-redhat/terraform-provider-rhcs/blob/main/docs/guides/machine-pool.md
 
-# Vault: https://developer.hashicorp.com/vault/tutorials/hcp-vault-secrets-get-started/hcp-vault-secrets-install-cli
+### Vault: https://developer.hashicorp.com/vault/tutorials/hcp-vault-secrets-get-started/hcp-vault-secrets-install-cli
 
 export TF_VAR_token=<OCM token>
 terraform init
