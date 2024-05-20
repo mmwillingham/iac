@@ -1,4 +1,4 @@
-cluster_name = "bosez-gdabs2"
+cluster_name = "bosez-20240520"
 openshift_version            = "4.15.10"
 ## For available stable versions: rosa list versions --channel-group stable
 upgrade_acknowledgements_for = "4.15"
