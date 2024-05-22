@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ocp-gitops
+  name: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-wave: "1" # (1)
 # ---
@@ -9,7 +9,7 @@ metadata:
 # kind: Subscription
 # metadata:
 #   name: openshift-gitops-operator
-#   namespace: ocp-gitops
+#   namespace: openshift-gitops
 #   annotations:
 #     argocd.argoproj.io/sync-wave: "2" # (2)
 # spec:
@@ -23,7 +23,7 @@ metadata:
 # kind: OperatorGroup
 # metadata:
 #   name: gitops-og
-#   namespace: ocp-gitops
+#   namespace: openshift-gitops
 #   annotations:
 #     argocd.argoproj.io/sync-wave: "2" # (2)
 # spec: {}
