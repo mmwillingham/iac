@@ -269,3 +269,11 @@ oc exec $MY_APP -- printenv | grep db_string
 ## Maybe for enviroment variables, it's impossible to get partial, so if you want just password, create a secret called db_password with value of the password as its contents
 NOTE: when I did this, I don't see the variable when I "oc exec", "oc rsh", or "oc debug" but I do when I select pods "Terminal" in the console.
 ```
+
+## Troubleshooting
+# Check csi-secrets-store provider logs
+oc logs -n csi-secrets-store $(oc get pods -n csi-secrets-store -oname | grep provider | tail -1)
+oc logs -n csi-secrets-store $(oc get pods -n csi-secrets-store -oname | grep provider | head -1)
+
+# Check service account annotation
+oc describe sa $MY_APP-sa | grep eks.amazonaws.com/role-arn
