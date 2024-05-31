@@ -41,9 +41,8 @@ helm repo update
 # Install secrets store CSI driver
 helm upgrade --install -n csi-secrets-store csi-secrets-store-driver secrets-store-csi-driver/secrets-store-csi-driver --set syncSecret.enabled=true
 
-
 # Verify
-oc --namespace=csi-secrets-store get pods -l "app=secrets-store-csi-driver"
+oc --ce=csi-secrets-store get pods -l "app=secrets-store-csi-driver"
 
 # Deploy AWS provider
 wget https://raw.githubusercontent.com/rh-mobb/documentation/main/content/misc/secrets-store-csi/aws-provider-installer.yaml
@@ -93,11 +92,11 @@ cat policy.json
 
 # Create an IAM Access Policy
 
-POLICY_ARN=$(aws --region "$REGION" --query Policy.Arn --output text iam create-policy --policy-name openshift-access-to-${MY_SECRET}-policy --policy-document file://policy.json)
+POLICY_ARN=$(aws --region "$REGION" --query Policy.Arn --output text iam create-policy --policy-name ocp-access-to-${MY_SECRET}-policy --policy-document file://policy.json)
 echo $POLICY_ARN
 
 # Create an IAM Role trust policy document
-# NOTE: The trust policy is locked down to the default service account of a namespace you create later in this process.
+# NOTE: The trust policy is locked down to the default service account of a ce you create later in this process.
 # NOTE: For testing, to allow all service accounts from all namespaces, you can change to
 #     "StringLike" : {
 #       "${OIDC_ENDPOINT}:sub": ["system:serviceaccount:*:*"]
@@ -110,7 +109,7 @@ cat <<EOF > trust-policy.json
    "Effect": "Allow",
    "Condition": {
      "StringEquals" : {
-       "${OIDC_ENDPOINT}:sub": ["system:serviceaccount:${MY_APP_NAMESPACE}:default"]
+       "${OIDC_ENDPOINT}:sub": ["system:serviceaccount:${MY_APP}:${MY_SA}"]
       }
     },
     "Principal": {
@@ -126,14 +125,14 @@ EOF
 cat trust-policy.json
 
 # Create IAM role
-ROLE_ARN=$(aws iam create-role --role-name openshift-access-to-${MY_SECRET} --assume-role-policy-document file://trust-policy.json --query Role.Arn --output text)
+ROLE_ARN=$(aws iam create-role --role-name ocp-access-to-${MY_SECRET} --assume-role-policy-document file://trust-policy.json --query Role.Arn --output text)
 echo $ROLE_ARN
 
 # Attach the role to the policy
-aws iam attach-role-policy --role-name openshift-access-to-${MY_SECRET} --policy-arn $POLICY_ARN
+aws iam attach-role-policy --role-name ocp-access-to-${MY_SECRET} --policy-arn $POLICY_ARN
 
 # Verify attachment
-aws iam list-attached-role-policies --role-name openshift-access-to-${MY_SECRET} --output text
+aws iam list-attached-role-policies --role-name ocp-access-to-${MY_SECRET} --output text
 ```
 
 ## Create an Application POD to expose the secret in a filepath
@@ -151,13 +150,13 @@ oc annotate -n $MY_APP serviceaccount $MY_SA eks.amazonaws.com/role-arn=$ROLE_AR
 oc describe sa $MY_SA | grep eks.amazonaws.com/role-arn
 
 # Create a secret provider class to access our secret
-# This needs to be in the application namespace
+# This needs to be in the application ce
 cat << EOF > secretproviderclass.yaml
 apiVersion: secrets-store.csi.x-k8s.io/v1
 kind: SecretProviderClass
 metadata:
   name: $MY_APP-aws-secrets
-  namespace: $MY_APP
+  ce: $MY_APP
 spec:
   provider: aws
   parameters:
@@ -208,18 +207,19 @@ oc get pods
 
 # Verify the Pod has the secret mounted
 oc exec -it $MY_APP -- cat /mnt/secrets-store/$MY_SECRET; echo
-# {"username":"shadowman", "password":"hunter2"}
+expected response: # {"username":"shadowman", "password":"hunter2"}
 
 ```
 
 ## Create an application DEPLOYMENT to expose the secret in an environment variable
 ```
+# Set new variables but use same secret
 cat << EOF > mysecret-aws-secrets-2
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysecret-app2
-  #  namespace: mysecret
+  #  ce: mysecret
   labels:
     app: mysecret-app2
 spec:
