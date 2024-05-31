@@ -96,7 +96,7 @@ POLICY_ARN=$(aws --region "$REGION" --query Policy.Arn --output text iam create-
 echo $POLICY_ARN
 
 # Create an IAM Role trust policy document
-# NOTE: The trust policy is locked down to the default service account of a ce you create later in this process.
+# NOTE: The trust policy is locked down to the default service account of a namespace you create later in this process.
 # NOTE: For testing, to allow all service accounts from all namespaces, you can change to
 #     "StringLike" : {
 #       "${OIDC_ENDPOINT}:sub": ["system:serviceaccount:*:*"]
@@ -143,20 +143,20 @@ oc new-project $MY_APP
 
 # Create service account
 oc create sa $MY_SA
-# Annotate the default service account to use the STS Role
+# Annotate the service account to use the STS Role
 oc annotate -n $MY_APP serviceaccount $MY_SA eks.amazonaws.com/role-arn=$ROLE_ARN
 
 # Verify annotation
 oc describe sa $MY_SA | grep eks.amazonaws.com/role-arn
 
 # Create a secret provider class to access our secret
-# This needs to be in the application ce
-cat << EOF > secretproviderclass.yaml
+# This needs to be in the application namespace
+cat << EOF > $MY_SA-secretproviderclass.yaml
 apiVersion: secrets-store.csi.x-k8s.io/v1
 kind: SecretProviderClass
 metadata:
   name: $MY_APP-aws-secrets
-  ce: $MY_APP
+  namespace: $MY_APP
 spec:
   provider: aws
   parameters:
@@ -164,14 +164,14 @@ spec:
       - objectName: "$MY_SECRET"  # AWS secret name
         objectType: "secretsmanager"
 EOF
-cat secretproviderclass.yaml
-oc apply -f secretproviderclass.yaml
+cat $MY_SA-secretproviderclass.yaml
+oc apply -f $MY_SA-secretproviderclass.yaml
 
 # Verify it exists and contents are as expected
 oc get secretproviderclass $MY_APP-aws-secrets -oyaml
 
 # Create a pod using our secret
-cat << EOF > myapp.yaml
+cat << EOF > $MY_APP-pod.yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -198,10 +198,9 @@ spec:
       mountPath: "/mnt/secrets-store"
       readOnly: true
 EOF
+cat $MY_APP-pod.yaml
 
-cat myapp.yaml
-
-oc apply -f myapp.yaml
+oc apply -f $MY_APP-pod.yaml
 
 oc get pods
 
@@ -213,27 +212,71 @@ expected response: # {"username":"shadowman", "password":"hunter2"}
 
 ## Create an application DEPLOYMENT to expose the secret in an environment variable
 ```
-# Set new variables but use same secret
-cat << EOF > mysecret-aws-secrets-2
+# Set new variables but use same AWS resources (secret, policy, role)
+export MY_APP="my-secret-app-2"
+export MY_SA=$MY_APP-sa
+echo $MY_APP, $MY_SA
+
+# Create project
+oc new-project $MY_APP
+
+# Create service account
+oc create sa $MY_SA
+
+# Annotate the service account to use the STS Role
+oc annotate -n $MY_APP serviceaccount $MY_SA eks.amazonaws.com/role-arn=$ROLE_ARN
+
+# Verify annotation
+oc describe sa $MY_SA | grep eks.amazonaws.com/role-arn
+
+# Create a secret provider class to access our secret
+# This needs to be in the application namespace
+
+cat << EOF > $MY_APP-secretproviderclass.yaml
+apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: $MY_APP-aws-secrets
+  namespace: $MY_APP
+spec:
+  provider: aws
+  secretObjects:
+    - data:
+        - key: db_string # whatever you want the env variable to be called
+          objectName: $MY_SECRET   # AWS secret name
+      secretName: $MY_APP # kubernetes secret name I think
+      type: Opaque
+  parameters:
+    objects: |
+      - objectName: "$MY_SECRET"  # AWS secret name
+        objectType: "secretsmanager"
+EOF
+cat $MY_APP-secretproviderclass.yaml
+oc apply -f $MY_APP-secretproviderclass.yaml
+
+# Verify it exists and contents are as expected
+oc get secretproviderclass $MY_APP-aws-secrets -oyaml
+
+cat << EOF > $MY_APP-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysecret-app2
-  #  ce: mysecret
+  name: $MY_APP
+  namespace: $MY_APP
   labels:
-    app: mysecret-app2
+    app: $MY_APP
 spec:
   selector:
     matchLabels:
-      app: mysecret-app2
+      app: $MY_APP
   template:
     metadata:
       labels:
-        app: mysecret-app2
+        app: $MY_APP
     spec:
-      serviceAccountName: mysecret-app-sa
+      serviceAccountName: $MY_SA
       containers:
-      - name: mysecret-app2
+      - name: $MY_APP
         image: k8s.gcr.io/e2e-test-images/busybox:1.29
         command:
           - "/bin/sleep"
@@ -242,16 +285,13 @@ spec:
           - name: db_string
             valueFrom:
               secretKeyRef:
-                key: mysecret-aws-secrets-2 # k8s secret specified in secretproviderclass
+                key: $MY_APP # k8s secret specified in secretproviderclass
                 name: db_string # env variable specified in secretproviderclass
 EOF
-cat mysecret-aws-secrets-2
-oc apply -f mysecret-aws-secrets-2
+cat $MY_APP-deployment.yaml
+oc apply -f $MY_APP-deployment.yaml
 
-oc exec mysecret-app2-7975cfc4f6-vwgpd -- cat /mnt/secrets-store/mysecret2; echo
-{"username":"shadowman", "password":"hunter2"}
-
-oc exec mysecret-app2-7975cfc4f6-vwgpd -- printenv | grep db_string
+oc exec $MY_APP -- printenv | grep db_string
 # expected result: db_string={"username":"shadowman", "password":"hunter2"}
 # You can extract just the password value with this:
 # Add steps here
