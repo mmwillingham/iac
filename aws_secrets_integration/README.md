@@ -39,7 +39,7 @@ helm repo update
 helm upgrade --install -n csi-secrets-store csi-secrets-store-driver secrets-store-csi-driver/secrets-store-csi-driver --set syncSecret.enabled=true
 
 # Verify
-oc --ce=csi-secrets-store get pods -l "app=secrets-store-csi-driver"
+oc -n csi-secrets-store get pods -l "app=secrets-store-csi-driver"
 
 # Deploy AWS provider
 wget https://raw.githubusercontent.com/rh-mobb/documentation/main/content/misc/secrets-store-csi/aws-provider-installer.yaml
@@ -187,9 +187,9 @@ cat << EOF > $MY_APP-pod.yaml
 apiVersion: v1
 kind: Pod
 metadata:
-  name: $MY_APP
+  name: $MY_APP-pod
   labels:
-    app: $MY_APP
+    app: $MY_APP-pod
 spec:
   serviceAccountName: $MY_APP-sa
   volumes:
@@ -200,7 +200,7 @@ spec:
       volumeAttributes:
         secretProviderClass: "${MY_APP}-aws-secrets"
   containers:
-  - name: $MY_APP
+  - name: $MY_APP-pod
     image: k8s.gcr.io/e2e-test-images/busybox:1.29
     command:
       - "/bin/sleep"
@@ -217,7 +217,7 @@ oc apply -f $MY_APP-pod.yaml
 oc get pods
 
 # Verify the Pod has the secret mounted
-oc exec -it $MY_APP -- cat /mnt/secrets-store/$MY_SECRET; echo
+oc exec -it $MY_APP-pod -- cat /mnt/secrets-store/$MY_SECRET; echo
 expected response: # {"username":"shadowman", "password":"hunter2"}
 
 ```
@@ -262,10 +262,9 @@ EOF
 cat $MY_APP-deployment.yaml
 oc apply -f $MY_APP-deployment.yaml
 
-oc exec $MY_APP -- printenv | grep db_string
+oc exec $(oc get pods -l app=$MY_APP -oname) -- env | grep db_string
 # expected result: db_string={"username":"shadowman", "password":"hunter2"}
 # You can extract just the password value with this:
-## Add steps here
 ## Maybe for enviroment variables, it's impossible to get partial, so if you want just password, create a secret called db_password with value of the password as its contents
 NOTE: when I did this, I don't see the variable when I "oc exec", "oc rsh", or "oc debug" but I do when I select pods "Terminal" in the console.
 ```
