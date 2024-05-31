@@ -15,19 +15,16 @@ export REGION=$(oc get infrastructure cluster -o=jsonpath="{.status.platformStat
 export OIDC_ENDPOINT=$(oc get authentication.config.openshift.io cluster -o jsonpath='{.spec.serviceAccountIssuer}' | sed  's|^https://||')
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 export AWS_PAGER=""
-export MY_APP="my-secret-app"
-export MY_SA=$MY_APP-sa
-export MY_SECRET=ocp-secrets # make this lowercase
+export MY_APP="bo-secret-app"
+export MY_SECRET=db_password # make this lowercase
 # Verify OIDC provider exists in AWS with the same OIDC_ENDPOINT as above
 aws iam list-open-id-connect-providers | grep ${OIDC_ENDPOINT}
 
 echo $REGION
 echo $OIDC_ENDPOINT
 echo $AWS_ACCOUNT_ID
-echo $AWS_PAGER
 echo $MY_APP
 echo $MY_SECRET
-echo $MY_SA
 ```
 
 ## Deploy AWS Secrets and Configuration Provider
@@ -109,7 +106,7 @@ cat <<EOF > trust-policy.json
    "Effect": "Allow",
    "Condition": {
      "StringEquals" : {
-       "${OIDC_ENDPOINT}:sub": ["system:serviceaccount:${MY_APP}:${MY_SA}"]
+       "${OIDC_ENDPOINT}:sub": ["system:serviceaccount:${MY_APP}:${MY_APP}-sa"]
       }
     },
     "Principal": {
@@ -135,23 +132,25 @@ aws iam attach-role-policy --role-name ocp-access-to-${MY_SECRET} --policy-arn $
 aws iam list-attached-role-policies --role-name ocp-access-to-${MY_SECRET} --output text
 ```
 
-## Create an Application POD to expose the secret in a filepath
+## Create a secret provider class for the secret
 ```
 # Create an OpenShift project
 # rename if necessary: export MY_APP=myapp2
 oc new-project $MY_APP
 
 # Create service account
-oc create sa $MY_SA
+oc create sa $MY_APP-sa
+
 # Annotate the service account to use the STS Role
-oc annotate -n $MY_APP serviceaccount $MY_SA eks.amazonaws.com/role-arn=$ROLE_ARN
+oc annotate -n $MY_APP serviceaccount $MY_APP-sa eks.amazonaws.com/role-arn=$ROLE_ARN
 
 # Verify annotation
-oc describe sa $MY_SA | grep eks.amazonaws.com/role-arn
+oc describe sa $MY_APP-sa | grep eks.amazonaws.com/role-arn
 
 # Create a secret provider class to access our secret
-# This needs to be in the application namespace
-cat << EOF > $MY_SA-secretproviderclass.yaml
+This needs to be in the application namespace.
+
+cat << EOF > $MY_APP-secretproviderclass.yaml
 apiVersion: secrets-store.csi.x-k8s.io/v1
 kind: SecretProviderClass
 metadata:
@@ -159,17 +158,30 @@ metadata:
   namespace: $MY_APP
 spec:
   provider: aws
+#################################################################
+# SecretObjects is required for generating a kubernetes secret.
+# Optional if you only want to mount the secret to a volume path
+  secretObjects:
+    - data:
+        - key: db_string           # data field to populate
+          objectName: $MY_SECRET   # AWS secret name
+      secretName: $MY_APP-k8s      # kubernetes secret name
+      type: Opaque
+#################################################################
   parameters:
     objects: |
       - objectName: "$MY_SECRET"  # AWS secret name
         objectType: "secretsmanager"
 EOF
-cat $MY_SA-secretproviderclass.yaml
-oc apply -f $MY_SA-secretproviderclass.yaml
+cat $MY_APP-secretproviderclass.yaml
+oc apply -f $MY_APP-secretproviderclass.yaml
 
 # Verify it exists and contents are as expected
 oc get secretproviderclass $MY_APP-aws-secrets -oyaml
+```
 
+## Create an Application POD to expose the secret in a filepath
+```
 # Create a pod using our secret
 cat << EOF > $MY_APP-pod.yaml
 apiVersion: v1
@@ -179,7 +191,7 @@ metadata:
   labels:
     app: $MY_APP
 spec:
-  serviceAccountName: $MY_SA
+  serviceAccountName: $MY_APP-sa
   volumes:
   - name: secrets-store-inline
     csi:
@@ -212,51 +224,6 @@ expected response: # {"username":"shadowman", "password":"hunter2"}
 
 ## Create an application DEPLOYMENT to expose the secret in an environment variable
 ```
-# Set new variables but use same AWS resources (secret, policy, role)
-export MY_APP="my-secret-app-2"
-export MY_SA=$MY_APP-sa
-echo $MY_APP, $MY_SA
-
-# Create project
-oc new-project $MY_APP
-
-# Create service account
-oc create sa $MY_SA
-
-# Annotate the service account to use the STS Role
-oc annotate -n $MY_APP serviceaccount $MY_SA eks.amazonaws.com/role-arn=$ROLE_ARN
-
-# Verify annotation
-oc describe sa $MY_SA | grep eks.amazonaws.com/role-arn
-
-# Create a secret provider class to access our secret
-# This needs to be in the application namespace
-
-cat << EOF > $MY_APP-secretproviderclass.yaml
-apiVersion: secrets-store.csi.x-k8s.io/v1
-kind: SecretProviderClass
-metadata:
-  name: $MY_APP-aws-secrets
-  namespace: $MY_APP
-spec:
-  provider: aws
-  secretObjects:
-    - data:
-        - key: db_string # whatever you want the env variable to be called
-          objectName: $MY_SECRET   # AWS secret name
-      secretName: $MY_APP # kubernetes secret name I think
-      type: Opaque
-  parameters:
-    objects: |
-      - objectName: "$MY_SECRET"  # AWS secret name
-        objectType: "secretsmanager"
-EOF
-cat $MY_APP-secretproviderclass.yaml
-oc apply -f $MY_APP-secretproviderclass.yaml
-
-# Verify it exists and contents are as expected
-oc get secretproviderclass $MY_APP-aws-secrets -oyaml
-
 cat << EOF > $MY_APP-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -265,16 +232,19 @@ metadata:
   namespace: $MY_APP
   labels:
     app: $MY_APP
+    component: api
 spec:
   selector:
     matchLabels:
       app: $MY_APP
+      component: api
   template:
     metadata:
       labels:
         app: $MY_APP
+        component: api
     spec:
-      serviceAccountName: $MY_SA
+      serviceAccountName: $MY_APP-sa
       containers:
       - name: $MY_APP
         image: k8s.gcr.io/e2e-test-images/busybox:1.29
@@ -285,8 +255,9 @@ spec:
           - name: db_string
             valueFrom:
               secretKeyRef:
-                key: $MY_APP # k8s secret specified in secretproviderclass
-                name: db_string # env variable specified in secretproviderclass
+                #name: $MY_APP-aws-secrets # secret provider class
+                name: $MY_APP-k8s # kubernetes secret
+                key: db_string # env variable specified in secretproviderclass
 EOF
 cat $MY_APP-deployment.yaml
 oc apply -f $MY_APP-deployment.yaml
@@ -294,6 +265,7 @@ oc apply -f $MY_APP-deployment.yaml
 oc exec $MY_APP -- printenv | grep db_string
 # expected result: db_string={"username":"shadowman", "password":"hunter2"}
 # You can extract just the password value with this:
-# Add steps here
-
+## Add steps here
+## Maybe for enviroment variables, it's impossible to get partial, so if you want just password, create a secret called db_password with value of the password as its contents
+NOTE: when I did this, I don't see the variable when I "oc exec", "oc rsh", or "oc debug" but I do when I select pods "Terminal" in the console.
 ```
