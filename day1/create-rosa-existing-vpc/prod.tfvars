@@ -7,7 +7,7 @@ admin_password = "adminuser-password-123"
 # To upgrade OCP, just update openshift_version and terraform apply
 openshift_version = "4.13.10"
 replicas = 3
-compute_machine_type ="m5.xlarge"
+compute_machine_type = "m5.xlarge"
 cloud_region = "us-east-2"
 multi_az = "true"
 machine_cidr = "10.0.0.0/16"
