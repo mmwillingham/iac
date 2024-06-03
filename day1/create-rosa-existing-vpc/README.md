@@ -6,6 +6,8 @@
 
 ### Vault: https://developer.hashicorp.com/vault/tutorials/hcp-vault-secrets-get-started/hcp-vault-secrets-install-cli
 
+aws ec2 describe-subnets | grep SubnetId
+
 export TF_VAR_token=<OCM token>
 terraform init
 terraform validate
