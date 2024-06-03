@@ -1,3 +1,4 @@
+```
 https://github.com/terraform-aws-modules/terraform-aws-vpc/blob/master/variables.tf
 https://adamtheautomator.com/terraform-vpc/
 https://www.cdw.com/content/cdw/en/articles/cloud/aws-vpc-terraform.html
@@ -8,3 +9,4 @@ terraform init
 terraform validate
 terraform plan
 terraform apply
+```
