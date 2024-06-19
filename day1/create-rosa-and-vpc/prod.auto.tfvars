@@ -3,7 +3,7 @@
 # +----------------------------+
 # | prod.auto.tfvars Variables |
 # +----------------------------+
-cluster_name = "bosez-20240618"
+cluster_name = "bosez-20240619"
 openshift_version            = "4.15.10"  # For available stable versions: rosa list versions --channel-group stable
 upgrade_acknowledgements_for = "4.15"
 cloud_region                 = "us-east-2"
