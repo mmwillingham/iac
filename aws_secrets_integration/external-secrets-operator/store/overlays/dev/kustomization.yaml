@@ -27,11 +27,8 @@ patches:
   - target:
       version: v1
       kind: ExternalSecret
-      name: PATCH-ME # This is a placeholder and will be replaced with the value below.
+      name: mysecret
     patch: |-
-      - op: replace
-        path: /metadata/name
-        value: my-external-secret
       - op: replace
         path: /spec/secretStoreRef/name
         value: mystore
