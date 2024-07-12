@@ -6,37 +6,43 @@ Process assumes AWS STS
 oc get authentication.config.openshift.io cluster -o json | jq .spec.serviceAccountIssuer
 # example response: "https://rh-oidc.s3.us-east-1.amazonaws.com/2b1a6mhmakfmljn26lek7n063ofjb3hi"
 
+# Create environment variables
 export REGION=$(oc get infrastructure cluster -o=jsonpath="{.status.platformStatus.aws.region}")
 export OIDC_ENDPOINT=$(oc get authentication.config.openshift.io cluster -o jsonpath='{.spec.serviceAccountIssuer}' | sed  's|^https://||')
 export AWS_ACCOUNT_ID=`aws sts get-caller-identity --query Account --output text`
 export AWS_PAGER=""
 export NAMESPACE="external-secrets"
-export SA_NAME="external-secrets-operator"
-export ESO_SECRET_BUCKET=eso-bucket
-export MY_SECRET_KEY=username
+export SA_NAME="external-secrets-operator-sa"
+export ESO_SECRET_BUCKET=eso-bucket5
+export KEY1="username"
+export VALUE1="bolauder"
+export KEY2="password"
+export VALUE2="HelloWorld"
+export AWS_SECRETS_POLICY_NAME="ocp-access-to-aws-secrets"
 
 echo $REGION
 echo $OIDC_ENDPOINT
 echo $AWS_ACCOUNT_ID
-echo $AWS_PAGER
 echo $NAMESPACE
 echo $SA_NAME
 echo $ESO_SECRET_BUCKET
-echo $MY_SECRET_KEY
-
-export KEY1="username"
-export KEY2="password"
-export VALUE1="bolauder"
-export VALUE2="HelloWorld"
 echo $KEY1
 echo $KEY2
 echo $VALUE1
 echo $VALUE2
+echo $AWS_SECRETS_POLICY_NAME
+echo $AWS_PAGER # Will be blank
+
 
 # Parameterize the secret creation using KEY/VALUE variables. Here and when creating ExternalSecret below
 # Create secret bucket
-ESO_SECRET_ARN=$(aws --region "$REGION" secretsmanager create-secret --name ${ESO_SECRET_BUCKET} --secret-string '{"username":"bolauder", "password":"HelloWorld"}' --query ARN --output text) 
+ESO_SECRET_ARN=$(aws --region "$REGION" secretsmanager create-secret --name ${ESO_SECRET_BUCKET} --secret-string '{"'"$KEY1"'":"'"$VALUE1"'", "'"$KEY2"'":"'"$VALUE2"'"}' --query ARN --output text)
+
 echo $ESO_SECRET_ARN
+
+# View the bucket to make sure it's correct
+aws secretsmanager get-secret-value --secret-id $ESO_SECRET_ARN
+
 
 # Create IAM policy
 cat << EOF > eso-actions-policy.json
@@ -57,20 +63,24 @@ cat << EOF > eso-actions-policy.json
 }
 EOF
 
-# Note, in the above policy, I replaced: 
+# Note, in the above policy, I replaced:
 # This: "Resource": "arn:aws:secretsmanager:$REGION:$AWS_ACCOUNT_ID:$ESO_SECRET_BUCKET:*",
-# With: "$ESO_SECRET_ARN"
+# With: "Resource": "$ESO_SECRET_ARN",
+# To allow access to all secrets: 
+            "Resource": "*",
+
 
 # Verify variables
 cat eso-actions-policy.json
 
 # Create policy ARN
-ESO_ACTIONS_POLICY_ARN=$(aws --region "$REGION" --query Policy.Arn --output text iam create-policy --policy-name ocp-access-to-eso-secrets --policy-document file://eso-actions-policy.json)
+ESO_ACTIONS_POLICY_ARN=$(aws --region "$REGION" --query Policy.Arn --output text iam create-policy --policy-name "$AWS_SECRETS_POLICY_NAME"  --policy-document file://eso-actions-policy.json)
 echo $ESO_ACTIONS_POLICY_ARN
 
 # Create IAM Role trust policy
 # NOTE: For testing, to allow all service accounts from all namespaces, you can change to
 #     "StringLike" : {"${OIDC_ENDPOINT}:sub": ["system:serviceaccount:*:*"]}
+# WARNING!! Don't copy the above line after creating the file or the variable OIDC_ENDPOINT isn't replaced
 
 cat << EOF > eso-trust-policy.json
 {
@@ -94,14 +104,14 @@ EOF
 cat eso-trust-policy.json
 
 # Create IAM role
-ESO_ROLE_ARN=$(aws iam create-role --role-name ocp-access-to-eso-secrets-role --assume-role-policy-document file://eso-trust-policy.json --query Role.Arn --output text)
+ESO_ROLE_ARN=$(aws iam create-role --role-name "$AWS_SECRETS_POLICY_NAME" --assume-role-policy-document file://eso-trust-policy.json --query Role.Arn --output text)
 echo $ESO_ROLE_ARN
 
 # Attach the role to the policy
-aws iam attach-role-policy --role-name ocp-access-to-eso-secrets-role --policy-arn $ESO_ACTIONS_POLICY_ARN
+aws iam attach-role-policy --role-name "$AWS_SECRETS_POLICY_NAME" --policy-arn $ESO_ACTIONS_POLICY_ARN
 
 # Verify attachment
-aws iam list-attached-role-policies --role-name ocp-access-to-eso-secrets-role --output text
+aws iam list-attached-role-policies --role-name "$AWS_SECRETS_POLICY_NAME" --output text
 ```
 
 ## Deploy Operator and Instance
@@ -111,87 +121,26 @@ oc apply -k aws_secrets_integration/external-secrets-operator/operator/overlays/
 ```
 
 ## Create OpenShift resources
-# Create service account
-cat << EOF > eso-sa.yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: external-secrets-operator
-  namespace: external-secrets
-  annotations:
-    eks.amazonaws.com/role-arn: $ESO_ROLE_ARN
-EOF
+```
+oc apply -k aws_secrets_integration/external-secrets-operator/store/overlays/dev
 
-# Verify variables
-cat eso-sa.yaml
+# Verify Service Account
+oc describe sa external-secrets-operator-sa -n external-secrets | egrep "^Annotations"
+# Example: Annotations: eks.amazonaws.com/role-arn: arn:aws:iam::519926745982:role/ocp-access-to-eso-secrets-role
 
-# Apply
-oc apply -f eso-sa.yaml
-
-# Verify
-oc describe sa external-secrets-operator -n external-secrets | egrep "^Annotations"
-Annotations: eks.amazonaws.com/role-arn: arn:aws:iam::519926745982:role/ocp-access-to-eso-secrets-role
-
-# Create SecretStore
-cat << EOF > ss.yaml
-apiVersion: external-secrets.io/v1beta1
-kind: SecretStore
-metadata:
-  name: my-secret-store
-spec:
-  provider:
-    aws:
-      service: SecretsManager
-      region: us-east-2
-      auth:
-        jwt:
-          serviceAccountRef:
-            name: external-secrets-operator
-EOF
-
-# Apply
-oc apply -f ss.yaml
-
-# Verify it was created
+# Verify Secret Store
 oc get secretstore -n external-secrets
-NAME                  AGE   STATUS   CAPABILITIES   READY
-aws-secrets-manager   37s   Valid    ReadWrite      True
+# NAME                  AGE   STATUS   CAPABILITIES   READY
+# aws-secrets-manager   37s   Valid    ReadWrite      True
 
-# Create a secret
-# Use KEY/VALUE variables instead of below (instead of password use $KEY2)
-cat << EOF > es.yaml
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
-metadata:
-  name: my-external-secret
-spec:
-  refreshInterval: 1m
-  secretStoreRef:
-    name: my-secret-store # The secret store name we have just created.
-    kind: SecretStore
-  target:
-    name: my-kubernetes-secret # Secret name in k8s
-  data:
-  - secretKey: password # which key is going to be stored
-    remoteRef:
-      key: ${ESO_SECRET_BUCKET} # Our AWS secret-name goes here
-      property: password        # The desired property in the AWS secret
-EOF
-
-# Verify variables
-cat es.yaml
-
-# Apply
-oc apply -f es.yaml
-
-# Verify it was created
+# Verify secret
 oc get externalsecret 
-NAME     STORE                 REFRESH INTERVAL               STATUS              READY
-my-external-secret   my-secret-store       1m                 SecretSynced        True
+# NAME     STORE                 REFRESH INTERVAL               STATUS              READY
+# my-external-secret   my-secret-store       1m                 SecretSynced        True
 
 # Check local secret
 oc get secrets my-kubernetes-secret -o json | jq -r .data.password | base64 -d; echo
-{"username":"bolauder", "password":"HelloWorld"}
+# {"username":"bolauder", "password":"HelloWorld"}
 
 # Use the secret in a deployment
 # NOTE: This example needs to be modified to fit the above.
@@ -212,3 +161,4 @@ kind: Deployment
 
 For every 1hr it refreshes and updates the secrets from the SecretStore.
 It fetches the specified secret from SecretStore and stores it in the target secret.
+```
