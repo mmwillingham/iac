@@ -28,6 +28,8 @@ echo $MY_SECRET
 ```
 
 ## Deploy AWS Secrets and Configuration Provider
+### Also possible to do it without helm. See my repo from https://github.com/NCDHHS-Enterprise/cwis-infra/app/openshift-automation/day2/kustomize/csi-driver
+
 ```
 # Add helm repo
 helm repo add secrets-store-csi-driver https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
