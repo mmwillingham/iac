@@ -148,34 +148,34 @@ oc get secretstore
 oc get externalsecret
 oc get secrets my-kubernetes-secret -o json | jq -r .data.$KEY1 | base64 -d; echo
 oc get secrets my-kubernetes-secret -o json | jq -r .data.$KEY2 | base64 -d; echo
-oc get secrets my-kubernetes-secret -o json | jq -r .data.$KEY3 | base64 -d; echo
+
 
 # Verify Service Account
-oc describe sa external-secrets-operator-sa -n external-secrets | egrep "^Annotations"
+oc describe sa external-secrets-operator-sa -n $USER_NAMESPACE | egrep "^Annotations"
 # Annotations:         eks.amazonaws.com/role-arn: arn:aws:iam::942823120101:role/ocp-access-to-aws-secrets
 
 
 # Verify Secret Store
-oc get secretstore -n external-secrets
+oc get secretstore -n $USER_NAMESPACE
 # NAME                  AGE   STATUS   CAPABILITIES   READY
 # mystore   21s   Valid    ReadWrite      True
 
 # Verify secret
-oc get externalsecret -n external-secrets # Probably need to create this in a user namespace
+oc get externalsecret -n $USER_NAMESPACE
 # NAME       STORE     FRESH INTERVAL     STATUS         READY
 # mysecret   mystore   1m                 SecretSynced   True
 
 
 # Check local secret
-oc get secrets my-kubernetes-secret -n external-secrets -o json | jq -r .data.password | base64 -d; echo
+oc get secrets my-kubernetes-secret -n $USER_NAMESPACE-o json | jq -r .data.password | base64 -d; echo
 # {"username":"bolauder", "password":"HelloWorld"}
 
-oc get secrets my-kubernetes-secret -n external-secrets -o json | jq -r .data.$KEY1 | base64 -d; echo
-oc get secrets my-kubernetes-secret -n external-secrets -o json | jq -r .data.username| base64 -d; echo
+oc get secrets my-kubernetes-secret -n $USER_NAMESPACE -o json | jq -r .data.$KEY1 | base64 -d; echo
+oc get secrets my-kubernetes-secret -n $USER_NAMESPACE -o json | jq -r .data.username| base64 -d; echo
 bolauder
 
-oc get secrets my-kubernetes-secret -n external-secrets -o json | jq -r .data.$KEY2 | base64 -d; echo
-oc get secrets my-kubernetes-secret -n external-secrets -o json | jq -r .data.password | base64 -d; echo
+oc get secrets my-kubernetes-secret -n $USER_NAMESPACE -o json | jq -r .data.$KEY2 | base64 -d; echo
+oc get secrets my-kubernetes-secret -n $USER_NAMESPACE -o json | jq -r .data.password | base64 -d; echo
 HelloWorld
 
 # Use the secret in a deployment
@@ -205,6 +205,6 @@ oc delete -k aws_secrets_integration/external-secrets-operator/store/overlays/de
 oc delete -k aws_secrets_integration/external-secrets-operator/instance/overlays/default
 oc delete -k aws_secrets_integration/external-secrets-operator/operator/overlays/stable
 oc delete csv $(oc get csv -n openshift-operators -o name | grep external-secrets)
-oc delete project external-secrets
+oc delete project $USER_NAMESPACE
 ```
 
