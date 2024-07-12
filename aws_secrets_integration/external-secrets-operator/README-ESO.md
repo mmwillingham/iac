@@ -12,6 +12,7 @@ export OIDC_ENDPOINT=$(oc get authentication.config.openshift.io cluster -o json
 export AWS_ACCOUNT_ID=`aws sts get-caller-identity --query Account --output text`
 export AWS_PAGER=""
 export NAMESPACE="external-secrets"
+export USER_NAMESPACE="abc-user-namespace"
 export SA_NAME="external-secrets-operator-sa"
 export ESO_SECRET_BUCKET=eso-bucket5
 export KEY1="username"
@@ -26,6 +27,7 @@ echo $REGION
 echo $OIDC_ENDPOINT
 echo $AWS_ACCOUNT_ID
 echo $NAMESPACE
+echo $USER_NAMESPACE
 echo $SA_NAME
 echo $ESO_SECRET_BUCKET
 echo $KEY1
@@ -101,7 +103,7 @@ cat << EOF > eso-trust-policy.json
             },
             "Action": "sts:AssumeRoleWithWebIdentity",
             "Condition": {
-                "StringEquals": {"${OIDC_ENDPOINT}:sub": ["system:serviceaccount:${NAMESPACE}:${SA_NAME}"]}
+                "StringEquals": {"${OIDC_ENDPOINT}:sub": ["system:serviceaccount:${USER_NAMESPACE}:${SA_NAME}"]}
             }
         }
     ]
