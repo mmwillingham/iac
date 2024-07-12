@@ -45,7 +45,7 @@ patches:
         value: username
       - op: replace
         path: /spec/data/0/remoteRef/property
-        value: username
+        value: password
       - op: replace
         path: /spec/data/1/remoteRef/key
         value: eso-bucket5
