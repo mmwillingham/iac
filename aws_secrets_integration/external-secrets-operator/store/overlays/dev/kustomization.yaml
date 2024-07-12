@@ -1,0 +1,60 @@
+---
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+namespace: external-secrets
+
+resources:
+  - ../../base
+
+patches:
+  - target:
+      version: v1
+      kind: ServiceAccount
+      name: PATCH-ME # This is a placeholder and will be replaced with the value below.
+    patch: |-
+      - op: replace
+        path: /metadata/annotations/eks.amazonaws.com~1role-arn
+        value: arn:aws:iam::942823120101:role/ocp-access-to-eso-secrets-role
+      - op: replace
+        path: /metadata/namespace
+        value: external-secrets
+      - op: replace
+        path: /metadata/name
+        value: external-secrets-operator
+
+  - target:
+      version: v1
+      kind: SecretStore
+      name: PATCH-ME # This is a placeholder and will be replaced with the value below.
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: my-secret-store
+      - op: replace
+        path: /spec/provider/aws/region
+        value: us-east-2
+
+  - target:
+      version: v1
+      kind: ExternalSecret
+      name: PATCH-ME # This is a placeholder and will be replaced with the value below.
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: my-external-secret
+      - op: replace
+        path: /spec/secretStoreRef/name
+        value: my-secret-store
+      - op: replace
+        path: /spec/target/name
+        value: my-kubernetes-secret
+      - op: replace
+        path: /spec/data/0/secretKey
+        value: password
+      - op: replace
+        path: /spec/data/0/remoteRef/key
+        value: eso-bucket
+      - op: replace
+        path: /spec/data/0/remoteRef/property
+        value: password

@@ -6,244 +6,209 @@ Process assumes AWS STS
 oc get authentication.config.openshift.io cluster -o json | jq .spec.serviceAccountIssuer
 # example response: "https://rh-oidc.s3.us-east-1.amazonaws.com/2b1a6mhmakfmljn26lek7n063ofjb3hi"
 
-# Set SCCs to allow CSI driver
-oc new-project csi-secrets-store
-oc adm policy add-scc-to-user privileged system:serviceaccount:csi-secrets-store:secrets-store-csi-driver
-oc adm policy add-scc-to-user privileged system:serviceaccount:csi-secrets-store:csi-secrets-store-provider-aws
-
-## Create environment variables
 export REGION=$(oc get infrastructure cluster -o=jsonpath="{.status.platformStatus.aws.region}")
 export OIDC_ENDPOINT=$(oc get authentication.config.openshift.io cluster -o jsonpath='{.spec.serviceAccountIssuer}' | sed  's|^https://||')
-export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+export AWS_ACCOUNT_ID=`aws sts get-caller-identity --query Account --output text`
 export AWS_PAGER=""
-export MY_APP="bo-secret-app"
-export MY_SECRET=db_password # make this lowercase
-# Verify OIDC provider exists in AWS with the same OIDC_ENDPOINT as above
-aws iam list-open-id-connect-providers | grep ${OIDC_ENDPOINT}
+export NAMESPACE="external-secrets"
+export SA_NAME="external-secrets-operator"
+export ESO_SECRET_BUCKET=eso-bucket
+export MY_SECRET_KEY=username
 
 echo $REGION
 echo $OIDC_ENDPOINT
 echo $AWS_ACCOUNT_ID
-echo $MY_APP
-echo $MY_SECRET
-```
+echo $AWS_PAGER
+echo $NAMESPACE
+echo $SA_NAME
+echo $ESO_SECRET_BUCKET
+echo $MY_SECRET_KEY
 
+export KEY1="username"
+export KEY2="password"
+export VALUE1="bolauder"
+export VALUE2="HelloWorld"
+echo $KEY1
+echo $KEY2
+echo $VALUE1
+echo $VALUE2
 
+# Parameterize the secret creation using KEY/VALUE variables. Here and when creating ExternalSecret below
+# Create secret bucket
+ESO_SECRET_ARN=$(aws --region "$REGION" secretsmanager create-secret --name ${ESO_SECRET_BUCKET} --secret-string '{"username":"bolauder", "password":"HelloWorld"}' --query ARN --output text) 
+echo $ESO_SECRET_ARN
 
-## Deploy Operator
-
-## Create an AWS secret and IAM access policies
-```
-# Create a secret (bucket) in Secrets Manager
-# NOTE: This will create a single secret (bucket) in AWS containing one or more key/value pairs
-
-SECRET_ARN=$(aws --region "$REGION" secretsmanager create-secret --name ${MY_SECRET} --secret-string '{"username":"shadowman", "password":"hunter2"}' --query ARN --output text)
-echo $SECRET_ARN
-
-# Create an IAM Access Policy document 
-# NOTE: for the previous secret, this document specifies what actions are allowed
-# NOTE: For testing, to allow access to all secrets, you can change Resource value to: "Resource": "*"
-
-cat << EOF > policy.json
+# Create IAM policy
+cat << EOF > eso-actions-policy.json
 {
-   "Version": "2012-10-17",
-   "Statement": [{
-      "Effect": "Allow",
-      "Action": [
-        "secretsmanager:GetSecretValue",
-        "secretsmanager:DescribeSecret"
-      ],
-      "Resource": ["$SECRET_ARN"]
-      }]
-}
-EOF
-
-# Verify the variables were correctly populated
-cat policy.json
-
-# Create an IAM Access Policy
-
-POLICY_ARN=$(aws --region "$REGION" --query Policy.Arn --output text iam create-policy --policy-name ocp-access-to-${MY_SECRET}-policy --policy-document file://policy.json)
-echo $POLICY_ARN
-
-# Create an IAM Role trust policy document
-# NOTE: The trust policy is locked down to the default service account of a namespace you create later in this process.
-# NOTE: For testing, to allow all service accounts from all namespaces, you can change to
-#     "StringLike" : {"${OIDC_ENDPOINT}:sub": ["system:serviceaccount:*:*"]}
-
-cat <<EOF > trust-policy.json
-{
-   "Version": "2012-10-17",
-   "Statement": [
-   {
-   "Effect": "Allow",
-   "Condition": {
-     "StringEquals" : {"${OIDC_ENDPOINT}:sub": ["system:serviceaccount:${MY_APP}:${MY_APP}-sa"]}
-    },
-    "Principal": {
-       "Federated": "arn:aws:iam::$AWS_ACCOUNT_ID:oidc-provider/${OIDC_ENDPOINT}"
-    },
-    "Action": "sts:AssumeRoleWithWebIdentity"
-    }
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:GetResourcePolicy",
+                "secretsmanager:DescribeSecret",
+                "secretsmanager:ListSecretVersionIds"
+            ],
+            "Resource": "$ESO_SECRET_ARN",
+            "Effect": "Allow"
+        }
     ]
 }
 EOF
 
-# Verify variables were correctly populated
-cat trust-policy.json
+# Note, in the above policy, I replaced: 
+# This: "Resource": "arn:aws:secretsmanager:$REGION:$AWS_ACCOUNT_ID:$ESO_SECRET_BUCKET:*",
+# With: "$ESO_SECRET_ARN"
+
+# Verify variables
+cat eso-actions-policy.json
+
+# Create policy ARN
+ESO_ACTIONS_POLICY_ARN=$(aws --region "$REGION" --query Policy.Arn --output text iam create-policy --policy-name ocp-access-to-eso-secrets --policy-document file://eso-actions-policy.json)
+echo $ESO_ACTIONS_POLICY_ARN
+
+# Create IAM Role trust policy
+# NOTE: For testing, to allow all service accounts from all namespaces, you can change to
+#     "StringLike" : {"${OIDC_ENDPOINT}:sub": ["system:serviceaccount:*:*"]}
+
+cat << EOF > eso-trust-policy.json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Federated": "arn:aws:iam::$AWS_ACCOUNT_ID:oidc-provider/${OIDC_ENDPOINT}"
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Condition": {
+                "StringEquals": {"${OIDC_ENDPOINT}:sub": ["system:serviceaccount:${NAMESPACE}:${SA_NAME}"]}
+            }
+        }
+    ]
+}
+EOF
+
+# Verify variables
+cat eso-trust-policy.json
 
 # Create IAM role
-ROLE_ARN=$(aws iam create-role --role-name ocp-access-to-${MY_SECRET} --assume-role-policy-document file://trust-policy.json --query Role.Arn --output text)
-echo $ROLE_ARN
+ESO_ROLE_ARN=$(aws iam create-role --role-name ocp-access-to-eso-secrets-role --assume-role-policy-document file://eso-trust-policy.json --query Role.Arn --output text)
+echo $ESO_ROLE_ARN
 
 # Attach the role to the policy
-aws iam attach-role-policy --role-name ocp-access-to-${MY_SECRET} --policy-arn $POLICY_ARN
+aws iam attach-role-policy --role-name ocp-access-to-eso-secrets-role --policy-arn $ESO_ACTIONS_POLICY_ARN
 
 # Verify attachment
-aws iam list-attached-role-policies --role-name ocp-access-to-${MY_SECRET} --output text
+aws iam list-attached-role-policies --role-name ocp-access-to-eso-secrets-role --output text
 ```
 
-## Create a secret provider class for the secret
+## Deploy Operator and Instance
 ```
-# Create an OpenShift project
-# rename if necessary: export MY_APP=myapp2
-oc new-project $MY_APP
+oc apply -k aws_secrets_integration/external-secrets-operator/instance/overlays/default
+oc apply -k aws_secrets_integration/external-secrets-operator/operator/overlays/stable
+```
 
+## Create OpenShift resources
 # Create service account
-oc create sa $MY_APP-sa
-
-# Annotate the service account to use the STS Role
-oc annotate -n $MY_APP serviceaccount $MY_APP-sa eks.amazonaws.com/role-arn=$ROLE_ARN
-
-# Verify annotation
-oc describe sa $MY_APP-sa | grep eks.amazonaws.com/role-arn
-
-# Create a secret provider class to access our secret
-This needs to be in the application namespace.
-
-cat << EOF > $MY_APP-secretproviderclass.yaml
-apiVersion: secrets-store.csi.x-k8s.io/v1
-kind: SecretProviderClass
-metadata:
-  name: $MY_APP-aws-secrets
-  namespace: $MY_APP
-spec:
-  provider: aws
-#################################################################
-# SecretObjects is required for generating a kubernetes secret.
-# Optional if you only want to mount the secret to a volume path
-  secretObjects:
-    - data:
-        - key: db_string           # data field to populate
-          objectName: $MY_SECRET   # AWS secret name
-      secretName: $MY_APP-k8s      # kubernetes secret name
-      type: Opaque
-#################################################################
-  parameters:
-    objects: |
-      - objectName: "$MY_SECRET"  # AWS secret name
-        objectType: "secretsmanager"
-EOF
-cat $MY_APP-secretproviderclass.yaml
-oc apply -f $MY_APP-secretproviderclass.yaml
-
-# Verify it exists and contents are as expected
-oc get secretproviderclass $MY_APP-aws-secrets -oyaml
-```
-
-## Create an Application POD to expose the secret in a filepath
-```
-# Create a pod using our secret
-cat << EOF > $MY_APP-pod.yaml
+cat << EOF > eso-sa.yaml
 apiVersion: v1
-kind: Pod
+kind: ServiceAccount
 metadata:
-  name: $MY_APP-pod
-  labels:
-    app: $MY_APP-pod
-spec:
-  serviceAccountName: $MY_APP-sa
-  volumes:
-  - name: secrets-store-inline
-    csi:
-      driver: secrets-store.csi.k8s.io
-      readOnly: true
-      volumeAttributes:
-        secretProviderClass: "${MY_APP}-aws-secrets"
-  containers:
-  - name: $MY_APP-pod
-    image: k8s.gcr.io/e2e-test-images/busybox:1.29
-    command:
-      - "/bin/sleep"
-      - "10000"
-    volumeMounts:
-    - name: secrets-store-inline
-      mountPath: "/mnt/secrets-store"
-      readOnly: true
+  name: external-secrets-operator
+  namespace: external-secrets
+  annotations:
+    eks.amazonaws.com/role-arn: $ESO_ROLE_ARN
 EOF
-cat $MY_APP-pod.yaml
 
-oc apply -f $MY_APP-pod.yaml
+# Verify variables
+cat eso-sa.yaml
 
-oc get pods
+# Apply
+oc apply -f eso-sa.yaml
 
-# Verify the Pod has the secret mounted
-oc exec -it $MY_APP-pod -- cat /mnt/secrets-store/$MY_SECRET; echo
-expected response: # {"username":"shadowman", "password":"hunter2"}
+# Verify
+oc describe sa external-secrets-operator -n external-secrets | egrep "^Annotations"
+Annotations: eks.amazonaws.com/role-arn: arn:aws:iam::519926745982:role/ocp-access-to-eso-secrets-role
 
-```
+# Create SecretStore
+cat << EOF > ss.yaml
+apiVersion: external-secrets.io/v1beta1
+kind: SecretStore
+metadata:
+  name: my-secret-store
+spec:
+  provider:
+    aws:
+      service: SecretsManager
+      region: us-east-2
+      auth:
+        jwt:
+          serviceAccountRef:
+            name: external-secrets-operator
+EOF
 
-## Create an application DEPLOYMENT to expose the secret in an environment variable
-```
-cat << EOF > $MY_APP-deployment.yaml
+# Apply
+oc apply -f ss.yaml
+
+# Verify it was created
+oc get secretstore -n external-secrets
+NAME                  AGE   STATUS   CAPABILITIES   READY
+aws-secrets-manager   37s   Valid    ReadWrite      True
+
+# Create a secret
+# Use KEY/VALUE variables instead of below (instead of password use $KEY2)
+cat << EOF > es.yaml
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: my-external-secret
+spec:
+  refreshInterval: 1m
+  secretStoreRef:
+    name: my-secret-store # The secret store name we have just created.
+    kind: SecretStore
+  target:
+    name: my-kubernetes-secret # Secret name in k8s
+  data:
+  - secretKey: password # which key is going to be stored
+    remoteRef:
+      key: ${ESO_SECRET_BUCKET} # Our AWS secret-name goes here
+      property: password        # The desired property in the AWS secret
+EOF
+
+# Verify variables
+cat es.yaml
+
+# Apply
+oc apply -f es.yaml
+
+# Verify it was created
+oc get externalsecret 
+NAME     STORE                 REFRESH INTERVAL               STATUS              READY
+my-external-secret   my-secret-store       1m                 SecretSynced        True
+
+# Check local secret
+oc get secrets my-kubernetes-secret -o json | jq -r .data.password | base64 -d; echo
+{"username":"bolauder", "password":"HelloWorld"}
+
+# Use the secret in a deployment
+# NOTE: This example needs to be modified to fit the above.
 apiVersion: apps/v1
 kind: Deployment
-metadata:
-  name: $MY_APP
-  namespace: $MY_APP
-  labels:
-    app: $MY_APP
-    component: api
-spec:
-  selector:
-    matchLabels:
-      app: $MY_APP
-      component: api
-  template:
-    metadata:
-      labels:
-        app: $MY_APP
-        component: api
-    spec:
-      serviceAccountName: $MY_APP-sa
+(...)
       containers:
-      - name: $MY_APP
-        image: k8s.gcr.io/e2e-test-images/busybox:1.29
-        command:
-          - "/bin/sleep"
-          - "10000"
-        env:
-          - name: db_string
-            valueFrom:
-              secretKeyRef:
-                #name: $MY_APP-aws-secrets # secret provider class
-                name: $MY_APP-k8s # kubernetes secret
-                key: db_string # env variable specified in secretproviderclass
-EOF
-cat $MY_APP-deployment.yaml
-oc apply -f $MY_APP-deployment.yaml
+        - name: example-app-prod
+          image: [yourimage]
+          env:
+            # Inject variables from a Kuberentes secret
+            - name: secret-variables
+              valueFrom:
+                secretKeyRef:
+                  name: my-kubernetes-secret
+                  key: password
 
-oc exec $(oc get pods -l app=$MY_APP -oname) -- env | grep db_string
-# expected result: db_string={"username":"shadowman", "password":"hunter2"}
-# You can extract just the password value with this:
-## Maybe for enviroment variables, it's impossible to get partial, so if you want just password, create a secret called db_password with value of the password as its contents
-NOTE: when I did this, I don't see the variable when I "oc exec", "oc rsh", or "oc debug" but I do when I select pods "Terminal" in the console.
-```
 
-## Troubleshooting
-# Check csi-secrets-store provider logs
-oc logs -n csi-secrets-store $(oc get pods -n csi-secrets-store -oname | grep provider | tail -1)
-oc logs -n csi-secrets-store $(oc get pods -n csi-secrets-store -oname | grep provider | head -1)
-
-# Check service account annotation
-oc describe sa $MY_APP-sa | grep eks.amazonaws.com/role-arn
+For every 1hr it refreshes and updates the secrets from the SecretStore.
+It fetches the specified secret from SecretStore and stores it in the target secret.
