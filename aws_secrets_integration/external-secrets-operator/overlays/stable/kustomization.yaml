@@ -8,10 +8,10 @@ resources:
   - ../../base
 
 patches:
-    target:
-      kind: Subscription
-      name: external-secrets-operator
   - patch: |-
       - op: replace
         path: /spec/channel
         value: 'stable'
+    target:
+      kind: Subscription
+      name: external-secrets-operator
