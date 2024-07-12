@@ -122,6 +122,13 @@ oc apply -k aws_secrets_integration/external-secrets-operator/operator/overlays/
 
 ## Create OpenShift resources
 ```
+# Update values in aws_secrets_integration/external-secrets-operator/store/overlays/dev/kustomization.yaml
+  # Especially
+  # - ServiceAccount /metadata/annotations/eks.amazonaws.com~1role-arn
+  # - ExternalSecret /spec/data/0/remoteRef/key
+  # - ExternalSecret /spec/data/0/remoteRef/property
+  # - ExternalSecret /spec/data/0/secretKey
+
 oc apply -k aws_secrets_integration/external-secrets-operator/store/overlays/dev
 
 # Verify Service Account
