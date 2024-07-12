@@ -15,12 +15,6 @@ patches:
       - op: replace
         path: /metadata/annotations/eks.amazonaws.com~1role-arn
         value: arn:aws:iam::942823120101:role/ocp-access-to-eso-secrets-role
-      # - op: replace
-      #   path: /metadata/namespace
-      #   value: external-secrets
-      # - op: replace
-      #   path: /metadata/name
-      #   value: external-secrets-operator
 
   - target:
       version: v1
@@ -30,6 +24,9 @@ patches:
       - op: replace
         path: /metadata/name
         value: my-secret-store
+      - op: replace
+        path: /metadata/namespace
+        value: external-secrets     
       - op: replace
         path: /spec/provider/aws/region
         value: us-east-2
@@ -56,4 +53,10 @@ patches:
         value: eso-bucket
       - op: replace
         path: /spec/data/0/remoteRef/property
+        value: username
+      - op: replace
+        path: /spec/data/1/remoteRef/key
+        value: eso-bucket
+      - op: replace
+        path: /spec/data/1/remoteRef/property
         value: password

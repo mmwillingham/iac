@@ -7,4 +7,4 @@ namespace: external-secrets
 resources:
   - serviceaccount.yaml
   - secretstore.yaml
-  - externalsecret-my-external-secret.yaml
+  - externalsecret.yaml
