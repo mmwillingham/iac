@@ -116,8 +116,8 @@ aws iam list-attached-role-policies --role-name "$AWS_SECRETS_POLICY_NAME" --out
 
 ## Deploy Operator and Instance
 ```
-oc apply -k aws_secrets_integration/external-secrets-operator/instance/overlays/default
 oc apply -k aws_secrets_integration/external-secrets-operator/operator/overlays/stable
+oc apply -k aws_secrets_integration/external-secrets-operator/instance/overlays/default
 ```
 
 ## Create OpenShift resources
@@ -169,3 +169,13 @@ kind: Deployment
 For every 1hr it refreshes and updates the secrets from the SecretStore.
 It fetches the specified secret from SecretStore and stores it in the target secret.
 ```
+
+# Cleanup
+```
+oc delete -k aws_secrets_integration/external-secrets-operator/store/overlays/dev
+oc delete -k aws_secrets_integration/external-secrets-operator/instance/overlays/default
+oc delete -k aws_secrets_integration/external-secrets-operator/operator/overlays/stable
+oc delete csv $(oc get csv -n openshift-operators -o name | grep external-secrets)
+oc delete project external-secrets
+```
+
