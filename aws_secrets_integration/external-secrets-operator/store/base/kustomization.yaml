@@ -6,5 +6,5 @@ namespace: external-secrets
 
 resources:
   - serviceaccount.yaml
-  - secretstore.yaml
+  - secretstore-mystore.yaml
   - externalsecret.yaml
