@@ -139,6 +139,15 @@ oc apply -k aws_secrets_integration/external-secrets-operator/instance/overlays/
 
 oc apply -k aws_secrets_integration/external-secrets-operator/store/overlays/dev
 
+# Verify all
+oc project abc-user-namespace
+oc describe sa external-secrets-operator-sa | egrep "^Annotations"
+oc get secretstore
+oc get externalsecret
+oc get secrets my-kubernetes-secret -o json | jq -r .data.$KEY1 | base64 -d; echo
+oc get secrets my-kubernetes-secret -o json | jq -r .data.$KEY2 | base64 -d; echo
+oc get secrets my-kubernetes-secret -o json | jq -r .data.$KEY3 | base64 -d; echo
+
 # Verify Service Account
 oc describe sa external-secrets-operator-sa -n external-secrets | egrep "^Annotations"
 # Annotations:         eks.amazonaws.com/role-arn: arn:aws:iam::942823120101:role/ocp-access-to-aws-secrets
