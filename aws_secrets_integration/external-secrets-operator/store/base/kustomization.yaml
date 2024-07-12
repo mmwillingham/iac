@@ -5,5 +5,6 @@ kind: Kustomization
 namespace: external-secrets
 
 resources:
-  - namespace.yaml
-  - default-operatorconfig.yaml
+  - serviceaccount.yaml
+  - secretstore.yaml
+  - externalsecret-my-external-secret.yaml
