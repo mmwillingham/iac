@@ -18,6 +18,8 @@ export KEY1="username"
 export VALUE1="bolauder"
 export KEY2="password"
 export VALUE2="HelloWorld"
+export KEY3="cred-string"
+export VALUE3="{"username":"BoLauder", "password":"HelloWorld123"}"
 export AWS_SECRETS_POLICY_NAME="ocp-access-to-aws-secrets"
 
 echo $REGION
@@ -27,9 +29,11 @@ echo $NAMESPACE
 echo $SA_NAME
 echo $ESO_SECRET_BUCKET
 echo $KEY1
-echo $KEY2
 echo $VALUE1
+echo $KEY2
 echo $VALUE2
+echo $KEY3
+echo $VALUE3
 echo $AWS_SECRETS_POLICY_NAME
 echo $AWS_PAGER # Will be blank
 
@@ -37,6 +41,10 @@ echo $AWS_PAGER # Will be blank
 # Parameterize the secret creation using KEY/VALUE variables. Here and when creating ExternalSecret below
 # Create secret bucket
 ESO_SECRET_ARN=$(aws --region "$REGION" secretsmanager create-secret --name ${ESO_SECRET_BUCKET} --secret-string '{"'"$KEY1"'":"'"$VALUE1"'", "'"$KEY2"'":"'"$VALUE2"'"}' --query ARN --output text)
+
+# ESO_SECRET_ARN_TEST=$(aws --region "$REGION" secretsmanager create-secret --name eso-bucket7 --secret-string '{"'"$KEY1"'":"'"$VALUE1"'", "'"$KEY2"'":"'"$VALUE2"'", "{"username":"BoLauder", "password":"HelloWorld123"}"}' --query ARN --output text)
+# The result in AWS is: {"username":"bolauder", "password":"HelloWorld", "{"username":"BoLauder", "password":"HelloWorld123"}"}
+
 
 echo $ESO_SECRET_ARN
 
@@ -152,7 +160,12 @@ oc get secrets my-kubernetes-secret -n external-secrets -o json | jq -r .data.pa
 # {"username":"bolauder", "password":"HelloWorld"}
 
 oc get secrets my-kubernetes-secret -n external-secrets -o json | jq -r .data.$KEY1 | base64 -d; echo
+oc get secrets my-kubernetes-secret -n external-secrets -o json | jq -r .data.username| base64 -d; echo
 bolauder
+
+oc get secrets my-kubernetes-secret -n external-secrets -o json | jq -r .data.$KEY2 | base64 -d; echo
+oc get secrets my-kubernetes-secret -n external-secrets -o json | jq -r .data.password | base64 -d; echo
+HelloWorld
 
 # Use the secret in a deployment
 # NOTE: This example needs to be modified to fit the above.
