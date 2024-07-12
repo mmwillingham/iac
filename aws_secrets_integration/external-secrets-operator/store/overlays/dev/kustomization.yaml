@@ -14,7 +14,7 @@ patches:
     patch: |-
       - op: replace
         path: /metadata/annotations/eks.amazonaws.com~1role-arn
-        value: arn:aws:iam::942823120101:role/ocp-access-to-eso-secrets-role
+        value: arn:aws:iam::942823120101:role/ocp-access-to-aws-secrets-role
 
   - target:
       kind: SecretStore
