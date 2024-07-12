@@ -9,19 +9,18 @@ resources:
 
 patches:
   - target:
-      version: v1
       kind: ServiceAccount
-      name: PATCH-ME # This is a placeholder and will be replaced with the value below.
+      name: external-secrets-operator
     patch: |-
       - op: replace
         path: /metadata/annotations/eks.amazonaws.com~1role-arn
         value: arn:aws:iam::942823120101:role/ocp-access-to-eso-secrets-role
-      - op: replace
-        path: /metadata/namespace
-        value: external-secrets
-      - op: replace
-        path: /metadata/name
-        value: external-secrets-operator
+      # - op: replace
+      #   path: /metadata/namespace
+      #   value: external-secrets
+      # - op: replace
+      #   path: /metadata/name
+      #   value: external-secrets-operator
 
   - target:
       version: v1
