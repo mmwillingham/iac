@@ -97,8 +97,7 @@ echo $POLICY_ARN
 # Create an IAM Role trust policy document
 # NOTE: The trust policy is locked down to the default service account of a namespace you create later in this process.
 # NOTE: For testing, to allow all service accounts from all namespaces, you can change to
-#     "StringLike" : {
-#       "${OIDC_ENDPOINT}:sub": ["system:serviceaccount:*:*"]
+#     "StringLike" : {"${OIDC_ENDPOINT}:sub": ["system:serviceaccount:*:*"]}
 
 cat <<EOF > trust-policy.json
 {
@@ -107,9 +106,7 @@ cat <<EOF > trust-policy.json
    {
    "Effect": "Allow",
    "Condition": {
-     "StringEquals" : {
-       "${OIDC_ENDPOINT}:sub": ["system:serviceaccount:${MY_APP}:${MY_APP}-sa"]
-      }
+     "StringEquals" : {"${OIDC_ENDPOINT}:sub": ["system:serviceaccount:${MY_APP}:${MY_APP}-sa"]}
     },
     "Principal": {
        "Federated": "arn:aws:iam::$AWS_ACCOUNT_ID:oidc-provider/${OIDC_ENDPOINT}"
