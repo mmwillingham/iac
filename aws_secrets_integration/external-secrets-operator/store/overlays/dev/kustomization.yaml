@@ -10,7 +10,7 @@ resources:
 patches:
   - target:
       kind: ServiceAccount
-      name: external-secrets-operator
+      name: external-secrets-operator-sa
     patch: |-
       - op: replace
         path: /metadata/annotations/eks.amazonaws.com~1role-arn
@@ -36,7 +36,7 @@ patches:
         value: my-kubernetes-secret
       - op: replace
         path: /spec/data/0/secretKey
-        value: password
+        value: username
       - op: replace
         path: /spec/data/0/remoteRef/key
         value: eso-bucket
