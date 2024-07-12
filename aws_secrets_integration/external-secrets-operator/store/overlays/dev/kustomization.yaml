@@ -25,7 +25,6 @@ patches:
         value: us-east-2
 
   - target:
-      version: v1
       kind: ExternalSecret
       name: mysecret
     patch: |-
