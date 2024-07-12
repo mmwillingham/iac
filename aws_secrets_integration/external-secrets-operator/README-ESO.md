@@ -133,21 +133,26 @@ oc apply -k aws_secrets_integration/external-secrets-operator/store/overlays/dev
 
 # Verify Service Account
 oc describe sa external-secrets-operator-sa -n external-secrets | egrep "^Annotations"
-# Example: Annotations: eks.amazonaws.com/role-arn: arn:aws:iam::519926745982:role/ocp-access-to-eso-secrets-role
+# Annotations:         eks.amazonaws.com/role-arn: arn:aws:iam::942823120101:role/ocp-access-to-aws-secrets
+
 
 # Verify Secret Store
 oc get secretstore -n external-secrets
 # NAME                  AGE   STATUS   CAPABILITIES   READY
-# aws-secrets-manager   37s   Valid    ReadWrite      True
+# mystore   21s   Valid    ReadWrite      True
 
 # Verify secret
-oc get externalsecret 
-# NAME     STORE                 REFRESH INTERVAL               STATUS              READY
-# my-external-secret   my-secret-store       1m                 SecretSynced        True
+oc get externalsecret -n external-secrets # Probably need to create this in a user namespace
+# NAME       STORE     FRESH INTERVAL     STATUS         READY
+# mysecret   mystore   1m                 SecretSynced   True
+
 
 # Check local secret
-oc get secrets my-kubernetes-secret -o json | jq -r .data.password | base64 -d; echo
+oc get secrets my-kubernetes-secret -n external-secrets -o json | jq -r .data.password | base64 -d; echo
 # {"username":"bolauder", "password":"HelloWorld"}
+
+oc get secrets my-kubernetes-secret -n external-secrets -o json | jq -r .data.$KEY1 | base64 -d; echo
+bolauder
 
 # Use the secret in a deployment
 # NOTE: This example needs to be modified to fit the above.
@@ -158,7 +163,7 @@ kind: Deployment
         - name: example-app-prod
           image: [yourimage]
           env:
-            # Inject variables from a Kuberentes secret
+            # Inject variables from a Kuberetes secret
             - name: secret-variables
               valueFrom:
                 secretKeyRef:
