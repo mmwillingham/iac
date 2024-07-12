@@ -17,16 +17,9 @@ patches:
         value: arn:aws:iam::942823120101:role/ocp-access-to-eso-secrets-role
 
   - target:
-      version: v1
       kind: SecretStore
-      name: PATCH-ME # This is a placeholder and will be replaced with the value below.
+      name: mystore
     patch: |-
-      - op: replace
-        path: /metadata/name
-        value: my-secret-store
-      - op: replace
-        path: /metadata/namespace
-        value: external-secrets     
       - op: replace
         path: /spec/provider/aws/region
         value: us-east-2
@@ -41,7 +34,7 @@ patches:
         value: my-external-secret
       - op: replace
         path: /spec/secretStoreRef/name
-        value: my-secret-store
+        value: mystore
       - op: replace
         path: /spec/target/name
         value: my-kubernetes-secret
