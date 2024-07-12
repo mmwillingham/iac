@@ -2,7 +2,7 @@
 kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 
-namespace: external-secrets
+namespace: abc-user-namespace
 
 resources:
   - ../../base
@@ -12,6 +12,9 @@ patches:
       kind: ServiceAccount
       name: external-secrets-operator-sa
     patch: |-
+      - op: replace
+        path: metadata/namespace
+        value: abc-user-namespace
       - op: replace
         path: /metadata/annotations/eks.amazonaws.com~1role-arn
         value: arn:aws:iam::942823120101:role/ocp-access-to-aws-secrets
