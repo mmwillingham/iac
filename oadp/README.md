@@ -102,5 +102,5 @@ aws iam list-attached-role-policies --role-name "${ROLE_NAME}" --output text
 # Install OADP Operator
 NOTE: Prior to OCP 4.15, you had to create a secret before installing the operator. This is not required with 4.15+, but you must provide the ROLE_ARN during operator installation. We will use the 4.15+ process. For OCP 4.14-, see the docs.
 ```
-oc apply -k oadp/operator/overlays/dev-stable-1.4
+oc apply -k oadp/operator/overlays/dev
 ```
