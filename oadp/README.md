@@ -99,12 +99,47 @@ aws iam attach-role-policy --role-name "${ROLE_NAME}" --policy-arn ${POLICY_ARN}
 # # Verify attachment
 aws iam list-attached-role-policies --role-name "${ROLE_NAME}" --output text
 ```
-# Install OADP Operator
+# Install OADP Operator and Instances
+## Install Operator
 NOTE: Prior to OCP 4.15, you had to create a secret before installing the operator. This is not required with 4.15+, but you must provide the ROLE_ARN during operator installation. We will use the 4.15+ process. For OCP 4.14-, see the docs.
 ```
 oc apply -k oadp/operator/overlays/dev
 ```
-# Install OADP Cloud Storage and Data Protection Application
+## Install OADP Cloud Storage and Data Protection Application
 ```
 oc apply -k oadp/instance/overlays/dev
 ```
+## Create Backup
+```
+apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  name: abc-user-namespace
+  labels:
+    velero.io/storage-location: default
+  namespace: openshift-adp
+spec:
+  hooks: {}
+  includedNamespaces:
+  - abc-user-namespace
+  includedResources: []
+  excludedResources: [] 
+  storageLocation: <velero-sample-1> 
+  ttl: 720h0m0s
+  labelSelector: 
+    matchLabels:
+      app: <label_1>
+      app: <label_2>
+      app: <label_3>
+  orLabelSelectors: 
+  - matchLabels:
+      app: <label_1>
+      app: <label_2>
+      app: <label_3>
+```
+## Verify contents in S3
+```
+aws s3api list-objects --bucket bosez-20240710-oadp --output table
+```
+
+# Restore

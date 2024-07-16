@@ -1,0 +1,18 @@
+apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  name: backup-user-namespaces
+  namespace: openshift-adp
+  labels:
+    velero.io/storage-location: bosez-20240710-dpa-1
+spec:
+  csiSnapshotTimeout: 10m0s
+  defaultVolumesToFsBackup: false
+  includedNamespaces:
+    - abc-user-namespace
+  itemOperationTimeout: 4h0m0s
+  snapshotMoveData: false
+  storageLocation: bosez-20240710-dpa-1
+  ttl: 720h0m0s
+  volumeSnapshotLocations:
+    - bosez-20240710-dpa-1
