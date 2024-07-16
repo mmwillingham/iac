@@ -10,9 +10,6 @@ resources:
 patches:
   - patch: |-
       - op: replace
-        path: /spec/channel
-        value: 'stable-1.4'
-      - op: replace
         path: /spec/config/env/0/value
         value: 'arn:aws:iam::942823120101:role/bosez-20240710-openshift-oadp-aws-cloud-credentials'
     target:
