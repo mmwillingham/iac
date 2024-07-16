@@ -105,37 +105,13 @@ NOTE: Prior to OCP 4.15, you had to create a secret before installing the operat
 ```
 oc apply -k oadp/operator/overlays/dev
 ```
-## Install OADP Cloud Storage and Data Protection Application
+## Install OADP Cloud Storage, Data Protection Application, and Backup
 ```
 oc apply -k oadp/instance/overlays/dev
 ```
 ## Create Backup
 ```
-apiVersion: velero.io/v1
-kind: Backup
-metadata:
-  name: abc-user-namespace
-  labels:
-    velero.io/storage-location: default
-  namespace: openshift-adp
-spec:
-  hooks: {}
-  includedNamespaces:
-  - abc-user-namespace
-  includedResources: []
-  excludedResources: [] 
-  storageLocation: <velero-sample-1> 
-  ttl: 720h0m0s
-  labelSelector: 
-    matchLabels:
-      app: <label_1>
-      app: <label_2>
-      app: <label_3>
-  orLabelSelectors: 
-  - matchLabels:
-      app: <label_1>
-      app: <label_2>
-      app: <label_3>
+oc apply -k oadp/backup/overlays/dev
 ```
 ## Verify backup and list objects
 ```
