@@ -18,6 +18,3 @@ patches:
     target:
       kind: Subscription
       name: redhat-oadp-operator
-
-
-      arn:aws:iam::942823120101:role/bosez-20240710-openshift-oadp-aws-cloud-credentials
