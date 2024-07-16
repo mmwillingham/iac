@@ -137,9 +137,33 @@ spec:
       app: <label_2>
       app: <label_3>
 ```
-## Verify contents in S3
+## Verify backup and list objects
 ```
+# OpenShift
+oc get backup -n openshift-adp
+# assume backup name is backup-user-namespaces
+oc describe backup backup-user-namespaces -n openshift-adp
+
+# AWS
 aws s3api list-objects --bucket bosez-20240710-oadp --output table
+
+# Velero (Details of the specific kubernetes resources backed up)
+alias velero='oc -n openshift-adp exec deployment/velero -c velero -it -- ./velero'
+velero backup describe backup-user-namespaces --details
 ```
 
 # Restore
+
+# Troubleshooting
+```
+oc get backup -n openshift-adp
+# assume backup name is backup-user-namespaces
+oc describe backup backup-user-namespaces -n openshift-adp
+oc logs -f deploy/velero -n openshift-adp
+alias velero='oc -n openshift-adp exec deployment/velero -c velero -it -- ./velero'
+velero backup describe backup-user-namespaces --details
+velero backup logs backup-user-namespaces
+# If everything works on active cluster, and passive says the cloudstorage and dpa are available, but it doesn't list the backups, check the velero pod logs. May say something like this
+# time="2023-09-25T18:34:56Z" level=error msg="Error getting backup metadata from backup store" backup=acm-resources-generic-schedule-20230925173327 backupLocation=dl-rosa10-2s-dpa-1 controller=backup-sync error="rpc error: code = Unknown desc = error getting object backups/acm-resources-generic-schedule-20230925173327/velero-backup.json: AccessDenied: User: arn:aws:sts::693101272312:assumed-role/delegate-admin-rhacm-bkp-restore-us-west-2/1695666895356145449 is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:us-east-1:693101272312:key/dfa432ed-0f3a-45a0-b545-617cadb64911 because no identity-based policy allows the kms:Decrypt action\n\tstatus code: 403, request id: 4MAQKWC0BMJXSCJ8, host id: kdjIg/Iiz/8kGodFriPLyu837ouYE/Mewwynv0pfrw+KVtMB4g+PPoTREnEPlG5eWVKTtNs5rag=" error.file="/remote-source/velero/app/pkg/persistence/object_store.go:294" error.function="github.com/vmware-tanzu/velero/pkg/persistence.(*objectBackupStore).GetBackupMetadata" logSource="/remote-source/velero/app/pkg/controlle...
+# Customer switched and used same KMS Key ID as was used in primary AWS region. Then it worked.
+```
