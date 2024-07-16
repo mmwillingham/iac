@@ -4,9 +4,9 @@
 ```
 oc login ...
 git clone https://github.com/mmwillingham/iac
-cd open
-oc apply -k day_1/gitops-operator/overlays/latest
-oc apply -k day_1/master-apps
+cd iac
+oc apply -k openshift-automation/day_1/gitops-operator/overlays/latest
+oc apply -k openshift-automation/day_1/master-apps
 ```
 
 # More details below
@@ -15,22 +15,22 @@ oc apply -k day_1/master-apps
 # CREATE
            
 git clone https://github.com/mmwillingham/iac
-cd cwis-infra
+cd iac
 
 # Specific version
-oc apply -k day_1/gitops-operator/overlays/gitops-1.12
+oc apply -k openshift-automation/day_1/gitops-operator/overlays/gitops-1.12
 
 # Latest version
-oc apply -k day_1/gitops-operator/overlays/latest
+oc apply -k openshift-automation/day_1/gitops-operator/overlays/latest
 
 # DELETE
-# oc delete -k day_1/gitops-operator/overlays/latest
+# oc delete -k openshift-automation/day_1/gitops-operator/overlays/latest
 
 # May need to add encryption
 oc -n openshift-gitops patch argocd/openshift-gitops --type=merge -p='{"spec":{"server":{"route":{"enabled":true,"tls":{"insecureEdgeTerminationPolicy":"Redirect","termination":"reencrypt"}}}}}'
 ```
 
-# Create GitOps repository connections
+# Create GitOps repository connections (NEEDS ADJUSTING FOR THIS REPO)
 ```
 export REPO_NAME="cwis-infra"
 export TYPE=git
@@ -76,11 +76,10 @@ oc -n openshift-gitops label secret $REPO_NAME argocd.argoproj.io/secret-type=re
 # CREATE
            
 git clone https://github.com/mmwillingham/iac
-cd cwis-infra
-git checkout feature-cwis-887-instructions
-oc apply -k day_1/master-apps
+cd iac
+oc apply -k openshift-automation/day_1/master-apps
 
 # DELETE
-# oc delete -k day_1/master-apps
+# oc delete -k openshift-automation/day_1/master-apps
 ```
 

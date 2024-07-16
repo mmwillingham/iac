@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ecm-sit
+  namespace: openshift-gitops
+spec:
+  project: default
+  source:
+    chart: ecm
+    repoURL: https://github.com/mmwillingham/iac
+    targetRevision: 0.0.1
+    ## override default values
+    helm:
+      values: |
+        namespace: "ecm-sit"
+        replicaCount: "1"
+        fullnameOverride: "ecm-sit"
+        secretName: ecm-sit-aws-secrets
+        serviceAccountName: iam-app-s3-sa-sit
+        image: 637423651937.dkr.ecr.us-east-1.amazonaws.com/cwisrosa-d-ecm
+        imagetag: latest
+        awsAccount: 637423651937
+        nodePort: 30010
+  destination:    
+    server: https://kubernetes.default.svc
+    namespace: ecm-dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

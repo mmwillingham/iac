@@ -4,7 +4,7 @@
 ```
 oc login ...
 git clone https://github.com/mmwillingham/iac
-cd open
+cd openshift-automation
 oc apply -k day_1/gitops-operator/overlays/latest
 oc apply -k day_1/master-apps
 ```
@@ -15,7 +15,7 @@ oc apply -k day_1/master-apps
 # CREATE
            
 git clone https://github.com/mmwillingham/iac
-cd cwis-infra
+openshift_automation
 
 # Specific version
 oc apply -k day_1/gitops-operator/overlays/gitops-1.12
@@ -32,7 +32,7 @@ oc -n openshift-gitops patch argocd/openshift-gitops --type=merge -p='{"spec":{"
 
 # Create GitOps repository connections
 ```
-export REPO_NAME="cwis-infra"
+export REPO_NAME="iac"
 export TYPE=git
 export PROJECT="gitops-repos"
 export URL="https://github.com/mmwillingham/iac"

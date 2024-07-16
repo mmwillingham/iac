@@ -1,3 +1,15 @@
+Repo
+```
+https://github.com/kubernetes-sigs/secrets-store-csi-driver/tree/main/deploy
+```
+Instructions
+```
+https://secrets-store-csi-driver.sigs.k8s.io/getting-started/installation.html#alternatively-deployment-using-yamls
+```
+Manual Steps
+```
+# NOTE: If customer wants to use CSI driver, these steps need to be adjusted to use GitOps approach. But External Secrets Operator is preferred, and already configured in repo.
+
 # Integrate AWS Secrets Manager secrets into OpenShift
 Process assumes AWS STS
 ```
@@ -275,3 +287,4 @@ oc logs -n csi-secrets-store $(oc get pods -n csi-secrets-store -oname | grep pr
 
 # Check service account annotation
 oc describe sa $MY_APP-sa | grep eks.amazonaws.com/role-arn
+```
