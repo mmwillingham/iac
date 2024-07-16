@@ -6,6 +6,7 @@ resources:
 #  - ../../base
   - dpa.yaml
   - cloudstorage.yaml
+  - backup-user-namespaces.yaml
 
 
 
