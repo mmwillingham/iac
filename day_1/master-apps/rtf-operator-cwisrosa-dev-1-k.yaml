@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:  
+  name: rtf-operator
+  namespace: openshift-gitops
+  labels:
+    appgrp: day2
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io  
+spec:
+  destination:    
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    directory:
+      recurse: false
+    path: app/openshift-automation/day2/kustomize/rtf-operator/overlays/rosa-cwisrosa-dev-1
+    repoURL: https://github.com/NCDHHS-Enterprise/cwis-infra.git
+#    targetRevision: HEAD
+    targetRevision: feature-cwis-887-instructions
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

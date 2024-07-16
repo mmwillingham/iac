@@ -1,0 +1,43 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+patches:
+  - target:
+      version: v1
+      kind: Secret
+      name: cloudwatch-credentials
+    patch: |-
+      - op: replace
+        path: /stringData/role_arn
+        value: arn:aws:iam::637423651937:role/dhhs-cwisrosa-d-cwisrosa-dev-1-cloudwatch
+
+  - target:
+      version: v1
+      kind: ClusterLogForwarder
+      name: instance
+    patch: |-
+      - op: replace
+        path: /spec/outputs/0/cloudwatch/groupPrefix
+        value: rosa-cwisrosa-dev-1
+      - op: replace
+        path: /spec/outputs/0/cloudwatch/region
+        value: us-east-1
+
+  - target:
+      version: v1
+      kind: Deployment
+      name: eventrouter
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/image
+        value: "registry.redhat.io/openshift-logging/eventrouter-rhel9:v0.4"
+      - op: replace
+        path: /spec/template/spec/containers/resources/requests/cpu
+        value: "100m"
+      - op: replace
+        path: /spec/template/spec/containers/resources/requests/memory
+        value: "128Mi"

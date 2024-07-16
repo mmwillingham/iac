@@ -1,0 +1,14 @@
+---
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+resources:
+  - cluster-logging-operator.yaml
+  - cluster-logging-secret.yaml
+  - cluster-logging-forwarder.yaml
+  - cluster-logging-instance.yaml
+  - eventrouter.yaml
+  - er-serviceaccount.yaml
+  - er-clusterrole.yaml
+  - er-clusterrolebinding.yaml
+  - er-configmap.yaml
+  - er-deployment.yaml

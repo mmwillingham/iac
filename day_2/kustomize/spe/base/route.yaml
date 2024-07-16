@@ -1,0 +1,16 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: spe
+  namespace: spe
+spec:
+  host: PATCH_ME
+  to:
+    kind: Service
+    name: spe-specs
+    weight: 100
+  port:
+    targetPort: restapiport
+  tls:
+    termination: edge
+  wildcardPolicy: None

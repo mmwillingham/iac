@@ -1,0 +1,18 @@
+---
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+resources:
+  - namespace.yaml
+  - csidriver.yaml
+  - rbac-secretproviderclass.yaml
+  - rbac-secretproviderrotation.yaml
+  - rbac-secretprovidersyncing.yaml
+  - rbac-secretprovidertokenrequest.yaml
+  - role-secretproviderclasses-admin.yaml
+  - role-secretproviderclasses-viewer.yaml
+  - role-secretproviderclasspodstatuses-viewer.yaml
+  - secrets-store-csi-driver.yaml
+  - secrets-store.csi.x-k8s.io_secretproviderclasses.yaml
+  - secrets-store.csi.x-k8s.io_secretproviderclasspodstatuses.yaml
+  - clusterrolebinding-priviliged.yaml
+  - aws-provider.yaml

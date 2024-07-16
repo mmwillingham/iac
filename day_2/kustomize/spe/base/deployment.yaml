@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: spe
+  name: spe-specs
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: spe
+      app.kubernetes.io/name: specs
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600  
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: spe
+        app.kubernetes.io/name: specs
+    spec:
+      containers:
+      containers:
+        - resources: {}
+          readinessProbe:
+            tcpSocket:
+              port: 1344
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+            periodSeconds: 30
+            successThreshold: 1
+            failureThreshold: 3
+          terminationMessagePath: /dev/termination-log
+          name: specs-scanner-chart
+          livenessProbe:
+            tcpSocket:
+              port: 1344
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+            periodSeconds: 30
+            successThreshold: 1
+            failureThreshold: 3
+          env:
+            - name: CSAPI_DEBUG_LOG
+              value: /tmp/csapi.log
+            - name: CSAPI_DEBUG_LEVEL
+              value: '0'
+            - name: STARGATE_DEBUG_LEVEL
+              value: '0'
+            - name: MallocArenaMax
+              value: '1'
+            - name: AutoConfigureInMemoryCacheSize
+              value: 'true'
+            - name: PolicyApplyRetries
+              value: '10'
+            - name: CONTAINER_DEBUG_ENABLED
+              value: 'false'
+          securityContext:
+            runAsNonRoot: true
+          ports:
+            - name: icapport
+              containerPort: 1344
+              protocol: TCP
+            - name: restapiport
+              containerPort: 8008
+              protocol: TCP
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: spe-volume
+              mountPath: /opt/persistent-data
+            - name: spe-license
+              mountPath: /opt/persistent-data/spe-data/license/spe-license.slf
+              subPath: spe-license.slf
+          terminationMessagePolicy: File
+          image: PATCH-ME
+      volumes:
+        - name: spe-volume
+          persistentVolumeClaim:
+            claimName: spe-volume-claim
+        - name: spe-license
+          configMap:
+            name: spe-license-cm
+            defaultMode: 420
+      dnsPolicy: ClusterFirst     
+      serviceAccount: default
+      serviceAccountName: default

@@ -1,0 +1,24 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+patches:
+  - target:
+      kind: Deployment
+      name: spe-specs
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/image
+        value: 'default-route-openshift-image-registry.apps.cwisrosa-dev-1.gc7f.p1.openshiftapps.com/spe/specs:9.1.0.14'
+        
+patches:
+  - target:
+      kind: Route
+      name: spe
+    patch: |-
+      - op: replace
+        path: /spec/host
+        value: spe.apps.cwisrosa-dev-1.gc7f.p1.openshiftapps.com

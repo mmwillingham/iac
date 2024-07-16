@@ -1,0 +1,163 @@
+---
+# Commented out values not likely to change
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: ecm-sit
+
+resources:
+  - ../../base
+  - secretproviderclass.yaml # Remove this when moving to External Secrets Operator
+  - secretstore.yaml
+  - namespace.yaml
+
+patches:
+  - target:
+      version: v1
+      kind: ServiceAccount
+      name: PATCH-ME # This is a placeholder and will be replaced with the value below.
+    patch: |-
+      - op: replace
+        path: /metadata/annotations/eks.amazonaws.com~1role-arn
+        value: arn:aws:iam::637423651937:role/dhhs-cwisrosa-d-ecm-sa-role
+      - op: replace
+        path: /metadata/namespace
+        value: ecm-sit
+      - op: replace
+        path: /metadata/name
+        value: iam-app-s3-sa-sit
+
+  - target:
+      kind: Deployment
+      name: ecm
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: ecm-sit
+      - op: replace
+        path: /spec/replicas
+        value: 1
+      - op: replace
+        path: /spec/template/spec/containers/0/image
+        value: 637423651937.dkr.ecr.us-east-1.amazonaws.com/cwisrosa-d-ecm:latest
+      - op: replace
+        path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/name
+        value: ecm-sit-aws-secrets
+      - op: replace
+        path: /spec/template/spec/containers/0/volumeMounts/0/name
+        value: ecm-sit-aws-secrets
+      - op: replace
+        path: /spec/template/spec/volumes/0/csi/volumeAttributes/secretProviderClass
+        value: ecm-sit-aws-secrets
+      - op: replace
+        path: /spec/template/spec/volumes/0/name
+        value: ecm-sit-aws-secrets
+      - op: replace
+        path: /spec/template/spec/serviceAccount
+        value: iam-app-s3-sa-sit
+      - op: replace
+        path: /spec/template/spec/serviceAccountName
+        value: iam-app-s3-sa-sit
+      # - op: replace
+      #   path: /spec/template/spec/containers/0/ports/containerPort
+      #   value: 8000
+      # - op: replace
+      #   path: /spec/template/spec/containers/0/volumeMounts/0/mountPath
+      #   value: /mnt/secrets-store
+
+  - target:
+      kind: Service
+      name: ecm-service
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: ecm-sit
+      - op: replace
+        path: /spec/ports/nodePort
+        value: 30010
+      # - op: replace
+      #   path: /spec/ports/port
+      #   value: 80
+      # - op: replace
+      #   path: /spec/ports/targetPort
+      #   value: 8000
+
+  - target:
+      kind: Route
+      name: ecm-route
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: ecm-sit
+
+# External Secrets patching
+# Don't need the SA because it is included above.
+  # - target:
+  #     kind: ServiceAccount
+  #     name: external-secrets-operator-sa
+  #   patch: |-
+  #     - op: replace
+  #       path: metadata/namespace
+  #       value: ecm-sit
+  #     - op: replace
+  #       path: /metadata/annotations/eks.amazonaws.com~1role-arn
+  #       value: TBD
+
+  - target:
+      kind: ExternalSecret
+      name: db-string
+    patch: |-
+      - op: replace
+        path: /spec/secretStoreRef/name
+        value: ecm-sit
+      - op: replace
+        path: /spec/target/name
+        value: db_string
+      - op: replace
+        path: /spec/data/0/secretKey
+        value: db_string
+      - op: replace
+        path: /spec/data/0/remoteRef/key
+        value: ecm-sit-aws-secrets
+      - op: replace
+        path: /spec/data/0/remoteRef/property
+        value: db_string
+      # - op: replace
+      #   path: /spec/data/1/secretKey
+      #   value: #password
+      # - op: replace
+      #   path: /spec/data/1/remoteRef/property
+      #   value: #password
+      # - op: replace
+      #   path: /spec/data/1/remoteRef/key
+      #   value: ecm-sit-aws-secrets
+
+  # - target:
+  #     version: v1
+  #     kind: SecretProviderClass
+  #     name: PATCH-ME # This is a placeholder and will be replaced with the value below.
+  #   patch: |-
+  #     - op: replace
+  #       path: /metadata/namespace
+  #       value: ecm-sit
+  #     - op: replace
+  #       path: /metadata/name
+  #       value: ecm-sit-aws-secrets
+  #     - op: replace
+  #       path: spec/secretObjects/0/data/0/objectName
+  #       value: dhhs-cwisrosa-d-ecm-sit-1
+  #     - op: replace
+  #       path: spec/secretObjects/0/secretName
+  #       value: ecm-sit-aws-secrets
+  #     - op: replace
+  #       path: spec/parameters/objects/0/objectName
+  #       value: dhhs-cwisrosa-d-ecm-sit-1
+
+  # - patch: |-
+  #     - op: replace
+  #       path: /metadata/name
+  #       value: ecm-sit
+  #   target:
+  #     kind: Namespace
+

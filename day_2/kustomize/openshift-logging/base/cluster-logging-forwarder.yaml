@@ -1,0 +1,23 @@
+apiVersion: "logging.openshift.io/v1"
+kind: ClusterLogForwarder
+metadata:
+  name: instance
+  namespace: openshift-logging
+spec:
+  outputs:
+    - name: cw
+      type: cloudwatch
+      cloudwatch:
+        groupBy: namespaceName
+        groupPrefix: PATCH-ME
+        region: PATCH-ME
+      secret:
+        name: cloudwatch-credentials
+  pipelines:
+    - name: to-cloudwatch
+      inputRefs:
+        - infrastructure
+        - audit
+        - application
+      outputRefs:
+        - cw

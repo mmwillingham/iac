@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: PATCH-ME
+  name: ecm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vault-app-nc
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vault-app-nc
+    spec:
+      containers:
+      - image: PATCH-ME
+        imagePullPolicy: IfNotPresent
+        name: vault-app-nc
+        ports:
+        - containerPort: 8000
+        env:
+        - name: db
+          valueFrom:
+            secretKeyRef:
+              key: db_string
+              name: PATCH-ME
+      #   volumeMounts:
+      #   - mountPath: /mnt/secrets-store
+      #     name: PATCH-ME
+      #     readOnly: true
+      # volumes:
+      # - csi:
+      #     driver: secrets-store.csi.k8s.io
+      #     readOnly: true
+      #     volumeAttributes:
+      #       secretProviderClass: PATCH-ME
+      #   name: PATCH-ME        
+      serviceAccount: PATCH-ME
+      serviceAccountName: PATCH-ME

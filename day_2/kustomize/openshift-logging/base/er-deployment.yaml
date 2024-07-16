@@ -1,0 +1,48 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: eventrouter
+  namespace: openshift-logging
+  labels:
+    component: "eventrouter"
+    logging-infra: "eventrouter"
+    provider: "openshift"
+spec:
+  selector:
+    matchLabels:
+      component: "eventrouter"
+      logging-infra: "eventrouter"
+      provider: "openshift"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: "eventrouter"
+        logging-infra: "eventrouter"
+        provider: "openshift"
+      name: eventrouter
+    spec:
+      serviceAccount: eventrouter
+      containers:
+        - name: kube-eventrouter
+          image: PATCH_ME
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: PATCH_ME
+              memory: PATCH_ME
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/eventrouter
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      volumes:
+      - name: config-volume
+        configMap:
+          name: eventrouter

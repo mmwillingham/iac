@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: spe
+  name: spe-specs
+spec:
+  ports:
+    - name: icapport
+      protocol: TCP
+      port: 1344
+      targetPort: 1344
+      nodePort: 32597
+    - name: restapiport
+      protocol: TCP
+      port: 8008
+      targetPort: 8008
+      nodePort: 32263
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/instance: spe
+    app.kubernetes.io/name: specs

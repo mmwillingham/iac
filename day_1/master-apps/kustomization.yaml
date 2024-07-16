@@ -1,0 +1,31 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+# Ready for testing
+# - openshift-logging-cwisrosa-dev-1.yaml
+- external-secrets-operator.yaml
+- external-secrets-instance.yaml
+# - spe-cwisrosa-dev-1-k.yaml
+# - web-terminal-cwisrosa-dev-1.yaml
+- ecm-uat-k.yaml
+# Ready but method for providing secret needs to be switched to External Secrets. Configuration is in place but commented out.
+# - ecm-dev-k.yaml
+# - ecm-sit-k.yaml
+
+# Needs addtional configuration, especially with the secret
+# - rtf-operator-cwisrosa-dev-1-k.yaml
+
+# Needs to be implemented from the start
+# - oadp.yaml
+# - etcd-backup.yaml
+
+
+# Needs helm repo enabled. Then they can replace the kustomize versions above.
+# - ecm-dev-h.yaml
+# - ecm-sit-h.yaml
+# - ecm-uat-h.yaml
+
+# Needs IDP integration with Azure AD and resource configuratioon
+# - idp.yaml
+

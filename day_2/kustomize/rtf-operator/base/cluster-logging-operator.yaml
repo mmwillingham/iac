@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: rtf
+  labels:
+    openshift.io/cluster-monitoring: "true"
+    kubernetes.io/metadata.name: rtf    
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: cluster-logging
+  namespace: rtf
+spec:
+  targetNamespaces:
+  - rtf
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: runtime-fabric-operator
+  namespace: openshift-operators
+spec:
+  channel: alpha
+  name: runtime-fabric-operator
+  installPlanApproval: Automatic
+  source: certified-operators
+  sourceNamespace: openshift-marketplace
