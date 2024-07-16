@@ -102,23 +102,5 @@ aws iam list-attached-role-policies --role-name "${ROLE_NAME}" --output text
 # Install OADP Operator
 NOTE: Prior to OCP 4.15, you had to create a secret before installing the operator. This is not required with 4.15+, but you must provide the ROLE_ARN during operator installation. We will use the 4.15+ process. For OCP 4.14-, see the docs.
 ```
-cat <<EOF > subscription.yaml
-apiVersion: operators.coreos.com/v1alpha1
-kind: Subscription
-metadata:
-  labels:
-    operators.coreos.com/redhat-oadp-operator.openshift-adp: ''
-  name: redhat-oadp-operator
-  namespace: openshift-adp
-spec:
-  channel: stable-1.4
-  config:
-    env:
-      - name: ROLEARN
-        value: 'arn:aws:iam::942823120101:role/bosez-20240710-openshift-oadp-aws-cloud-credentials'
-  installPlanApproval: Automatic
-  name: redhat-oadp-operator
-  source: redhat-operators
-  sourceNamespace: openshift-marketplace
-  startingCSV: oadp-operator.v1.4.0
-EOF
+oc apply -k oadp/operator/overlays/dev-stable-1.4
+```

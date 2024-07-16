@@ -1,0 +1,23 @@
+---
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+namespace: openshift-operators
+
+resources:
+  - ../../base
+
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/channel
+        value: 'stable-1.4'
+      - op: replace
+        path: /spec/config/env/0/value
+        value: 'arn:aws:iam::942823120101:role/bosez-20240710-openshift-oadp-aws-cloud-credentials'
+    target:
+      kind: Subscription
+      name: redhat-oadp-operator
+
+
+      arn:aws:iam::942823120101:role/bosez-20240710-openshift-oadp-aws-cloud-credentials
