@@ -104,3 +104,7 @@ NOTE: Prior to OCP 4.15, you had to create a secret before installing the operat
 ```
 oc apply -k oadp/operator/overlays/dev
 ```
+# Install OADP Cloud Storage and Data Protection Application
+```
+oc apply -k oadp/instance/overlays/dev
+```
