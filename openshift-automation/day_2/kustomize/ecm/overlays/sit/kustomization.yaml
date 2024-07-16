@@ -20,7 +20,7 @@ patches:
     patch: |-
       - op: replace
         path: /metadata/annotations/eks.amazonaws.com~1role-arn
-        value: arn:aws:iam::637423651937:role/dhhs-cwisrosa-d-ecm-sa-role
+        value: arn:aws:iam::xxxxxxxxxxxxxx:role/xxxx-cwisrosa-d-ecm-sa-role
       - op: replace
         path: /metadata/namespace
         value: ecm-sit
@@ -40,7 +40,7 @@ patches:
         value: 1
       - op: replace
         path: /spec/template/spec/containers/0/image
-        value: 637423651937.dkr.ecr.us-east-1.amazonaws.com/cwisrosa-d-ecm:latest
+        value: xxxxxxxxxxxxxx.dkr.ecr.us-east-1.amazonaws.com/cwisrosa-d-ecm:latest
       - op: replace
         path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/name
         value: ecm-sit-aws-secrets
@@ -146,13 +146,13 @@ patches:
   #       value: ecm-sit-aws-secrets
   #     - op: replace
   #       path: spec/secretObjects/0/data/0/objectName
-  #       value: dhhs-cwisrosa-d-ecm-sit-1
+  #       value: xxxx-cwisrosa-d-ecm-sit-1
   #     - op: replace
   #       path: spec/secretObjects/0/secretName
   #       value: ecm-sit-aws-secrets
   #     - op: replace
   #       path: spec/parameters/objects/0/objectName
-  #       value: dhhs-cwisrosa-d-ecm-sit-1
+  #       value: xxxx-cwisrosa-d-ecm-sit-1
 
   # - patch: |-
   #     - op: replace

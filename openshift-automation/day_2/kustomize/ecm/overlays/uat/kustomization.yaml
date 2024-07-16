@@ -22,7 +22,7 @@ patches:
     patch: |-
       - op: replace
         path: /metadata/annotations/eks.amazonaws.com~1role-arn
-        value: arn:aws:iam::637423651937:role/dhhs-cwisrosa-d-ecm-sa-role
+        value: arn:aws:iam::xxxxxxxxxxxxxx:role/xxxx-cwisrosa-d-ecm-sa-role
       - op: replace
         path: /metadata/namespace
         value: ecm-uat
@@ -42,7 +42,7 @@ patches:
         value: 1
       - op: replace
         path: /spec/template/spec/containers/0/image
-        value: 637423651937.dkr.ecr.us-east-1.amazonaws.com/cwisrosa-d-ecm:latest
+        value: xxxxxxxxxxxxxx.dkr.ecr.us-east-1.amazonaws.com/cwisrosa-d-ecm:latest
       - op: replace
         path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/name
         value: ecm-uat-aws-secrets
@@ -102,7 +102,7 @@ patches:
         value: ecm-uat
       - op: replace
         path: /metadata/annotations/eks.amazonaws.com~1role-arn
-        value: arn:aws:iam::637423651937:role/dhhs-cwisrosa-d-ecm-sa-role
+        value: arn:aws:iam::xxxxxxxxxxxxxx:role/xxxx-cwisrosa-d-ecm-sa-role
 
   # - target:
   #     kind: ExternalSecret
@@ -119,7 +119,7 @@ patches:
   #       value: db_string
   #     - op: replace
   #       path: /spec/data/0/remoteRef/key
-  #       value: dhhs-cwisrosa-d-ecm-sit-1
+  #       value: xxxx-cwisrosa-d-ecm-sit-1
   #     - op: replace
   #       path: /spec/data/0/remoteRef/property
   #       value: db_string

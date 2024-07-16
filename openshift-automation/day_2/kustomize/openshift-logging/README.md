@@ -15,7 +15,7 @@ NOTE: By default, log data is stored in CloudWatch Logs indefinitely. However, y
 - AWS access to create roles and policies
 
 ## Export Environment Variables
-NOTE: Adjust steps as needed for DHHS specifics
+NOTE: Adjust steps as needed for xxxx specifics
 
 ```
 oc login -u <username> -p <password> <API URL>

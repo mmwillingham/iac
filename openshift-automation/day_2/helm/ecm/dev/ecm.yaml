@@ -17,9 +17,9 @@ spec:
         fullnameOverride: "ecm-dev"
         secretName: ecm-dev-aws-secrets
         serviceAccountName: iam-app-s3-sa
-        image: 637423651937.dkr.ecr.us-east-1.amazonaws.com/cwisrosa-d-ecm
+        image: xxxxxxxxxxxxxx.dkr.ecr.us-east-1.amazonaws.com/cwisrosa-d-ecm
         imagetag: latest
-        awsAccount: 637423651937
+        awsAccount: xxxxxxxxxxxxxx
         nodePort: 30000
   destination:    
     server: https://kubernetes.default.svc

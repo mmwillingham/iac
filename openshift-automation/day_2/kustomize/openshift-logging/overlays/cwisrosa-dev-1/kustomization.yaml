@@ -13,7 +13,7 @@ patches:
     patch: |-
       - op: replace
         path: /stringData/role_arn
-        value: arn:aws:iam::637423651937:role/dhhs-cwisrosa-d-cwisrosa-dev-1-cloudwatch
+        value: arn:aws:iam::xxxxxxxxxxxxxx:role/xxxx-cwisrosa-d-cwisrosa-dev-1-cloudwatch
 
   - target:
       version: v1

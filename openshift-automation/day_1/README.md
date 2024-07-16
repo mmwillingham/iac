@@ -32,7 +32,7 @@ oc -n openshift-gitops patch argocd/openshift-gitops --type=merge -p='{"spec":{"
 
 # Create GitOps repository connections (NEEDS ADJUSTING FOR THIS REPO)
 ```
-export REPO_NAME="cwis-infra"
+export REPO_NAME="iac"
 export TYPE=git
 export PROJECT="gitops-repos"
 export URL="https://github.com/mmwillingham/iac"

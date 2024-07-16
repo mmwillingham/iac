@@ -15,7 +15,7 @@ oc apply -k day_1/master-apps
 # CREATE
            
 git clone https://github.com/mmwillingham/iac
-cd cwis-infra
+cd iac
 
 # Specific version
 oc apply -k day_1/gitops-operator/overlays/gitops-1.12
@@ -32,7 +32,7 @@ oc -n openshift-gitops patch argocd/openshift-gitops --type=merge -p='{"spec":{"
 
 # Create GitOps repository connections
 ```
-export REPO_NAME="cwis-infra"
+export REPO_NAME="iac"
 export TYPE=git
 export PROJECT="gitops-repos"
 export URL="https://github.com/mmwillingham/iac"
@@ -76,7 +76,7 @@ oc -n openshift-gitops label secret $REPO_NAME argocd.argoproj.io/secret-type=re
 # CREATE
            
 git clone https://github.com/mmwillingham/iac
-cd cwis-infra
+cd iac
 git checkout feature-cwis-887-instructions
 oc apply -k day_1/master-apps
 

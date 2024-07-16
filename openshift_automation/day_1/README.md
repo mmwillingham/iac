@@ -76,7 +76,7 @@ oc -n openshift-gitops label secret $REPO_NAME argocd.argoproj.io/secret-type=re
 # CREATE
            
 git clone https://github.com/mmwillingham/iac
-cd cwis-infra
+cd iac
 git checkout feature-cwis-887-instructions
 oc apply -k day_1/master-apps
 
