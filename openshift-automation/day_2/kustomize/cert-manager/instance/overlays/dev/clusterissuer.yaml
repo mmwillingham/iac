@@ -5,7 +5,7 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: ${EMAIL}
+    email: bolauder88@gmail.com
     # This key doesn't exist, cert-manager creates it
     privateKeySecretRef:
       name: dev-letsencrypt-issuer-account-key
