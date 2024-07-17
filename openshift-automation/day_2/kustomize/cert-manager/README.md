@@ -2,7 +2,7 @@
 # Setup AWS
 ```
 # Set variables
-export DOMAIN=apps.bosez-20240710.o5fq.p1.openshiftapps.com
+export DOMAIN=*.extapps.bosez-20240710.o5fq.p1.openshiftapps.com
 export EMAIL=bolauder88@gmail.com
 export AWS_PAGER=""
 export CLUSTER=$(oc get infrastructure cluster -o=jsonpath="{.status.infrastructureName}"  | sed 's/-[a-z0-9]\{5\}$//')
@@ -107,16 +107,22 @@ oc apply -k cert-manager/operator/overlays/dev
 ```
 ### Install ClusterIssuers and custom domain Ingress Controller
 ```
-# NOTE: For wildcards, replace $DOMAIN with *.$DOMAIN
 oc apply -k cert-manager/instance/overlays/dev
 
 # NOTE: It takes a few minutes for this certificate to be issued by Let’s Encrypt. If it takes longer than 5 minutes, to see any issues reported by cert-manager:
 
+# Verify
 oc get clusterissuer.cert-manager.io/letsencrypt-dev
 oc -n openshift-ingress get certificate.cert-manager.io/custom-domain-ingress-cert
 oc -n openshift-ingress describe certificate.cert-manager.io/custom-domain-ingress-cert
 oc logs -n cert-manager $(oc get pods -n cert-manager | grep -v cain | grep -v web | grep -v NAME | awk '{print $1}'
 
+# NOTE: This IngressController example will create an internet accessible Network Load Balancer (NLB) in your AWS account.
+# To provision an internal NLB instead, set the .spec.endpointPublishingStrategy.loadBalancer.scope parameter to Internal 
+# before creating the IngressController resource.
+
+# Verify
+oc -n openshift-ingress get service/router-custom-domain-ingress
 ```
 
 # Cleanup

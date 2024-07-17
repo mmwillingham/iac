@@ -9,3 +9,4 @@ resources:
 #  - ../../base
   - clusterissuer.yaml
   - certificate.yaml
+  - ingresscontroller.yaml
