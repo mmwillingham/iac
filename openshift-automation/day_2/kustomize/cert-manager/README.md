@@ -110,6 +110,7 @@ oc apply -k cert-manager/instance/overlays/dev
 oc get clusterissuer.cert-manager.io/letsencrypt-dev
 oc -n openshift-ingress get certificate.cert-manager.io/custom-domain-ingress-cert
 oc -n openshift-ingress describe certificate.cert-manager.io/custom-domain-ingress-cert
+oc logs -n cert-manager $(oc get pods -n cert-manager | grep -v cain | grep -v web | grep -v NAME | awk '{print $1}'
 
 ```
 
