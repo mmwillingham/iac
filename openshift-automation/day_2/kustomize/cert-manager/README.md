@@ -97,10 +97,9 @@ aws iam list-attached-role-policies --role-name "${CLUSTER}-cert-manager-operato
 ```
 NOTE: It's now possible to provide ROLE_ARN during operator installation.
 
-
 oc apply -k cert-manager/operator/overlays/dev
 ```
-### Install OADP Cloud Storage, Data Protection Application, and Backup
+### Install XXX
 ```
 oc apply -k cert-manager/instance/overlays/dev
 ```
