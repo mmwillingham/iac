@@ -93,6 +93,7 @@ aws iam list-attached-role-policies --role-name "${CLUSTER}-cert-manager-operato
 
 # Setup OpenShift
 ## Install OADP Operator and Instances
+
 ### Install Operator
 ```
 NOTE: It's now possible to provide ROLE_ARN during operator installation.
@@ -110,4 +111,17 @@ oc get clusterissuer.cert-manager.io/letsencrypt-dev
 oc -n openshift-ingress get certificate.cert-manager.io/custom-domain-ingress-cert
 oc -n openshift-ingress describe certificate.cert-manager.io/custom-domain-ingress-cert
 
+```
+
+# Cleanup
+# All in one - or see below for details
+```
+# Install here for convenience
+oc apply -k cert-manager/operator/overlays/dev
+oc apply -k cert-manager/instance/overlays/dev
+
+oc delete -k cert-manager/instance/overlays/dev
+oc delete -k cert-manager/operator/overlays/dev
+oc delete project cert-manager
+oc delete project cert-manager-operator
 ```

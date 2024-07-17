@@ -6,3 +6,4 @@ resources:
   - operator-group.yaml
   - subscription.yaml
   - cluster.yaml
+  - serviceaccount.yaml
