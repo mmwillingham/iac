@@ -1,0 +1,33 @@
+apiVersion: oadp.openshift.io/v1alpha1
+kind: DataProtectionApplication
+metadata:
+  name: bosez-20240710-dpa
+  namespace: openshift-adp
+spec:
+  backupLocations:
+  - bucket:
+      cloudStorageRef:
+        name: bosez-20240710-oadp
+      credential:
+        key: credentials
+        name: cloud-credentials
+      prefix: velero
+      default: true
+      config:
+        region: us-east-2
+  configuration:
+    velero:
+      defaultPlugins:
+      - openshift
+      - aws
+    nodeAgent: 
+      enable: false
+      uploaderType: restic
+  snapshotLocations:
+    - velero:
+        config:
+          credentialsFile: /tmp/credentials/openshift-adp/cloud-credentials-credentials 
+          enableSharedConfig: "true" 
+          profile: default 
+          region: us-east-2 
+        provider: aws

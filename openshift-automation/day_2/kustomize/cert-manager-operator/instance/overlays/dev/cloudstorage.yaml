@@ -1,0 +1,13 @@
+apiVersion: oadp.openshift.io/v1alpha1
+kind: CloudStorage
+metadata:
+  name: bosez-20240710-oadp
+  namespace: openshift-adp
+spec:
+  creationSecret:
+    key: credentials
+    name: cloud-credentials
+  enableSharedConfig: true
+  name: bosez-20240710-oadp
+  provider: aws
+  region: us-east-2
