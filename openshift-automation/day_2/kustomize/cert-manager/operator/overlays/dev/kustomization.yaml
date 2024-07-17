@@ -20,3 +20,15 @@ patches:
       namespace: cert-manager-operator
       version: v1alpha1
 
+  - target:
+      version: v1
+      kind: ServiceAccount
+      name: cert-manager
+    patch: |-
+      - op: replace
+        path: /metadata/annotations/eks.amazonaws.com~1role-arn
+        value: 'arn:aws:iam::942823120101:role/bosez-20240710-cert-manager-operator'
+
+
+      
+
