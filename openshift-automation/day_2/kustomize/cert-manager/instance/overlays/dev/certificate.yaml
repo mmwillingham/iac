@@ -8,6 +8,6 @@ spec:
   issuerRef:
      name: letsencrypt-dev
      kind: ClusterIssuer
-  commonName: "*.apps.bosez-20240710.o5fq.p1.openshiftapps.com"
+  commonName: "mmwapps.bosez-20240710.o5fq.p1.openshiftapps.com"
   dnsNames:
-  - "*.apps.bosez-20240710.o5fq.p1.openshiftapps.com"
+  - "mmwapps.bosez-20240710.o5fq.p1.openshiftapps.com"
