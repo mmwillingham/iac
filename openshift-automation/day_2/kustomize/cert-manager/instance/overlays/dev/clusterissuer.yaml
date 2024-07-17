@@ -14,7 +14,7 @@ spec:
     solvers:
     - dns01:
         route53:
-         hostedZoneID: Z06649973UKIFVPH1Q9HI
+         hostedZoneID: Z2FSPBG485WLBI
          region: us-east-2
          secretAccessKeySecretRef:
            name: ''
