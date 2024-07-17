@@ -1,4 +1,6 @@
 # Cert Manager on ROSA
+https://docs.openshift.com/rosa/cloud_experts_tutorials/cloud-experts-dynamic-certificate-custom-domain.html#cloud-experts-dynamic-certificate-custom-domain-create-cd-ingress-con
+
 # Setup AWS
 ```
 # Set variables
@@ -123,8 +125,54 @@ oc logs -n cert-manager $(oc get pods -n cert-manager | grep -v cain | grep -v w
 
 # Verify
 oc -n openshift-ingress get service/router-custom-domain-ingress
+
+# Check if it's Ready (it takes some time in provisioning)
+export ELB_DNS=$(oc -n openshift-ingress get service/router-custom-domain-ingress -o=custom-columns=EXTIP:status.loadBalancer.ingress[0].hostname | grep -v EXTIP)
+echo $ELB_DNS
+# Never got this variable working
+aws elbv2 describe-load-balancers | jq '.LoadBalancers[] | select(.DNSName == \"${ELB_DNS}\")' | jq .State
+aws elbv2 describe-load-balancers | jq '.LoadBalancers[] | select(.DNSName == $ELB_DNS)' | jq .State
+
+# Other commands maybe useful
+aws elbv2 describe-load-balancers --query 'LoadBalancers[*].LoadBalancerName' --output text
+aws elbv2 describe-load-balancers | jq '.LoadBalancers[] | select(.DNSName == "a107506d2745f48178607a509b9f5e73-662d2e478dce45c5.elb.us-east-2.amazonaws.com") | .LoadBalancerArn'
+aws elbv2 describe-load-balancers --load-balancer-arns arn:aws:elasticloadbalancing:us-east-2:942823120101:loadbalancer/net/a107506d2745f48178607a509b9f5e73/662d2e478dce45c5 --output json | jq .LoadBalancers[0].State
 ```
 
+# Manual AWS step. How to automate???
+```
+# Prepare a document with the necessary DNS changes to enable DNS resolution for your custom domain Ingress Controller
+
+INGRESS=$(oc -n openshift-ingress get service/router-custom-domain-ingress -ojsonpath="{.status.loadBalancer.ingress[0].hostname}")
+cat << EOF > "${SCRATCH}/create-cname.json"
+{
+  "Comment":"Add CNAME to custom domain endpoint",
+  "Changes":[{
+      "Action":"CREATE",
+      "ResourceRecordSet":{
+        "Name": "*.${DOMAIN}",
+      "Type":"CNAME",
+      "TTL":30,
+      "ResourceRecords":[{
+        "Value": "${INGRESS}"
+      }]
+    }
+  }]
+}
+EOF
+
+cat ${SCRATCH}/create-cname.json
+
+# Submit your changes to Amazon Route 53 for propagation
+aws route53 change-resource-record-sets --hosted-zone-id ${ZONE_ID} --change-batch file://${SCRATCH}/create-cname.json
+```
+
+# Configuring dynamic certificates for custom domain routes
+### IMPORTANT. The previous AWS step should be completed before proceeding.
+```
+oc apply -k cert-manager/app-prep/overlays/dev
+oc -n cert-manager get pods
+```
 # Cleanup
 # All in one - or see below for details
 ```
