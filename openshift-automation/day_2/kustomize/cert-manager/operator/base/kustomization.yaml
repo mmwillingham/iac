@@ -7,3 +7,4 @@ resources:
   - subscription.yaml
   - cluster.yaml
   - serviceaccount.yaml
+  - ingresscontroller.yaml

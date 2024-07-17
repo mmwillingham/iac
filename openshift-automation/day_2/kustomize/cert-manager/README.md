@@ -18,11 +18,16 @@ echo "OIDC Endpoint: ${OIDC_ENDPOINT}"
 echo "AWS Account ID: ${AWS_ACCOUNT_ID}"
 
 # Retrieve the Amazon Route 53 public hosted zone ID:
-# NOTE: This command looks for a public hosted zone that matches the custom domain you specified earlier as the DOMAIN environment variable.
+# IMPORTANT NOTE: This command looks for a public hosted zone that 
+matches the custom domain you specified earlier as the DOMAIN environment variable.
 # You can manually specify the Amazon Route 53 public hosted zone by running export ZONE_ID=<zone_ID>, replacing <zone_ID> with your specific 
 # Amazon Route 53 public hosted zone ID.
 
 export ZONE_ID=$(aws route53 list-hosted-zones-by-name --output json --dns-name "${DOMAIN}." --query 'HostedZones[0]'.Id --out text | sed 's/\/hostedzone\///')
+
+# In my case, it picked up the wrong one. Run this to get a list of the zones and pick the public zone ("PrivateZone": false) that isn't sandbox
+aws route53 list-hosted-zones-by-name --output json
+export ZONE_ID=<correct zone>
 
 # Create an AWS IAM policy document for the cert-manager Operator that provides the ability to update only the specified public hosted zone
 cat <<EOF > "${SCRATCH}/cert-manager-policy.json"

@@ -1,0 +1,18 @@
+apiVersion: operator.openshift.io/v1
+kind: IngressController
+metadata:
+  name: custom-domain-ingress
+  namespace: openshift-ingress-operator
+spec:
+  domain: "*.extapps.bosez-20240710.o5fq.p1.openshiftapps.com"
+  defaultCertificate:
+    name: custom-domain-ingress-cert-tls
+  endpointPublishingStrategy:
+    loadBalancer:
+      dnsManagementPolicy: Unmanaged
+      providerParameters:
+        aws:
+          type: NLB
+        type: AWS
+      scope: External
+    type: LoadBalancerService
