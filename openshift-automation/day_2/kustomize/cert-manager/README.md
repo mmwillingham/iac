@@ -101,7 +101,11 @@ oc apply -k cert-manager/operator/overlays/dev
 ```
 ### Install ClusterIssuers and custom domain Ingress Controller
 ```
-The following example uses a single domain certificate. SAN and wildcard certificates are also supported.
-
+# NOTE: For wildcards, replace $DOMAIN with *.$DOMAIN
 oc apply -k cert-manager/instance/overlays/dev
+
+# NOTE: It takes a few minutes for this certificate to be issued by Let’s Encrypt. If it takes longer than 5 minutes, to see any issues reported by cert-manager:
+oc -n openshift-ingress get certificate.cert-manager.io/custom-domain-ingress-cert
+oc -n openshift-ingress describe certificate.cert-manager.io/custom-domain-ingress-cert
+
 ```
