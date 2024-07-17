@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: custom-domain-ingress-cert
+  namespace: openshift-ingress
+spec:
+  secretName: custom-domain-ingress-cert-tls
+  issuerRef:
+     name: letsencrypt-dev
+     kind: ClusterIssuer
+  commonName: "apps.bosez-20240710.o5fq.p1.openshiftapps.com"
+  dnsNames:
+  - "apps.bosez-20240710.o5fq.p1.openshiftapps.com"

@@ -99,7 +99,9 @@ NOTE: It's now possible to provide ROLE_ARN during operator installation.
 
 oc apply -k cert-manager/operator/overlays/dev
 ```
-### Install XXX
+### Install ClusterIssuers and custom domain Ingress Controller
 ```
+The following example uses a single domain certificate. SAN and wildcard certificates are also supported.
+
 oc apply -k cert-manager/instance/overlays/dev
 ```
