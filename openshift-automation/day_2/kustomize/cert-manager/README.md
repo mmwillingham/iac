@@ -5,6 +5,7 @@ https://docs.openshift.com/rosa/cloud_experts_tutorials/cloud-experts-dynamic-ce
 ```
 # Set variables
 export DOMAIN=*.extapps.bosez-20240710.o5fq.p1.openshiftapps.com
+NOTE: May need to change this to: DOMAIN=extapps.bosez-20240710.o5fq.p1.openshiftapps.com
 export EMAIL=bolauder88@gmail.com
 export AWS_PAGER=""
 export CLUSTER=$(oc get infrastructure cluster -o=jsonpath="{.status.infrastructureName}"  | sed 's/-[a-z0-9]\{5\}$//')
@@ -129,14 +130,14 @@ oc -n openshift-ingress get service/router-custom-domain-ingress
 # Check if it's Ready (it takes some time in provisioning)
 export ELB_DNS=$(oc -n openshift-ingress get service/router-custom-domain-ingress -o=custom-columns=EXTIP:status.loadBalancer.ingress[0].hostname | grep -v EXTIP)
 echo $ELB_DNS
-# Never got this variable working
-aws elbv2 describe-load-balancers | jq '.LoadBalancers[] | select(.DNSName == \"${ELB_DNS}\")' | jq .State
-aws elbv2 describe-load-balancers | jq '.LoadBalancers[] | select(.DNSName == $ELB_DNS)' | jq .State
+a29e9114a7e1f460fa752d2c4eabc07e-f43d8c858dfb40cd.elb.us-east-2.amazonaws.com
 
-# Other commands maybe useful
-aws elbv2 describe-load-balancers --query 'LoadBalancers[*].LoadBalancerName' --output text
-aws elbv2 describe-load-balancers | jq '.LoadBalancers[] | select(.DNSName == "a107506d2745f48178607a509b9f5e73-662d2e478dce45c5.elb.us-east-2.amazonaws.com") | .LoadBalancerArn'
-aws elbv2 describe-load-balancers --load-balancer-arns arn:aws:elasticloadbalancing:us-east-2:942823120101:loadbalancer/net/a107506d2745f48178607a509b9f5e73/662d2e478dce45c5 --output json | jq .LoadBalancers[0].State
+# Never got this variable working: aws elbv2 describe-load-balancers | jq '.LoadBalancers[] | select(.DNSName == \"${ELB_DNS}\")' | jq .State
+
+aws elbv2 describe-load-balancers | jq '.LoadBalancers[] | select(.DNSName == "a29e9114a7e1f460fa752d2c4eabc07e-f43d8c858dfb40cd.elb.us-east-2.amazonaws.com")' | jq .State
+
+# Wait until it moves from provisioning to active
+
 ```
 
 # Manual AWS step. How to automate???
@@ -145,6 +146,9 @@ aws elbv2 describe-load-balancers --load-balancer-arns arn:aws:elasticloadbalanc
 
 INGRESS=$(oc -n openshift-ingress get service/router-custom-domain-ingress -ojsonpath="{.status.loadBalancer.ingress[0].hostname}")
 # NOTE: Be careful with "*.${DOMAIN}" If you are using wildcard, you could end with "*.*.extapps.bosez-20240710.o5fq.p1.openshiftapps.com"
+# For wildcards, the result should be: *.extapps.bosez-20240710.o5fq.p1.openshiftapps.com
+# NOTE: This creates a CNAME. The default *.apps is an A alias.
+
 cat << EOF > "${SCRATCH}/create-cname.json"
 {
   "Comment":"Add CNAME to custom domain endpoint",
@@ -166,6 +170,9 @@ cat ${SCRATCH}/create-cname.json
 
 # Submit your changes to Amazon Route 53 for propagation
 aws route53 change-resource-record-sets --hosted-zone-id ${ZONE_ID} --change-batch file://${SCRATCH}/create-cname.json
+
+# Wait until it moves from pending to INSYNC (Check console. Couldn't find a CLI option for this.)
+
 ```
 
 # Configuring dynamic certificates for custom domain routes
@@ -181,9 +188,16 @@ oc -n cert-manager get pods | grep route
 ```
 oc new-project hello-world-cert
 oc -n hello-world-cert new-app --image=docker.io/openshift/hello-openshift
-# oc -n hello-world-cert create route edge --service=hello-openshift hello-openshift-tls --hostname hello.${DOMAIN}
-# For wildcard domains:
-echo ${DOMAIN} | sed s/\*//)
+echo $DOMAIN
+# If it does not include *
+oc -n hello-world-cert create route edge --service=hello-openshift hello-openshift-tls --hostname hello.${DOMAIN}
+
+# If includes *:
+export NEW_DOMAIN=$(echo ${DOMAIN} | sed s/\*.//)
+echo $NEW_DOMAIN
+oc -n hello-world-cert create route edge --service=hello-openshift hello-openshift-tls --hostname hello.${NEW_DOMAIN}
+
+
 
 oc -n hello-world-cert create route edge --service=hello-openshift hello-openshift-tls --hostname hello.${DOMAIN}
 oc -n hello-world-cert create route edge --service=hello-openshift hello-openshift-tls --hostname hello.extapps.bosez-20240710.o5fq.p1.openshiftapps.com
