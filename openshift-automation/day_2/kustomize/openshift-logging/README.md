@@ -81,6 +81,7 @@ cat <<EOF > ${SCRATCH}/trust-policy.json
 }
 EOF
 
+cat ${SCRATCH}/trust-policy.json
 ROLE_ARN=$(aws iam create-role --role-name "${ROSA_CLUSTER_NAME}-RosaCloudWatch" \
       --assume-role-policy-document file://${SCRATCH}/trust-policy.json \
       --query Role.Arn --output text)

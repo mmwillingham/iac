@@ -8,15 +8,6 @@ resources:
 patches:
   - target:
       version: v1
-      kind: Secret
-      name: cloudwatch-credentials
-    patch: |-
-      - op: replace
-        path: /stringData/role_arn
-        value: arn:aws:iam::xxxxxxxxxxxxxx:role/xxxx-cwisrosa-d-cwisrosa-dev-1-cloudwatch
-
-  - target:
-      version: v1
       kind: ClusterLogForwarder
       name: instance
     patch: |-
@@ -26,6 +17,15 @@ patches:
       - op: replace
         path: /spec/outputs/0/cloudwatch/region
         value: us-east-2
+        
+  - target:
+      version: v1
+      kind: Secret
+      name: cloudwatch-credentials
+    patch: |-
+      - op: replace
+        path: /stringData/role_arn
+        value: arn:aws:iam::942823120101:role/bosez-20240710-RosaCloudWatch
 
   - target:
       version: v1
