@@ -13,7 +13,7 @@ patches:
       name: external-secrets-operator-sa
     patch: |-
       - op: replace
-        path: metadata/namespace
+        path: /metadata/namespace
         value: abc-user-namespace
       - op: replace
         path: /metadata/annotations/eks.amazonaws.com~1role-arn
