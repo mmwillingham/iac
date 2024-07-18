@@ -5,9 +5,11 @@ resources:
 - hello-world-env.yaml
 - hello-world-bg.yaml
 - web-terminal-default.yaml
+- external-secrets-operator.yaml
+- external-secrets-instance.yaml
+- external-secrets-samplestore.yaml
+
 # - openshift-logging.yaml
-# - external-secrets-operator.yaml
-# - external-secrets-instance.yaml
 # - oadp.yaml
 
 # - etcd-backup.yaml
