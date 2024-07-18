@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
 - hello-world-env.yaml
+- hello-world-bg.yaml
 # - openshift-logging.yaml
 # - external-secrets-operator.yaml
 # - external-secrets-instance.yaml
