@@ -1,3 +1,8 @@
+# Secrets Store CSI Driver
+
+
+
+# Old Docs
 Repo
 ```
 https://github.com/kubernetes-sigs/secrets-store-csi-driver/tree/main/deploy
@@ -16,11 +21,6 @@ Process assumes AWS STS
 # To verify STS
 oc get authentication.config.openshift.io cluster -o json | jq .spec.serviceAccountIssuer
 # example response: "https://rh-oidc.s3.us-east-1.amazonaws.com/2b1a6mhmakfmljn26lek7n063ofjb3hi"
-
-# Set SCCs to allow CSI driver
-oc new-project csi-secrets-store
-oc adm policy add-scc-to-user privileged system:serviceaccount:csi-secrets-store:secrets-store-csi-driver
-oc adm policy add-scc-to-user privileged system:serviceaccount:csi-secrets-store:csi-secrets-store-provider-aws
 
 ## Create environment variables
 export REGION=$(oc get infrastructure cluster -o=jsonpath="{.status.platformStatus.aws.region}")

@@ -14,5 +14,5 @@ resources:
   - secrets-store-csi-driver.yaml
   - secrets-store.csi.x-k8s.io_secretproviderclasses.yaml
   - secrets-store.csi.x-k8s.io_secretproviderclasspodstatuses.yaml
-  - clusterrolebinding-priviliged.yaml
+  - clusterrolebinding-privileged.yaml
   - aws-provider.yaml
