@@ -5,8 +5,8 @@ metadata:
   namespace: openshift-gitops
   labels:
     appgrp: day2
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io  
+  # finalizers:
+  # - resources-finalizer.argocd.argoproj.io  
 spec:
   destination:    
     server: https://kubernetes.default.svc
