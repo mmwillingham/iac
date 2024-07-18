@@ -117,7 +117,7 @@ oc apply -k cert-manager/instance/overlays/dev
 oc get clusterissuer.cert-manager.io/letsencrypt-dev
 oc -n openshift-ingress get certificate.cert-manager.io/custom-domain-ingress-cert
 oc -n openshift-ingress describe certificate.cert-manager.io/custom-domain-ingress-cert
-oc logs -n cert-manager $(oc get pods -n cert-manager | grep -v cain | grep -v web | grep -v NAME | awk '{print $1}'
+oc logs -n cert-manager $(oc get pods -n cert-manager | grep -v cain | grep -v web | grep -v NAME | awk '{print $1}')
 
 # NOTE: This IngressController example will create an internet accessible Network Load Balancer (NLB) in your AWS account.
 # To provision an internal NLB instead, set the .spec.endpointPublishingStrategy.loadBalancer.scope parameter to Internal 
