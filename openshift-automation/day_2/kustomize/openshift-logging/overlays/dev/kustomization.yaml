@@ -17,7 +17,7 @@ patches:
       - op: replace
         path: /spec/outputs/0/cloudwatch/region
         value: us-east-2
-        
+
   - target:
       version: v1
       kind: Secret
@@ -33,7 +33,7 @@ patches:
       name: eventrouter
     patch: |-
       - op: replace
-        path: /spec/template/spec/containers/image
+        path: /spec/template/spec/containers/0/image
         value: "registry.redhat.io/openshift-logging/eventrouter-rhel9:v0.4"
       - op: replace
         path: /spec/template/spec/containers/resources/requests/cpu
