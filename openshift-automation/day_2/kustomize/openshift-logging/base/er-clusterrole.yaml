@@ -1,3 +1,4 @@
+---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -6,3 +7,25 @@ rules:
 - apiGroups: [""]
   resources: ["events"]
   verbs: ["get", "watch", "list"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: event-reader-binding
+subjects:
+- kind: ServiceAccount
+  name: eventrouter
+  namespace: openshift-logging
+roleRef:
+  kind: ClusterRole
+  name: event-reader
+- kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: eventrouter
+  namespace: openshift-logging
+data:
+  config.json: |-
+    {
+      "sink": "stdout"
+    }
