@@ -10,3 +10,4 @@ resources:
 - redis-service.yaml
 - route.yaml
 - service.yaml
+- consolelink.yaml

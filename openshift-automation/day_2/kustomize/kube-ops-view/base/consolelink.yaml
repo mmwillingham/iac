@@ -1,0 +1,14 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleLink
+metadata:
+  name: kube-ops-view
+  namespace: kube-ops-view
+  labels:
+    appgrp: day2
+spec:
+  applicationMenu:
+    # imageURL: 'https://i.ibb.co/pZ0Lxdb/Logo-Red-Hat-Hat-Color-RGB.png'
+    section: Kube Ops View
+  href: 'https://proxy-ocp-ops-view.apps.bosez-20240710.o5fq.p1.openshiftapps.com/
+  location: ApplicationMenu
+  text: Kube Ops View

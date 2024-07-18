@@ -5,7 +5,7 @@ metadata:
     application: kube-ops-view
     component: frontend
   name: kube-ops-view
-  namespace: ocp-ops-view
+  namespace: kube-ops-view
 spec:
   selector:
     application: kube-ops-view

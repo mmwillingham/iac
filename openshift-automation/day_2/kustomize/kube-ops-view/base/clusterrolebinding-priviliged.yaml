@@ -6,7 +6,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: kube-ops-view
-    namespace: ocp-ops-view
+    namespace: kube-ops-view
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
