@@ -5,6 +5,7 @@ metadata:
     application: kube-ops-view
     component: redis
   name: kube-ops-view-redis
+  namespace: ocp-ops-view
 spec:
   selector:
     application: kube-ops-view

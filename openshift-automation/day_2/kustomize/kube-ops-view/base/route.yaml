@@ -2,6 +2,7 @@ apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: proxy
+  namespace: ocp-ops-view
 spec:
 #  host: ocp-ops-view.apps.<cluster.domain>
   port:

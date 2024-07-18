@@ -10,6 +10,7 @@ resources:
 - external-secrets-samplestore.yaml
 - oadp.yaml
 - openshift-logging-dev.yaml
+- kube-ops-view.yaml
 
 # - etcd-backup.yaml
 # - idp.yaml
