@@ -7,10 +7,10 @@ resources:
   - cluster-logging-secret.yaml
   - cluster-logging-forwarder.yaml
   - cluster-logging-instance.yaml
-
+  - er-clusterrolebinding.yaml
 # Event Router Configuration
   - er-serviceaccount.yaml
   - er-clusterrole.yaml
-  - er-clusterrolebinding.yaml
+
   - er-configmap.yaml
   - er-deployment.yaml
