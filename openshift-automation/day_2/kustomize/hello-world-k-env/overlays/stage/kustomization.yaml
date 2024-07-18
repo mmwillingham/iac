@@ -1,5 +1,6 @@
 resources:
 - ../../base
+- namespace.yaml
 
 images:
 - name: quay.io/redhattraining/do480-hello-app
@@ -34,9 +35,3 @@ patches:
     target:
       kind: Route
 
-  # - patch: |-
-  #     - op: replace
-  #       path: /metadata/name
-  #       value: hello-world-k-stage
-  #   target:
-  #     kind: Namespace      
