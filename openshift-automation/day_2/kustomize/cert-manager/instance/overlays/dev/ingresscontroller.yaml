@@ -4,7 +4,7 @@ metadata:
   name: custom-domain-ingress
   namespace: openshift-ingress-operator
 spec:
-  domain: "*.extapps.bosez-20240710.o5fq.p1.openshiftapps.com"
+  domain: "extapps.bosez-20240710.o5fq.p1.openshiftapps.com"
   defaultCertificate:
     name: custom-domain-ingress-cert-tls
   endpointPublishingStrategy:

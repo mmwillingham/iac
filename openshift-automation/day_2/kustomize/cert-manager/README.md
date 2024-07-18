@@ -144,13 +144,14 @@ aws elbv2 describe-load-balancers --load-balancer-arns arn:aws:elasticloadbalanc
 # Prepare a document with the necessary DNS changes to enable DNS resolution for your custom domain Ingress Controller
 
 INGRESS=$(oc -n openshift-ingress get service/router-custom-domain-ingress -ojsonpath="{.status.loadBalancer.ingress[0].hostname}")
+# NOTE: Be careful with "*.${DOMAIN}" If you are using wildcard, you could end with "*.*.extapps.bosez-20240710.o5fq.p1.openshiftapps.com"
 cat << EOF > "${SCRATCH}/create-cname.json"
 {
   "Comment":"Add CNAME to custom domain endpoint",
   "Changes":[{
       "Action":"CREATE",
       "ResourceRecordSet":{
-        "Name": "*.${DOMAIN}",
+        "Name": "${DOMAIN}",
       "Type":"CNAME",
       "TTL":30,
       "ResourceRecords":[{
@@ -169,10 +170,27 @@ aws route53 change-resource-record-sets --hosted-zone-id ${ZONE_ID} --change-bat
 
 # Configuring dynamic certificates for custom domain routes
 ### IMPORTANT. The previous AWS step should be completed before proceeding.
+### Image is here: ghcr.io/cert-manager/cert-manager-openshift-routes:0.5.0
+### May need to open firewall to ghcr.io/cert-manager
 ```
 oc apply -k cert-manager/app-prep/overlays/dev
-oc -n cert-manager get pods
+oc -n cert-manager get pods | grep route
 ```
+
+# Test with a sample app
+```
+oc new-project hello-world-cert
+oc -n hello-world-cert new-app --image=docker.io/openshift/hello-openshift
+# oc -n hello-world-cert create route edge --service=hello-openshift hello-openshift-tls --hostname hello.${DOMAIN}
+# For wildcard domains:
+echo ${DOMAIN} | sed s/\*//)
+
+oc -n hello-world-cert create route edge --service=hello-openshift hello-openshift-tls --hostname hello.${DOMAIN}
+oc -n hello-world-cert create route edge --service=hello-openshift hello-openshift-tls --hostname hello.extapps.bosez-20240710.o5fq.p1.openshiftapps.com
+curl -I https://hello.extapps.bosez-20240710.o5fq.p1.openshiftapps.com
+curl: (6) Could not resolve host: hello.extapps.bosez-20240710.o5fq.p1.openshiftapps.com
+```
+
 # Cleanup
 # All in one - or see below for details
 ```
