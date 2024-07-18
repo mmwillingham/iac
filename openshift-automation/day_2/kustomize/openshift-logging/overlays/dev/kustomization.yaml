@@ -22,10 +22,10 @@ patches:
     patch: |-
       - op: replace
         path: /spec/outputs/0/cloudwatch/groupPrefix
-        value: rosa-cwisrosa-dev-1
+        value: bosez-20240710.o5fq
       - op: replace
         path: /spec/outputs/0/cloudwatch/region
-        value: us-east-1
+        value: us-east-2
 
   - target:
       version: v1
