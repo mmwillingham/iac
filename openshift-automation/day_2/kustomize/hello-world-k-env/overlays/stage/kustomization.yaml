@@ -20,7 +20,7 @@ patches:
         value: hello-world-stage
       - op: replace
         path: /spec/replicas
-        value: 1                                # STAGE HAS 1 REPLICA
+        value: 2                                # STAGE HAS 1 REPLICA
     target:
       kind: Deployment
 
