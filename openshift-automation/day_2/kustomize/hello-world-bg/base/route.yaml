@@ -1,0 +1,19 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: hello-world
+  labels: {}
+spec:
+  to:
+    kind: Service
+    name: hello-world-blue
+    weight: 100
+  alternateBackends:
+    - weight: 0
+      kind: Service
+      name: hello-world-green
+  port:
+#    targetPort: 8000
+    targetPort: 8080
+  tls: {}
+  path: /

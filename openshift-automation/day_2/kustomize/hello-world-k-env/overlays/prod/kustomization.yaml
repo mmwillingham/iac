@@ -1,0 +1,42 @@
+resources:
+- ../../base
+
+images:
+- name: quay.io/redhattraining/do480-hello-app
+  newTag: v1.0  # PROD HAS v1.0 TAG
+
+commonLabels:
+  app: hello-world-prod
+
+patches:
+
+  - patch: |-
+      - op: replace
+        path: /metadata/name
+        value: hello-world-prod
+      - op: replace
+        path: /spec/replicas
+        value: 3                                # PROD HAS 3 REPLICAS
+    target:
+      kind: Deployment
+
+  - patch: |-
+      - op: replace
+        path: /metadata/name
+        value: hello-world-prod
+    target:
+      kind: Service
+
+  - patch: |-
+      - op: replace
+        path: /spec/to/name
+        value: hello-world-prod
+    target:
+      kind: Route
+
+  # - patch: |-
+  #     - op: replace
+  #       path: /metadata/name
+  #       value: hello-world-k-prod
+  #   target:
+  #     kind: Namespace

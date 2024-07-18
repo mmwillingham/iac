@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: OVERLAY_VALUE
+spec:
+  replicas: OVERLAY_VALUE                                                  # BLUE HAS 1 REPLICA
+  selector:
+    matchLabels:
+      app: OVERLAY_VALUE
+  template:
+    metadata:
+      labels:
+        app: OVERLAY_VALUE
+    spec:
+      containers:
+      - name: hello-world
+        image: quay.io/redhattraining/do480-hello-app:v1.0

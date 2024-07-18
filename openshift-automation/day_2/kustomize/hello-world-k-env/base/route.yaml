@@ -1,0 +1,16 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  annotations:
+    haproxy.router.openshift.io/disable_cookies: true
+  name: hello-world
+  labels: {}
+spec:
+  to:
+    kind: Service
+    name: OVERLAY_VALUE
+    weight: 100
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge  
