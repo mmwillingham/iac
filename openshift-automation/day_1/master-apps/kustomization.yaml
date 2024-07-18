@@ -4,10 +4,10 @@ kind: Kustomization
 resources:
 - hello-world-env.yaml
 - hello-world-bg.yaml
+- web-terminal-default.yaml
 # - openshift-logging.yaml
 # - external-secrets-operator.yaml
 # - external-secrets-instance.yaml
-# - web-terminal-cwisrosa-dev-1.yaml
 # - oadp.yaml
 
 # - etcd-backup.yaml
