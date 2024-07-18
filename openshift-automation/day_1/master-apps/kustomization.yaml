@@ -8,9 +8,9 @@ resources:
 - external-secrets-operator.yaml
 - external-secrets-instance.yaml
 - external-secrets-samplestore.yaml
+- oadp.yaml
 
 # - openshift-logging.yaml
-# - oadp.yaml
 # - etcd-backup.yaml
 # - idp.yaml
 

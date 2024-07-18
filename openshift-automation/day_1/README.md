@@ -1,6 +1,7 @@
 # Unable to run from GitHub Actions because OpenShift API is private.
 # Workaround. After cluster is created, install GitOps and Master App:
 
+# TL/DR
 ```
 oc login ...
 git clone https://github.com/mmwillingham/iac
@@ -30,7 +31,7 @@ oc apply -k openshift-automation/day_1/gitops-operator/overlays/latest
 oc -n openshift-gitops patch argocd/openshift-gitops --type=merge -p='{"spec":{"server":{"route":{"enabled":true,"tls":{"insecureEdgeTerminationPolicy":"Redirect","termination":"reencrypt"}}}}}'
 ```
 
-# Create GitOps repository connections (NEEDS ADJUSTING FOR THIS REPO)
+# If private git repo: Create GitOps repository connections (NEEDS ADJUSTING FOR THIS REPO)
 ```
 export REPO_NAME="iac"
 export TYPE=git
@@ -83,9 +84,3 @@ oc apply -k openshift-automation/day_1/master-apps
 # oc delete -k openshift-automation/day_1/master-apps
 ```
 
-# To test creating apps with argocd cli
-# Retrieve and use argocd admin_password to login:
-ADMIN_PASSWD=$(oc get secret openshift-gitops-cluster -n openshift-gitops -o jsonpath='{.data.admin\.password}' | base64 -d)
-SERVER_URL=$(oc get routes openshift-gitops-server -n openshift-gitops -o jsonpath='{.status.ingress[0].host}')
-argocd login --username admin --password ${ADMIN_PASSWD} ${SERVER_URL} --insecure
-argocd app list
