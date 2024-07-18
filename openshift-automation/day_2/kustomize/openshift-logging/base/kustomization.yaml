@@ -9,6 +9,6 @@ resources:
   - cluster-logging-instance.yaml
   - er-serviceaccount.yaml
   - er-clusterrole.yaml
-  - er-clusterrolebinding.yaml
+  # - er-clusterrolebinding.yaml
   - er-configmap.yaml
   - er-deployment.yaml
