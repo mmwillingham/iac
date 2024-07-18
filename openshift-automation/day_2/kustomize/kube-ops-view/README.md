@@ -1,6 +1,8 @@
 # kube-ops-view
-oc adm policy add-scc-to-user privileged system:serviceaccount:ops-view:kube-ops-view
-oc adm policy add-scc-to-user privileged system:serviceaccount:ops-view:default
+
+# Not required...added as a clusterrolebinding
+# oc adm policy add-scc-to-user privileged system:serviceaccount:ops-view:kube-ops-view
+# oc adm policy add-scc-to-user privileged system:serviceaccount:ops-view:default
 
 argocd app create kube-ops-view \
 --repo https://github.com/mmwillingham/sampleapps.git \
