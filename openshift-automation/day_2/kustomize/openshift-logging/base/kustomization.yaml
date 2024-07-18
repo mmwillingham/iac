@@ -10,7 +10,6 @@ resources:
 
 # Event Router Configuration
   - er-serviceaccount.yaml
-  - er-clusterrole.yaml
-#  - er-clusterrolebinding.yaml
   - er-configmap.yaml
   - er-deployment.yaml
+  # - er-clusterrole.yaml  
