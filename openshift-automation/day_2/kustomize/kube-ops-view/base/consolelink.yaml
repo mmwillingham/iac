@@ -7,8 +7,8 @@ metadata:
     appgrp: day2
 spec:
   applicationMenu:
-    imageURL: 'https://i.ibb.co/pZ0Lxdb/Logo-Red-Hat-Hat-Color-RGB.png'
+    # imageURL: 'https://i.ibb.co/pZ0Lxdb/Logo-Red-Hat-Hat-Color-RGB.png'
     section: Kube Ops View
-  href: 'https://proxy-ocp-ops-view.apps.bosez-20240710.o5fq.p1.openshiftapps.com/
+  href: 'https://proxy-ocp-ops-view.apps.bosez-20240710.o5fq.p1.openshiftapps.com/'
   location: ApplicationMenu
   text: Kube Ops View
