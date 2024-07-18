@@ -16,6 +16,9 @@ patches:
         path: /metadata/name
         value: hello-world-stage
       - op: replace
+        path: /metadata/namespace
+        value: hello-world-stage
+      - op: replace
         path: /spec/replicas
         value: 1                                # STAGE HAS 1 REPLICA
     target:
@@ -25,13 +28,19 @@ patches:
       - op: replace
         path: /metadata/name
         value: hello-world-stage
+      - op: replace
+        path: /metadata/namespace
+        value: hello-world-stage        
     target:
       kind: Service
 
   - patch: |-
       - op: replace
         path: /spec/to/name
-        value: hello-world-stage        
+        value: hello-world-stage     
+      - op: replace
+        path: /metadata/namespace
+        value: hello-world-stage
     target:
       kind: Route
 

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: OVERLAY_VALUE
+  namespace: OVERLAY_VALUE
 spec:
   replicas: OVERLAY_VALUE                                                  # BLUE HAS 1 REPLICA
   selector:

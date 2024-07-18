@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:  
-  name: hello-world-env-stage
+  name: hello-world-stage
   namespace: openshift-gitops
   labels:
     appgrp: day2
