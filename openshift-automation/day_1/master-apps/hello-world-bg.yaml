@@ -14,7 +14,7 @@ spec:
   source:
     directory:
       recurse: false
-    path: openshift-automation/day_2/kustomize/hello-world-bg/base
+    path: openshift-automation/day_2/kustomize/hello-world-bg/overlays/default
     repoURL: https://github.com/mmwillingham/iac.git
     targetRevision: HEAD
   syncPolicy:
