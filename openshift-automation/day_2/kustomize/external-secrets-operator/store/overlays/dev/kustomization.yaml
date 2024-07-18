@@ -25,7 +25,7 @@ patches:
     patch: |-
       - op: replace
         path: /spec/provider/aws/region
-        value: us-east-1
+        value: us-east-2
 
   - target:
       kind: ExternalSecret
