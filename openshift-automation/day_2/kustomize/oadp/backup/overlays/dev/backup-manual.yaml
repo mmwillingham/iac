@@ -1,7 +1,7 @@
 apiVersion: velero.io/v1
 kind: Backup
 metadata:
-  name: backup-user-namespaces
+  name: backup-manual-user-namespaces
   namespace: openshift-adp
   labels:
     velero.io/storage-location: bosez-20240710-dpa-1
