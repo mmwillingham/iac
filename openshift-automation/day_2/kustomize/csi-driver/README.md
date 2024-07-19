@@ -1,6 +1,28 @@
 # Secrets Store CSI Driver
+## Create environment variables
+export REGION=$(oc get infrastructure cluster -o=jsonpath="{.status.platformStatus.aws.region}")
+export OIDC_ENDPOINT=$(oc get authentication.config.openshift.io cluster -o jsonpath='{.spec.serviceAccountIssuer}' | sed  's|^https://||')
+export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+export AWS_PAGER=""
+export MY_APP="bo-secret-app"
+export MY_SECRET=db_password # make this lowercase
+# Verify OIDC provider exists in AWS with the same OIDC_ENDPOINT as above
+aws iam list-open-id-connect-providers | grep ${OIDC_ENDPOINT}
 
+echo $REGION
+echo $OIDC_ENDPOINT
+echo $AWS_ACCOUNT_ID
+echo $MY_APP
+echo $MY_SECRET
 
+## Create AWS resources
+```
+
+```
+## Create OpenShift resources
+```
+
+```
 
 # Old Docs
 Repo

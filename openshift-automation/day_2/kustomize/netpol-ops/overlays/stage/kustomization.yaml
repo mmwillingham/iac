@@ -1,0 +1,46 @@
+resources:
+- ../../base
+- namespace.yaml
+
+images:
+- name: quay.io/redhattraining/do480-hello-app
+  newTag: latest    # STAGE HAS latest TAG
+
+commonLabels:
+  app: hello-world-stage
+
+patches:
+
+  - patch: |-
+      - op: replace
+        path: /metadata/name
+        value: hello-world-stage
+      - op: replace
+        path: /metadata/namespace
+        value: hello-world-stage
+      - op: replace
+        path: /spec/replicas
+        value: 2                                # STAGE HAS 1 REPLICA
+    target:
+      kind: Deployment
+
+  - patch: |-
+      - op: replace
+        path: /metadata/name
+        value: hello-world-stage
+      - op: replace
+        path: /metadata/namespace
+        value: hello-world-stage        
+    target:
+      kind: Service
+
+  - patch: |-
+      - op: replace
+        path: /spec/to/name
+        value: hello-world-stage     
+      - op: replace
+        path: /metadata/namespace
+        value: hello-world-stage
+    target:
+      kind: Route
+

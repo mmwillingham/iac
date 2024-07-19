@@ -1,0 +1,16 @@
+kind: BackupStorageLocation
+metadata:
+  name: bosez-20240710-dpa-1
+  namespace: openshift-adp
+spec:
+  config:
+    enableSharedConfig: "true"
+    region: us-east-2
+  credential:
+    key: credentials
+    name: cloud-credentials
+  default: true
+  objectStorage:
+    bucket: bosez-20240710-oadp
+    prefix: velero
+  provider: aws
