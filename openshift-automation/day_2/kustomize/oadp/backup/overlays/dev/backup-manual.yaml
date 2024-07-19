@@ -10,7 +10,6 @@ spec:
   defaultVolumesToFsBackup: false
   includedNamespaces:
     - abc-user-namespace
-    - etherpad-prod
     - hello-world
   itemOperationTimeout: 4h0m0s
   snapshotMoveData: false
