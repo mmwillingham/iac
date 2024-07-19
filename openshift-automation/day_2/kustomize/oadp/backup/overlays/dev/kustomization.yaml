@@ -4,7 +4,8 @@ kind: Kustomization
 
 resources:
 #  - ../../base
-  - backup-user-namespaces.yaml
+  - backupsingle.yaml
+  - backupschedule.yaml
 
 
 

@@ -1,0 +1,17 @@
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: <schedule>
+  namespace: openshift-adp
+spec:
+  # schedule: 0 7 * * *          # perform a backup every day at 7:00 am
+  schedule: "*/15 * * * *"   # perform a backup every 15 minutes
+  template:
+    hooks: {}
+    includedNamespaces:
+    - abc-user-namespace
+    - etherpad-prod
+    - hello-world
+    storageLocation: bosez-20240710-dpa-1
+    defaultVolumesToFsBackup: true 
+    ttl: 720h0m0s # How long to retain the backup.
