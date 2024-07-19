@@ -6,4 +6,4 @@ resources:
 #  - ../../base
   - dpa.yaml
   - cloudstorage.yaml
-  # - backupstoragelocation.yaml
+  - backupstoragelocation.yaml
