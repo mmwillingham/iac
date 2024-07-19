@@ -10,7 +10,6 @@ spec:
     hooks: {}
     includedNamespaces:
     - abc-user-namespace
-    - etherpad-prod
     - hello-world
     storageLocation: bosez-20240710-dpa-1
     defaultVolumesToFsBackup: true 

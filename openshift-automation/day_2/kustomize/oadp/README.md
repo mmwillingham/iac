@@ -117,15 +117,15 @@ oc apply -k oadp/backup/overlays/dev
 ```
 # OpenShift
 oc get backup -n openshift-adp
-# assume backup name is backup-user-namespaces
-oc describe backup backup-user-namespaces -n openshift-adp
+# assume backup name is backup-manual-user-namespaces
+oc describe backup backup-manual-user-namespaces -n openshift-adp
 
 # AWS
 aws s3api list-objects --bucket bosez-20240710-oadp --output table
 
 # Velero (Details of the specific kubernetes resources backed up)
 alias velero='oc -n openshift-adp exec deployment/velero -c velero -it -- ./velero'
-velero backup describe backup-user-namespaces --details
+velero backup describe backup-manual-user-namespaces --details
 ```
 
 # Restore
