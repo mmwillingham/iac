@@ -4,7 +4,7 @@ kind: Kustomization
 
 resources:
 #  - ../../base
-  - backup-manual.yaml
+  # - backup-manual.yaml
   - backup-automated.yaml
 
 
