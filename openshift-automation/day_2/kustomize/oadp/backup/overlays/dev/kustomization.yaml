@@ -4,8 +4,8 @@ kind: Kustomization
 
 resources:
 #  - ../../base
-  - backupsingle.yaml
-  - backupschedule.yaml
+  - backup-manual.yaml
+  - backup-automated.yaml
 
 
 
