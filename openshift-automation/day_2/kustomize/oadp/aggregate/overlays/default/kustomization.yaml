@@ -7,3 +7,4 @@ commonAnnotations:
 resources:
   - ../../../operator/overlays/dev
   - ../../../instance/overlays/dev
+  - ../../../backup/overlays/dev  
