@@ -215,13 +215,14 @@ oc get pods
 #### Locate logs in AWS using CLI (with example log names)
 ```
 # List log groups
-aws logs describe-log-groups --log-group-name-prefix rosa-${ROSA_CLUSTER_NAME} | awk '{print $2}'
+aws logs describe-log-groups --log-group-name-prefix ${ROSA_CLUSTER_NAME} | awk '{print $2}'
 
 # Details of log groups
-aws logs describe-log-groups --log-group-name-prefix rosa-${ROSA_CLUSTER_NAME}
+aws logs describe-log-groups --log-group-name-prefix ${ROSA_CLUSTER_NAME}
 
 # Get log streams for the sample-app log group
-aws logs describe-log-streams --log-group-name rosa-bosez-gdabs.sample-app
+# Example
+aws logs describe-log-streams --log-group-name bosez-20240710.o5fq.sample-app
 
 # Get events for a log stream
 aws logs get-log-events --log-group-name rosa-bosez-gdabs.sample-app --log-stream-name kubernetes.var.log.pods.sample-app_nginx-example-1-deploy_2bdeb45a-e25b-4433-a60a-61dd18d97a66.deployment.0.log
