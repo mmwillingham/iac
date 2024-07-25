@@ -75,6 +75,7 @@ patches:
 # Secret when created manually was: logging-loki-aws
 secretGenerator:
 - name: loki-secret-3
+  namespace: openshift-logging
   literals:
     - audience=openshift
     - bucketnames=bosez-loki
