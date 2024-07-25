@@ -9,7 +9,7 @@ resources:
 - external-secrets-instance.yaml
 - external-secrets-samplestore.yaml
 - oadp.yaml
-- openshift-logging-dev.yaml
+- openshift-logging-with-loki-dev.yaml
 - kube-ops-view.yaml
 
 # - etcd-backup.yaml
