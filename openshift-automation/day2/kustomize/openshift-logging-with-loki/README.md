@@ -2,7 +2,7 @@
 
 # IMPORTANT NOTE: I added Loki to the manifests but did not describe below.
 #                 As a prereq, I manually created a bucket and a role (I re-used the role I created for OADP.)
-
+#                 I also had to add more and bigger nodes
 
 ## References
 https://docs.openshift.com/rosa/cloud_experts_tutorials/cloud-experts-rosa-cloudwatch-sts.html

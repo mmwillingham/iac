@@ -100,7 +100,7 @@ aws iam list-attached-role-policies --role-name "${CLUSTER}-cert-manager-operato
 ```
 
 # Setup OpenShift
-## Install OADP Operator and Instances
+## Install Operator and Instances
 
 ### Install Operator
 ```
@@ -145,7 +145,9 @@ aws elbv2 describe-load-balancers | jq '.LoadBalancers[] | select(.DNSName == "a
 # Prepare a document with the necessary DNS changes to enable DNS resolution for your custom domain Ingress Controller
 
 INGRESS=$(oc -n openshift-ingress get service/router-custom-domain-ingress -ojsonpath="{.status.loadBalancer.ingress[0].hostname}")
+
 # NOTE: Be careful with "*.${DOMAIN}" If you are using wildcard, you could end with "*.*.extapps.bosez-20240710.o5fq.p1.openshiftapps.com"
+
 # For wildcards, the result should be: *.extapps.bosez-20240710.o5fq.p1.openshiftapps.com
 # NOTE: This creates a CNAME. The default *.apps is an A alias.
 
