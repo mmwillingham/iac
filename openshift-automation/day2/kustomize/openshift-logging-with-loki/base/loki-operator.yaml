@@ -7,7 +7,6 @@ metadata:
   name: loki-operator
   namespace: openshift-operators-redhat
 spec:
-spec:
   channel: stable-5.9
   config:
     env:
