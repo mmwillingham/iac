@@ -64,7 +64,7 @@ patches:
     patch: |-
       - op: replace
         path: /spec/storage/secret/name
-        value: loki-secret-3
+        value: logging-loki-aws-3
       - op: replace
         path: /spec/storage/secret/credentialMode
         value: token
@@ -74,7 +74,7 @@ patches:
 
 # Secret when created manually was: logging-loki-aws
 secretGenerator:
-- name: loki-secret-3
+- name: logging-loki-aws-3
   namespace: openshift-logging
   literals:
     - audience=openshift
