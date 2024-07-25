@@ -14,7 +14,7 @@ spec:
   source:
     directory:
       recurse: false
-    path: openshift-automation/day_2/kustomize/hello-world-k-env/overlays/stage
+    path: openshift-automation/day2/kustomize/hello-world-k-env/overlays/stage
     repoURL: https://github.com/mmwillingham/iac.git
     targetRevision: HEAD
   syncPolicy:

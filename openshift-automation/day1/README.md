@@ -6,8 +6,8 @@
 oc login ...
 git clone https://github.com/mmwillingham/iac
 cd iac
-oc apply -k openshift-automation/day_1/gitops-operator/overlays/latest
-oc apply -k openshift-automation/day_1/master-apps
+oc apply -k openshift-automation/day1/gitops-operator/overlays/latest
+oc apply -k openshift-automation/day1/master-apps
 ```
 
 # More details below
@@ -19,13 +19,13 @@ git clone https://github.com/mmwillingham/iac
 cd iac
 
 # Specific version
-oc apply -k openshift-automation/day_1/gitops-operator/overlays/gitops-1.12
+oc apply -k openshift-automation/day1/gitops-operator/overlays/gitops-1.12
 
 # Latest version
-oc apply -k openshift-automation/day_1/gitops-operator/overlays/latest
+oc apply -k openshift-automation/day1/gitops-operator/overlays/latest
 
 # DELETE
-# oc delete -k openshift-automation/day_1/gitops-operator/overlays/latest
+# oc delete -k openshift-automation/day1/gitops-operator/overlays/latest
 
 # May need to add encryption
 oc -n openshift-gitops patch argocd/openshift-gitops --type=merge -p='{"spec":{"server":{"route":{"enabled":true,"tls":{"insecureEdgeTerminationPolicy":"Redirect","termination":"reencrypt"}}}}}'
@@ -78,9 +78,9 @@ oc -n openshift-gitops label secret $REPO_NAME argocd.argoproj.io/secret-type=re
            
 git clone https://github.com/mmwillingham/iac
 cd iac
-oc apply -k openshift-automation/day_1/master-apps
+oc apply -k openshift-automation/day1/master-apps
 
 # DELETE
-# oc delete -k openshift-automation/day_1/master-apps
+# oc delete -k openshift-automation/day1/master-apps
 ```
 
