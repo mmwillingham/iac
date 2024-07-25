@@ -17,4 +17,4 @@ resources:
 # Loki
   - loki-operator.yaml
   - lokistack.yaml
-  - loki-secret.yaml
+
