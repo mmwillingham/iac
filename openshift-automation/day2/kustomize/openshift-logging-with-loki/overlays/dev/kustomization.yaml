@@ -76,7 +76,7 @@ patches:
 secretGenerator:
 - name: logging-loki-aws-3
   namespace: openshift-logging
-  renaming: none
+  disableNameSuffixHash: true
   literals:
     - audience=openshift
     - bucketnames=bosez-loki
