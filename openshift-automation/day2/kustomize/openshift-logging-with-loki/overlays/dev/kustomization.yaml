@@ -76,8 +76,8 @@ patches:
 secretGenerator:
 - name: loki-secret-3
   literals:
-    audience=openshift
-    bucketnames=bosez-loki
-    region=us-east-2
-    role_arn="arn:aws:iam::942823120101:role/bosez-20240710-openshift-oadp-aws-cloud-credentials"
+    - audience=openshift
+    - bucketnames=bosez-loki
+    - region=us-east-2
+    - role_arn="arn:aws:iam::942823120101:role/bosez-20240710-openshift-oadp-aws-cloud-credentials"
     
