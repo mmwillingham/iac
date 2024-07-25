@@ -9,10 +9,10 @@ patches:
   - patch: |-
       - op: replace
         path: /spec/domain
-        value: myextapps.bosez-20240710.o5fq.p1.openshiftapps.com
+        value: 'myextapps.bosez-20240710.o5fq.p1.openshiftapps.com'
       - op: replace
         path: /spec/defaultCertificate
-        value: custom-certs-extapps
+        value: 'custom-certs-extapps'
     target:
       kind: IngressController
       name: extapps-ingress
