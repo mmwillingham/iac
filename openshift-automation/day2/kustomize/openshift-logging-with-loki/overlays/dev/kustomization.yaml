@@ -73,10 +73,11 @@ patches:
         value: gp3-csi
 
 # Secret when created manually was: logging-loki-aws
+generatorOptions:
+ disableNameSuffixHash: true
 secretGenerator:
 - name: logging-loki-aws-3
   namespace: openshift-logging
-  disableNameSuffixHash: true
   literals:
     - audience=openshift
     - bucketnames=bosez-loki
