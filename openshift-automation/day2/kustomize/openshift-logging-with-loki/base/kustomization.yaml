@@ -12,4 +12,9 @@ resources:
   - er-serviceaccount.yaml
   - er-configmap.yaml
   - er-deployment.yaml
-  - er-clusterrole.yaml  
+  - er-clusterrole.yaml
+
+# Loki
+  - loki-operator.yaml
+  - lokistack.yaml
+  - loki-secret.yaml

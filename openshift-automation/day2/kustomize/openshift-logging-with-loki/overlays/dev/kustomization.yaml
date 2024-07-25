@@ -44,3 +44,40 @@ patches:
       - op: replace
         path: /spec/template/spec/containers/0/resources/requests/memory
         value: "128Mi"
+
+  - target:
+      version: v1
+      kind: Subscription
+      name: loki-operator
+    patch: |-
+      - op: replace
+        path: /spec/config/env/0/value
+        value: arn:aws:iam::942823120101:role/bosez-20240710-openshift-oadp-aws-cloud-credentials
+      - op: replace
+        path: /spec/channel
+        value: stable-5.9
+
+  - target:
+      version: v1
+      kind: LokiStack
+      name: logging-loki
+    patch: |-
+      - op: replace
+        path: /spec/storage/secret/name
+        value: loki-secret-3
+      - op: replace
+        path: /spec/storage/secret/credentialMode
+        value: token
+      - op: replace
+        path: /spec/storageClassName
+        value: gp3-csi
+
+# Secret when created manually was: logging-loki-aws
+secretGenerator:
+- name: loki-secret-3
+  literals:
+    audience=openshift
+    bucketnames=bosez-loki
+    region=us-east-2
+    role_arn="arn:aws:iam::942823120101:role/bosez-20240710-openshift-oadp-aws-cloud-credentials"
+    

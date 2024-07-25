@@ -21,4 +21,5 @@ spec:
         - application
       outputRefs:
         - cw
-        - default # Required for Loki
+# Required for Loki        
+        - default

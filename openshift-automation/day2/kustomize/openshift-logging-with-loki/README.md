@@ -1,5 +1,7 @@
 # Configure OpenShift to forward cluster logging to AWS CloudWatch
 
+# NOTE: Adding Loki to config detailed below
+
 ## References
 https://docs.openshift.com/rosa/cloud_experts_tutorials/cloud-experts-rosa-cloudwatch-sts.html
 https://docs.openshift.com/rosa/observability/logging/cluster-logging.html
