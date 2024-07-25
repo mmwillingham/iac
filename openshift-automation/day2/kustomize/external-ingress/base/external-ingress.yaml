@@ -10,7 +10,7 @@ spec:
     clientCertificatePolicy: ''
   domain: PATCH-ME
   defaultCertificate:
-    name: PATCH-ME # This is the secret
+    name: PATCH-ME
   endpointPublishingStrategy:
     type: LoadBalancerService
     loadBalancer:
