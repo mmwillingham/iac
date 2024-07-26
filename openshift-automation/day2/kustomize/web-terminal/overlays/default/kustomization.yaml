@@ -8,6 +8,11 @@ patches:
   - target:
       kind: Subscription
       name: web-terminal
-    path: patch-channel.yaml
+    patch: |-
+      - op: replace
+        path: /spec/channel
+        value: fast
 
   - path: exclude-default-template.yaml
+
+
