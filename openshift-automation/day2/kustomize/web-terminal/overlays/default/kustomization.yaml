@@ -13,6 +13,5 @@ patches:
         path: /spec/channel
         value: fast
 
-  - path: exclude-default-template.yaml
 
 
