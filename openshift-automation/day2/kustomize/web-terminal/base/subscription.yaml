@@ -4,7 +4,7 @@ metadata:
   name: web-terminal
   namespace: openshift-operators
 spec:
-  channel: patch-me-see-overlays-dir
+  channel: PATCH-ME
   installPlanApproval: Automatic
   name: web-terminal
   source: redhat-operators
