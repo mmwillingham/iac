@@ -15,6 +15,6 @@ resources:
   - er-clusterrole.yaml
 
 # Loki
-  - loki-operator.yaml
-  - lokistack.yaml
+  # - loki-operator.yaml
+  # - lokistack.yaml
 

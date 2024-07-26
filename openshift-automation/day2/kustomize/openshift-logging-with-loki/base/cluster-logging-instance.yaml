@@ -9,17 +9,17 @@ spec:
   managementState: Managed
 
 # With Loki
-  logStore:
-    lokistack:
-      name: logging-loki
-    retentionPolicy:
-      application:
-        maxAge: 7d
-      audit:
-        maxAge: 7d
-      infra:
-        maxAge: 7d
-    type: lokistack
+  # logStore:
+  #   lokistack:
+  #     name: logging-loki
+  #   retentionPolicy:
+  #     application:
+  #       maxAge: 7d
+  #     audit:
+  #       maxAge: 7d
+  #     infra:
+  #       maxAge: 7d
+  #   type: lokistack
   visualization:
     ocpConsole:
       logsLimit: 15
