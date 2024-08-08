@@ -4,6 +4,7 @@ kind: Kustomization
 
 resources:
 #  - ../../base
-  - dpa.yaml
+# This is the correct order of creation
   - cloudstorage.yaml
   - backupstoragelocation.yaml
+  - dpa.yaml
