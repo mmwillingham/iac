@@ -122,12 +122,12 @@ aws iam list-attached-role-policies --role-name "$AWS_SECRETS_POLICY_NAME" --out
 
 ## Deploy Operator and Instance
 ```
-oc apply -k aws_secrets_integration/external-secrets-operator/operator/overlays/stable
-oc apply -k aws_secrets_integration/external-secrets-operator/instance/overlays/default
+oc apply -k external-secrets-operator/operator/overlays/stable
+oc apply -k external-secrets-operator/instance/overlays/default
 ```
 ## Create namespace-scoped secret store
 ```
-oc apply -k aws_secrets_integration/external-secrets-operator/store/overlays/dev
+oc apply -k external-secrets-operator/store/overlays/dev
 ```
 
 ## Create OpenShift resources
