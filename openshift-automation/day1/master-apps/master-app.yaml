@@ -1,0 +1,25 @@
+# This is untested.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:  
+  name: master-app
+  namespace: openshift-gitops
+  labels:
+    appgrp: day2
+  # finalizers:
+  # - resources-finalizer.argocd.argoproj.io  
+spec:
+  destination:    
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: app/openshift-automation/day1/master-apps
+    repoURL: https://github.com/mmwillingham/iac.git
+#    targetRevision: HEAD
+    targetRevision: feature-cwis-887-instructions
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
