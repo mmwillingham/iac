@@ -7,7 +7,9 @@ oc login ...
 git clone https://github.com/mmwillingham/iac
 cd iac
 oc apply -k openshift-automation/day1/gitops-operator/overlays/latest
-oc apply -k openshift-automation/day1/master-apps
+#oc apply -k openshift-automation/day1/master-apps
+oc apply -k openshift-automation/day1/master-apps/master-app.yaml
+
 ```
 
 # More details below
