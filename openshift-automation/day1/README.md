@@ -1,4 +1,4 @@
-# Unable to run from GitHub Actions because OpenShift API is private.
+### Unable to run from GitHub Actions because OpenShift API is private.
 # Workaround. After cluster is created, install GitOps and Master App:
 
 # TL/DR
@@ -6,10 +6,11 @@
 oc login ...
 git clone https://github.com/mmwillingham/iac
 cd iac
+
+# Install gitops
 oc apply -k openshift-automation/day1/gitops-operator/overlays/latest
 
-# Untested 
-#oc apply -k openshift-automation/day1/master-apps
+# Install master-app
 oc apply -k openshift-automation/day1/master-apps/master-app.yaml
 
 ```
