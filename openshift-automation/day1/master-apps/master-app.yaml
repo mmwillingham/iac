@@ -15,8 +15,7 @@ spec:
   source:
     path: app/openshift-automation/day1/master-apps
     repoURL: https://github.com/mmwillingham/iac.git
-#    targetRevision: HEAD
-    targetRevision: feature-cwis-887-instructions
+    targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true
