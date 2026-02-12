@@ -1,6 +1,0 @@
-apiVersion: v2
-name: OpenShift the app of apps
-description: A Helm chart to deploy the app of apps
-type: application
-version: 0.1.0
-appVersion: "1.16.0"
