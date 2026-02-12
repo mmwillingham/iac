@@ -11,7 +11,7 @@ cd iac
 oc apply -k openshift-automation/day1/gitops-operator/overlays/latest
 
 # Install master-app
-oc apply -k openshift-automation/day1/master-apps
+oc apply -f openshift-automation/day1/master-apps/master-app.yaml
 
 ```
 
@@ -83,9 +83,9 @@ oc -n openshift-gitops label secret $REPO_NAME argocd.argoproj.io/secret-type=re
            
 git clone https://github.com/mmwillingham/iac
 cd iac
-oc apply -k openshift-automation/day1/master-apps
+oc apply -f openshift-automation/day1/master-apps/master-app.yaml
 
 # DELETE
-# oc delete -k openshift-automation/day1/master-apps
+# oc delete -f openshift-automation/day1/master-apps/master-app.yaml
 ```
 
