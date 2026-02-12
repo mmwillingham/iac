@@ -13,7 +13,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: app/openshift-automation/day1/master-apps
+    path: openshift-automation/day1/master-apps
     repoURL: https://github.com/mmwillingham/iac
     targetRevision: HEAD
   syncPolicy:
