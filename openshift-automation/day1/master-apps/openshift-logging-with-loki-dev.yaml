@@ -12,8 +12,6 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    directory:
-      recurse: false
     path: openshift-automation/day2/kustomize/openshift-logging-with-loki/overlays/dev
     repoURL: https://github.com/mmwillingham/iac.git
     targetRevision: HEAD
