@@ -11,7 +11,7 @@ cd iac
 oc apply -k openshift-automation/day1/gitops-operator/overlays/latest
 
 # Install master-app
-oc apply -f openshift-automation/day1/master-apps/master-app.yaml
+oc apply -k openshift-automation/day1/master-apps
 
 ```
 
