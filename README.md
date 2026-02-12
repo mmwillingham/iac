@@ -1,8 +1,10 @@
 # iac
+```
 https://github.com/terraform-redhat/terraform-provider-rhcs/blob/main/examples/create_rosa_sts_cluster/classic_sts/cluster/README.md
 https://excalidraw.com/#json=LSeUV72meWCj8uAd5iJfv,cKAWQw8wKRIAM-pn9e8isA
 https://developer.hashicorp.com/terraform/tutorials/automation/github-actions
 https://registry.terraform.io/browse/providers
+```
 clis needed
 rosa
 ocm
