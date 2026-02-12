@@ -1,7 +1,7 @@
 # kube-ops-view
 
-### Not required...added as a clusterrolebinding
 ```
+### Not required...added as a clusterrolebinding
 oc adm policy add-scc-to-user privileged system:serviceaccount:ops-view:kube-ops-view
 oc adm policy add-scc-to-user privileged system:serviceaccount:ops-view:default
 ```
