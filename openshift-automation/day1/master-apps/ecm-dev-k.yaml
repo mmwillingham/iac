@@ -14,8 +14,7 @@ spec:
   source:
     path: openshift-automation/day2/kustomize/ecm/overlays/dev
     repoURL: https://github.com/mmwillingham/iac.git
-#    targetRevision: HEAD
-    targetRevision: feature-cwis-887-instructions
+    targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true
