@@ -3,7 +3,7 @@
 argocd app create ecm-sit \
 --repo https://github.com/mmwillingham/iac.git \
 --revision feature-cwis-887-instructions \
---path app/openshift-automation/day2/ecm/overlays/sit \
+--path openshift-automation/day2/ecm/overlays/sit \
 --dest-server https://kubernetes.default.svc \
 --sync-policy automated \
 --self-heal \

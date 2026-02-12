@@ -3,7 +3,7 @@
 argocd app create ecm-uat \
 --repo https://github.com/mmwillingham/iac.git \
 --revision feature-cwis-887-instructions \
---path app/openshift-automation/day2/ecm/overlays/uat \
+--path openshift-automation/day2/ecm/overlays/uat \
 --dest-server https://kubernetes.default.svc \
 --sync-policy automated \
 --self-heal \

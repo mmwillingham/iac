@@ -62,7 +62,7 @@ echo $MY_SECRET
 ```
 
 ## Deploy AWS Secrets and Configuration Provider
-### Also possible to do it without helm. See my repo from https://github.com/mmwillingham/iac/app/openshift-automation/day2/kustomize/csi-driver
+### Also possible to do it without helm. See my repo from https://github.com/mmwillingham/iac/openshift-automation/day2/kustomize/csi-driver
 
 ```
 # Add helm repo

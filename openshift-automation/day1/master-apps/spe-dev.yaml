@@ -14,7 +14,7 @@ spec:
   source:
     directory:
       recurse: false
-    path: app/openshift-automation/day2/kustomize/spe/overlays/rosa-cwisrosa-dev-1
+    path: openshift-automation/day2/kustomize/spe/overlays/rosa-cwisrosa-dev-1
     repoURL: https://github.com/mmwillingham/iac.git
 #    targetRevision: HEAD
     targetRevision: feature-cwis-887-instructions
