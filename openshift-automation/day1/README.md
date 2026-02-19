@@ -1,6 +1,3 @@
-### Unable to run from GitHub Actions because OpenShift API is private.
-### Workaround. After cluster is created, install GitOps and Master App:
-
 # TL/DR
 ```
 oc login ...
